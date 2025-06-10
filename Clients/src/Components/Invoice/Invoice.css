@@ -1,0 +1,22 @@
+.page-break {
+  page-break-after: always; /* Ensures new page in print */
+  margin-bottom: 40px; /* Visual space between pages */
+  border-bottom: 2px dashed #000; /* Optional: dashed line to show separation */
+}
+
+@media print {
+  .page-break {
+    margin-bottom: 0;
+    border-bottom: none;
+  }
+}
+
+#billing-table table,
+tr,
+td,
+th {
+  background-color: transparent !important;
+}
+#invoice-container {
+  margin: 10px 0px;
+}
