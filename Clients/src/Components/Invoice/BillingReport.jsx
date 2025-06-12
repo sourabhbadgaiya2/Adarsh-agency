@@ -1,69 +1,10 @@
-// import React, { useState } from "react";
-// import ProductBillingReport from "./ProductBillingReport";
-// import CustomerBilling from "./CustomerBilling";
-// import axios from "../../../Config/axios";
-
-// import { ToastContainer, toast } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
-
-// function BillingReport() {
-//   const [billingData, setBillingData] = useState([]);
-//   const [customerData, setCustomerData] = useState({});
-
-//   const handleBillingDataChange = (data) => {
-//     setBillingData(data);
-//   };
-
-//   const handleCustomerDataChange = (data) => {
-//     setCustomerData(data);
-//   };
-
-//   const handleSubmit = async () => {
-//     try {
-//       const finalData = {
-//         customer: customerData,
-//         billing: billingData,
-//       };
-
-//       const response = await axios.post("/pro-billing", finalData);
-
-//       toast.success("Invoice saved successfully!"); // Success Toast
-//       console.log("Response from server:", response.data);
-//     } catch (error) {
-//       toast.error("Failed to save invoice"); // Error Toast
-//       console.error("Error saving invoice:", error);
-//     }
-//   };
-
-//   return (
-//     <>
-//       <ProductBillingReport onBillingDataChange={handleBillingDataChange} />
-//       <CustomerBilling onDataChange={handleCustomerDataChange} />
-
-//       <hr />
-//       <div className="text-center mt-4">
-//         <button
-//           className="btn btn-primary px-4 py-2"
-//           onClick={handleSubmit}
-//           style={{ fontWeight: "bold", fontSize: "16px", borderRadius: "8px" }}
-//         >
-//           Submit
-//         </button>
-//       </div>
-
-//       {/* Toast Container to display toasts */}
-//       <ToastContainer position="top-right" autoClose={3000} />
-//     </>
-//   );
-// }
-
-// export default BillingReport;
 import React, { useState } from "react";
 import axios from "../../Config/axios";
 import ProductBillingReport from "./ProductBillingReport";
 import CustomerBilling from "./CustomerBilling";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Loader from "../Loader";
 // import { useNavigate } from "react-router-dom"; // ✅ Correct import
 
 function BillingReport() {
@@ -72,6 +13,8 @@ function BillingReport() {
   // const navigate = useNavigate(); // ✅ Correct hook
   const [finalAmount, setFinalAmount] = useState(0);
   const [resetKey, setResetKey] = useState(0);
+
+  const [loading, setLoading] = useState(false);
 
   const handleBillingDataChange = (data, totalAmount) => {
     setBillingData(data);
@@ -89,6 +32,8 @@ function BillingReport() {
   };
 
   const handleSubmit = async () => {
+    setLoading(true);
+
     try {
       const finalData = {
         companyId: customerData.companyId,
@@ -115,8 +60,14 @@ function BillingReport() {
     } catch (error) {
       toast.error("Failed to save invoice");
       console.error("Error saving invoice:", error);
+    } finally {
+      setLoading(false);
     }
   };
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <>
@@ -130,9 +81,9 @@ function BillingReport() {
       />
 
       <hr />
-      <div className="text-center mt-4">
+      <div className='text-center mt-4'>
         <button
-          className="btn btn-primary px-4 py-2"
+          className='btn btn-primary px-4 py-2'
           onClick={handleSubmit}
           style={{ fontWeight: "bold", fontSize: "16px", borderRadius: "8px" }}
         >
@@ -140,7 +91,7 @@ function BillingReport() {
         </button>
       </div>
 
-      <ToastContainer position="top-right" autoClose={3000} />
+      <ToastContainer position='top-right' autoClose={3000} />
     </>
   );
 }
