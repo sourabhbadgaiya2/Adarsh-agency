@@ -9,6 +9,11 @@ import {
   Table,
 } from "react-bootstrap";
 import axios from "../../Config/axios";
+import Loader from "../Loader";
+import toast from "react-hot-toast";
+import { BsPlusCircle, BsTrash } from "react-icons/bs";
+
+import { confirmAlert } from "react-confirm-alert";
 
 const PurchaseForm = () => {
   const [vendors, setVendors] = useState([]);
@@ -16,6 +21,7 @@ const PurchaseForm = () => {
   const [products, setProducts] = useState([]);
   const [purchases, setPurchases] = useState([]);
   const [editingId, setEditingId] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const [purchaseData, setPurchaseData] = useState({
     vendorId: "",
@@ -32,6 +38,7 @@ const PurchaseForm = () => {
   const [itemsList, setItemsList] = useState([]);
 
   const fetchInitialData = async () => {
+    setLoading(true);
     try {
       const [vRes, cRes, pRes, purRes] = await Promise.all([
         axios.get("/vendor"),
@@ -45,6 +52,8 @@ const PurchaseForm = () => {
       setPurchases(purRes.data || []);
     } catch (err) {
       console.error("Error fetching data:", err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -83,7 +92,7 @@ const PurchaseForm = () => {
   const addItemToList = () => {
     const { productId, companyId, quantity, purchaseRate } = purchaseData.item;
     if (!productId || !companyId || !quantity || !purchaseRate) {
-      alert("Please fill all item fields");
+      toast.error("Please fill all item fields");
       return;
     }
 
@@ -104,9 +113,10 @@ const PurchaseForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!purchaseData.vendorId || itemsList.length === 0) {
-      alert("Please select a vendor and add at least one item");
+      toast.error("Please select a vendor and add at least one item");
       return;
     }
+    setLoading(true);
 
     try {
       const dataToSend = {
@@ -116,10 +126,10 @@ const PurchaseForm = () => {
 
       if (editingId) {
         await axios.put(`/purchase/${editingId}`, dataToSend);
-        alert("Purchase updated successfully");
+        toast.success("Purchase updated successfully");
       } else {
         await axios.post("/purchase", dataToSend);
-        alert("Purchase saved successfully");
+        toast.success("Purchase saved successfully");
       }
 
       setPurchaseData({
@@ -138,7 +148,9 @@ const PurchaseForm = () => {
       fetchInitialData();
     } catch (err) {
       console.error(err);
-      alert("Failed to save/update purchase");
+      toast.error("Failed to save/update purchase");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -158,17 +170,50 @@ const PurchaseForm = () => {
   //   setEditingId(purchase._id);
   // };
 
+  // const handleDelete = async (id) => {
+  //   if (window.confirm("Are you sure you want to delete this purchase?")) {
+  //     setLoading(true);
+  //     try {
+  //       await axios.delete(`/purchase/${id}`);
+  //       toast.success("Purchase deleted");
+  //       fetchInitialData();
+  //     } catch (err) {
+  //       console.error(err);
+  //       toast.error("Failed to delete purchase");
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   }
+  // };
+
   const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this purchase?")) {
-      try {
-        await axios.delete(`/purchase/${id}`);
-        alert("Purchase deleted");
-        fetchInitialData();
-      } catch (err) {
-        console.error(err);
-        alert("Failed to delete purchase");
-      }
-    }
+    confirmAlert({
+      title: "Confirm Delete",
+      message: "Are you sure you want to delete this purchase?",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: async () => {
+            try {
+              setLoading(true);
+              await axios.delete(`/purchase/${id}`);
+              toast.success("Purchase deleted");
+              fetchInitialData();
+            } catch (err) {
+              toast.error("Failed to delete purchase");
+            } finally {
+              setLoading(false);
+            }
+          },
+        },
+        {
+          label: "No",
+          onClick: () => {
+            // do nothing
+          },
+        },
+      ],
+    });
   };
 
   const removeItem = (index) => {
@@ -177,21 +222,260 @@ const PurchaseForm = () => {
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       e.preventDefault(); // Prevent form submission on Enter
+      console.log(e);
       addItemToList();
     }
   };
 
+  if (loading) {
+    return <Loader />;
+  }
+
   return (
-    <div className="mx-5">
-      <Card className=" p-4 mb-4">
-        <h4 className="mb-3">{editingId ? "Edit Purchase" : "Add Purchase"}</h4>
-        <Form onSubmit={handleSubmit}>
-          <Row className="mb-3">
+    // <div className='mx-5'>
+    //   <Card className=' p-4 mb-4'>
+    //     <h4 className='mb-3'>{editingId ? "Edit Purchase" : "Add Purchase"}</h4>
+    //     <Form onSubmit={handleSubmit}>
+    //       <Row className='mb-3'>
+    //         <Col md={6}>
+    //           <Form.Group>
+    //             <Form.Label>Vendor</Form.Label>
+    //             <Form.Select
+    //               name='vendorId'
+    //               value={purchaseData.vendorId}
+    //               onChange={(e) =>
+    //                 setPurchaseData((prev) => ({
+    //                   ...prev,
+    //                   vendorId: e.target.value,
+    //                 }))
+    //               }
+    //             >
+    //               <option value=''>Select Vendor</option>
+    //               {vendors.map((v) => (
+    //                 <option key={v._id} value={v._id}>
+    //                   {v.name}
+    //                 </option>
+    //               ))}
+    //             </Form.Select>
+    //           </Form.Group>
+    //         </Col>
+    //       </Row>
+    //       <Row className='mt-3'>
+    //         <Col xs={12} md={6} className='mb-2 mb-md-0'>
+    //           <p>
+    //             <strong>Add More Items: </strong>
+    //             <span style={{ color: "gray" }}>press Enter</span>
+    //           </p>
+    //         </Col>
+
+    //         <Col
+    //           xs={12}
+    //           md={6}
+    //           className='d-flex justify-content-end align-items-end'
+    //         >
+    //           <Button
+    //             variant='info'
+    //             onClick={addItemToList}
+    //             aria-label='Add new item'
+    //           >
+    //             ➕
+    //           </Button>
+    //         </Col>
+    //       </Row>
+
+    //       <Row className='mb-3'>
+    //         <Col md={2}>
+    //           <Form.Group>
+    //             <Form.Label>Brand</Form.Label>
+    //             <Form.Select
+    //               name='companyId'
+    //               value={purchaseData.item.companyId}
+    //               onChange={handleItemChange}
+    //               onKeyDown={handleKeyDown}
+    //               placeholder='Enter Brand'
+    //             >
+    //               <option value=''>Select Company</option>
+    //               {companies.map((c) => (
+    //                 <option key={c._id} value={c._id}>
+    //                   {c.name}
+    //                 </option>
+    //               ))}
+    //             </Form.Select>
+    //           </Form.Group>
+    //         </Col>
+    //         <Col md={2}>
+    //           <Form.Group>
+    //             <Form.Label>Product</Form.Label>
+    //             <Form.Select
+    //               name='productId'
+    //               value={purchaseData.item.productId}
+    //               onChange={handleItemChange}
+    //               onKeyDown={handleKeyDown}
+    //               placeholder='Enter Product'
+    //             >
+    //               <option value=''>Select Product</option>
+    //               {products.map((p) => (
+    //                 <option key={p._id} value={p._id}>
+    //                   {p.productName}
+    //                 </option>
+    //               ))}
+    //             </Form.Select>
+    //           </Form.Group>
+    //         </Col>
+
+    //         <Col md={2}>
+    //           <Form.Group>
+    //             <Form.Label>Rate</Form.Label>
+    //             <Form.Control
+    //               type='number'
+    //               name='purchaseRate'
+    //               value={purchaseData.item.purchaseRate}
+    //               onChange={handleItemChange}
+    //               onKeyDown={handleKeyDown}
+    //             />
+    //           </Form.Group>
+    //         </Col>
+    //         <Col md={2}>
+    //           <Form.Group>
+    //             <Form.Label>Qty</Form.Label>
+    //             <Form.Control
+    //               type='number'
+    //               name='quantity'
+    //               value={purchaseData.item.quantity}
+    //               onChange={handleItemChange}
+    //               onKeyDown={handleKeyDown}
+    //               placeholder='Enter Qty'
+    //             />
+    //           </Form.Group>
+    //         </Col>
+
+    //         <Col md={2}>
+    //           <Form.Group>
+    //             <Form.Label>Available Qty</Form.Label>
+    //             <Form.Control
+    //               type='number'
+    //               name='availableQty'
+    //               value={purchaseData.item.availableQty}
+    //               readOnly
+    //             />
+    //           </Form.Group>
+    //         </Col>
+    //         <Col md={2}>
+    //           <Form.Group>
+    //             <Form.Label>Total</Form.Label>
+    //             <Form.Control
+    //               type='number'
+    //               name='totalAmount'
+    //               value={purchaseData.item.totalAmount}
+    //               readOnly
+    //             />
+    //           </Form.Group>
+    //         </Col>
+    //       </Row>
+
+    //       {itemsList.length > 0 && (
+    //         <Table striped bordered className='mt-3'>
+    //           <thead>
+    //             <tr>
+    //               <th>Product</th>
+    //               <th>Company</th>
+    //               <th>Rate</th>
+    //               <th>Qty</th>
+    //               <th>Total</th>
+    //               <th>Action</th>
+    //             </tr>
+    //           </thead>
+    //           <tbody>
+    //             {itemsList.map((item, index) => {
+    //               const product = products.find(
+    //                 (p) => p._id === item.productId
+    //               );
+    //               const company = companies.find(
+    //                 (c) => c._id === item.companyId
+    //               );
+    //               return (
+    //                 <tr key={index}>
+    //                   <td>{product?.productName}</td>
+    //                   <td>{company?.name}</td>
+    //                   <td>{item.purchaseRate}</td>
+    //                   <td>{item.quantity}</td>
+    //                   <td>{item.totalAmount}</td>
+    //                   <td>
+    //                     <Button
+    //                       variant='outline-danger'
+    //                       size='sm'
+    //                       onClick={() => removeItem(index)}
+    //                     >
+    //                       Remove
+    //                     </Button>
+    //                   </td>
+    //                 </tr>
+    //               );
+    //             })}
+    //           </tbody>
+    //         </Table>
+    //       )}
+
+    //       <Button type='submit' className='mt-3' variant='primary'>
+    //         {editingId ? "Update Purchase" : "Save Purchase"}
+    //       </Button>
+    //     </Form>
+    //   </Card>
+
+    //   <Card className='p-3'>
+    //     <h5>Purchase List</h5>
+    //     <Table striped bordered>
+    //       <thead>
+    //         <tr>
+    //           <th>Vendor</th>
+    //           <th>Items Count</th>
+    //           <th>Item Quantity</th>
+    //           <th>Item Rate</th>
+    //           <th>Total Amount</th>
+    //           <th>Actions</th>
+    //         </tr>
+    //       </thead>
+    //       <tbody>
+    //         {purchases.map((p) => (
+    //           <tr key={p._id}>
+    //             <td>{p.vendorId?.name}</td>
+    //             <td>{p.items.length}</td>
+    //             <td>{p.items.reduce((sum, i) => sum + i.quantity, 0)}</td>
+    //             <td>{p.items.reduce((sum, i) => sum + i.purchaseRate, 0)}</td>
+    //             <td>{p.items.reduce((sum, i) => sum + i.totalAmount, 0)}</td>
+    //             <td>
+    //               {/* <Button
+    //                 variant="outline-secondary"
+    //                 size="sm"
+    //                 onClick={() => handleEdit(p)}
+    //               >
+    //                 Edit
+    //               </Button>{" "} */}
+    //               <Button
+    //                 variant='outline-danger'
+    //                 size='sm'
+    //                 onClick={() => handleDelete(p._id)}
+    //               >
+    //                 Delete
+    //               </Button>
+    //             </td>
+    //           </tr>
+    //         ))}
+    //       </tbody>
+    //     </Table>
+    //   </Card>
+    // </div>
+
+    <div className='mx-5'>
+      <Card className='p-4 mb-4'>
+        <h4 className='mb-3'>{editingId ? "Edit Purchase" : "Add Purchase"}</h4>
+        <Form onSubmit={handleSubmit} onKeyDown={handleKeyDown}>
+          <Row className='mb-3'>
             <Col md={6}>
               <Form.Group>
                 <Form.Label>Vendor</Form.Label>
                 <Form.Select
-                  name="vendorId"
+                  name='vendorId'
                   value={purchaseData.vendorId}
                   onChange={(e) =>
                     setPurchaseData((prev) => ({
@@ -200,7 +484,7 @@ const PurchaseForm = () => {
                     }))
                   }
                 >
-                  <option value="">Select Vendor</option>
+                  <option value=''>Select Vendor</option>
                   {vendors.map((v) => (
                     <option key={v._id} value={v._id}>
                       {v.name}
@@ -210,27 +494,31 @@ const PurchaseForm = () => {
               </Form.Group>
             </Col>
           </Row>
-          <Row className="mt-3">
-            <Col md={6}>
+
+          <Row className='mt-3'>
+            <Col xs={12} md={6}>
               <p>
-                <strong>Add More Items : </strong>{" "}
+                <strong>Add More Items:</strong>{" "}
                 <span style={{ color: "gray" }}>press Enter</span>
               </p>
             </Col>
+            <Col xs={12} md={6} className='d-flex justify-content-end'>
+              <Button variant='primary' onClick={addItemToList}>
+                <BsPlusCircle size={16} style={{ marginRight: "0px" }} />
+              </Button>
+            </Col>
           </Row>
 
-          <Row className="mb-3">
+          <Row className='mb-3'>
             <Col md={2}>
               <Form.Group>
                 <Form.Label>Brand</Form.Label>
                 <Form.Select
-                  name="companyId"
+                  name='companyId'
                   value={purchaseData.item.companyId}
                   onChange={handleItemChange}
-                  onKeyDown={handleKeyDown}
-                  placeholder="Enter Brand"
                 >
-                  <option value="">Select Company</option>
+                  <option value=''>Select Company</option>
                   {companies.map((c) => (
                     <option key={c._id} value={c._id}>
                       {c.name}
@@ -243,13 +531,11 @@ const PurchaseForm = () => {
               <Form.Group>
                 <Form.Label>Product</Form.Label>
                 <Form.Select
-                  name="productId"
+                  name='productId'
                   value={purchaseData.item.productId}
                   onChange={handleItemChange}
-                  onKeyDown={handleKeyDown}
-                  placeholder="Enter Product"
                 >
-                  <option value="">Select Product</option>
+                  <option value=''>Select Product</option>
                   {products.map((p) => (
                     <option key={p._id} value={p._id}>
                       {p.productName}
@@ -263,8 +549,8 @@ const PurchaseForm = () => {
               <Form.Group>
                 <Form.Label>Rate</Form.Label>
                 <Form.Control
-                  type="number"
-                  name="purchaseRate"
+                  type='number'
+                  name='purchaseRate'
                   value={purchaseData.item.purchaseRate}
                   onChange={handleItemChange}
                   onKeyDown={handleKeyDown}
@@ -275,12 +561,12 @@ const PurchaseForm = () => {
               <Form.Group>
                 <Form.Label>Qty</Form.Label>
                 <Form.Control
-                  type="number"
-                  name="quantity"
+                  type='number'
+                  name='quantity'
                   value={purchaseData.item.quantity}
                   onChange={handleItemChange}
                   onKeyDown={handleKeyDown}
-                  placeholder="Enter Qty"
+                  placeholder='Enter Qty'
                 />
               </Form.Group>
             </Col>
@@ -289,8 +575,8 @@ const PurchaseForm = () => {
               <Form.Group>
                 <Form.Label>Available Qty</Form.Label>
                 <Form.Control
-                  type="number"
-                  name="availableQty"
+                  type='number'
+                  name='availableQty'
                   value={purchaseData.item.availableQty}
                   readOnly
                 />
@@ -300,22 +586,17 @@ const PurchaseForm = () => {
               <Form.Group>
                 <Form.Label>Total</Form.Label>
                 <Form.Control
-                  type="number"
-                  name="totalAmount"
+                  type='number'
+                  name='totalAmount'
                   value={purchaseData.item.totalAmount}
                   readOnly
                 />
               </Form.Group>
             </Col>
-            {/* <Col md={2} className="d-flex align-items-end">
-              <Button variant="info" onClick={addItemToList}>
-                Add Item
-              </Button>
-            </Col> */}
           </Row>
 
           {itemsList.length > 0 && (
-            <Table striped bordered className="mt-3">
+            <Table striped bordered className='mt-3'>
               <thead>
                 <tr>
                   <th>Product</th>
@@ -343,8 +624,8 @@ const PurchaseForm = () => {
                       <td>{item.totalAmount}</td>
                       <td>
                         <Button
-                          variant="outline-danger"
-                          size="sm"
+                          variant='outline-danger'
+                          size='sm'
                           onClick={() => removeItem(index)}
                         >
                           Remove
@@ -357,13 +638,13 @@ const PurchaseForm = () => {
             </Table>
           )}
 
-          <Button type="submit" className="mt-3" variant="primary">
+          <Button type='submit' className='mt-3' variant='primary'>
             {editingId ? "Update Purchase" : "Save Purchase"}
           </Button>
         </Form>
       </Card>
 
-      <Card className="p-3">
+      <Card className='p-3'>
         <h5>Purchase List</h5>
         <Table striped bordered>
           <thead>
@@ -385,19 +666,12 @@ const PurchaseForm = () => {
                 <td>{p.items.reduce((sum, i) => sum + i.purchaseRate, 0)}</td>
                 <td>{p.items.reduce((sum, i) => sum + i.totalAmount, 0)}</td>
                 <td>
-                  {/* <Button
-                    variant="outline-secondary"
-                    size="sm"
-                    onClick={() => handleEdit(p)}
-                  >
-                    Edit
-                  </Button>{" "} */}
                   <Button
-                    variant="outline-danger"
-                    size="sm"
+                    variant='danger'
+                    size='md'
                     onClick={() => handleDelete(p._id)}
                   >
-                    Delete
+                    <BsTrash style={{ marginRight: "0px" }} />
                   </Button>
                 </td>
               </tr>
