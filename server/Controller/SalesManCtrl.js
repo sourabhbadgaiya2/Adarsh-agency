@@ -43,7 +43,7 @@ const Display = async (req, res) => {
   try {
     const Data = await Salesman.find();
     res.status(200).send({ Data });
-    console.log(Data);
+    // console.log(Data);
   } catch (error) {
     console.error("Error fetching Sales Man:", error); // Log the error for debugging
     res
@@ -51,6 +51,7 @@ const Display = async (req, res) => {
       .json({ message: "Failed to fetch Data", error: error.message });
   }
 };
+
 const getSingleSalesman = async (req, res) => {
   try {
     const { id } = req.params;

@@ -10,7 +10,7 @@ exports.createPurchase = async (req, res) => {
     for (const item of savedPurchase.items) {
       const product = await Product.findById(item.productId);
       if (!product) continue;
-      product.availableQty += item.quantity;
+      product.availableQty -= item.quantity;
       await product.save();
     }
 
@@ -85,5 +85,33 @@ exports.deletePurchase = async (req, res) => {
     res.json({ message: "Deleted successfully" });
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+};
+
+// exports.getNextEntryNumber = async (req, res) => {
+//   try {
+//     const count = await Purchase.countDocuments();
+//     const nextNumber = (count + 1).toString().padStart(5, "0");
+
+//     res.json({ nextEntryNumber: nextNumber });
+//   } catch (err) {
+//     res.status(500).json({ error: "Failed to get next entry number" });
+//   }
+// };
+
+exports.getNextEntryNumber = async (req, res) => {
+  try {
+    const lastEntry = await Purchase.findOne().sort({ createdAt: -1 });
+
+    let nextEntryNumber = "00001";
+    if (lastEntry && lastEntry.entryNumber) {
+      const lastNumber = parseInt(lastEntry.entryNumber);
+      const nextNumber = lastNumber + 1;
+      nextEntryNumber = nextNumber.toString().padStart(5, "0");
+    }
+
+    res.json({ nextEntryNumber });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to get next entry number" });
   }
 };

@@ -4,6 +4,16 @@ body {
   margin: 0;
   padding: 0;
 }
+
+
+
+.auto-width-input {
+  min-width: 40px !important;
+  width: auto !important;
+  /* display: inline-block !important; */
+}
+
+
 #displayInvoice Table,
 Table tr,
 Table td,
@@ -179,6 +189,7 @@ table th {
     box-shadow: none !important;
     border-radius: 0;
   }
+
   .main-navigation {
     /* position: absolute; */
     /* border-radius: 5px; */
@@ -190,6 +201,7 @@ table th {
     z-index: 1000;
   }
 }
+
 /* Navbar.css */
 
 /* Blue Header */
@@ -314,6 +326,7 @@ table th {
 }
 
 @media (max-width: 991.98px) {
+
   .blue-header,
   .dashboard-section {
     padding: 10px 0;
@@ -377,24 +390,29 @@ table th {
     transform: rotate(180deg);
   }
 }
+
 .custom-dropdown {
-  min-width: 600px; /* Default for larger screens */
+  min-width: 600px;
+  /* Default for larger screens */
 }
+
 /* Show dropdown on hover (desktop only) */
 
 /* Mobile view dropdown compact */
 @media (max-width: 768px) {
   .custom-dropdown {
-    min-width: 200px; /* Adjust to 200px for mobile */
+    min-width: 200px;
+    /* Adjust to 200px for mobile */
   }
 
-  .nav-item.dropdown-hover:hover > .dropdown-menu {
+  .nav-item.dropdown-hover:hover>.dropdown-menu {
     display: block;
   }
 
   .dropdown-menu-multicol {
     min-width: 100px !important;
   }
+
   .dropdown-menu-multicol {
     min-width: 40px !important;
     /* width: auto; */
@@ -408,6 +426,7 @@ table th {
   .dropdown-menu-multicol .col-6 {
     width: 80%;
   }
+
   .nav-icon {
     font-size: 18px;
   }

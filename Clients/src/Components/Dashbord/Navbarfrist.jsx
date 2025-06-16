@@ -8,10 +8,10 @@ const Navbarfristn = () => {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <div className="vpfinancial-navbar">
-      <div className="blue-header   py-2">
+    <div className='vpfinancial-navbar'>
+      <div className='blue-header   py-2'>
         <Container>
-          <h1 className="brand-title mb-0">
+          <h1 className='brand-title mb-0'>
             Aadarsh{" "}
             <span style={{ color: "orange", backgroundColor: "white" }}>
               Agency
@@ -20,60 +20,60 @@ const Navbarfristn = () => {
         </Container>
       </div>
 
-      <div className="dashboard-section p-4 ">
+      <div className='dashboard-section p-4 '>
         <Container>
-          <div className="dashboard-header d-flex justify-content-between align-items-center">
-            <h2 className="dashboard-title m-0">Dashboard</h2>
-            <div className="breadcrumb">Aadarsh &gt; Dashboard</div>
+          <div className='dashboard-header d-flex justify-content-between align-items-center'>
+            <h2 className='dashboard-title m-0'>Dashboard</h2>
+            <div className='breadcrumb'>Aadarsh &gt; Dashboard</div>
           </div>
         </Container>
       </div>
 
       <Navbar
-        bg="white"
-        expand="lg"
-        className="main-navigation border-top border-bottom"
+        bg='white'
+        expand='lg'
+        className='main-navigation border-top border-bottom'
         expanded={expanded}
         onToggle={() => setExpanded(!expanded)}
       >
         <Container fluid>
           <Navbar.Toggle
-            aria-controls="main-navbar-nav"
-            className="navbar-toggler-custom"
+            aria-controls='main-navbar-nav'
+            className='navbar-toggler-custom'
           >
-            <FiMenu className="toggle-icon" />
+            <FiMenu className='toggle-icon' />
           </Navbar.Toggle>
 
-          <Navbar.Collapse id="main-navbar-nav">
-            <Nav className="me-auto gap-4">
-              <Nav.Link as={Link} to="/" className="nav-item">
-                <FiGrid className="nav-icon" />
-                <span className="nav-text">Dashboard</span>
+          <Navbar.Collapse id='main-navbar-nav'>
+            <Nav className='me-auto gap-4'>
+              <Nav.Link as={Link} to='/' className='nav-item'>
+                <FiGrid className='nav-icon' />
+                <span className='nav-text'>Dashboard</span>
               </Nav.Link>
 
               {/* Master */}
-              <Dropdown as={Nav.Item} className="nav-item dropdown-hover">
+              <Dropdown as={Nav.Item} className='nav-item dropdown-hover'>
                 <Dropdown.Toggle as={Nav.Link}>
-                  <FiLayers className="nav-icon" />
-                  Master <FiChevronDown size={12} className="ms-1" />
+                  <FiLayers className='nav-icon' />
+                  Master <FiChevronDown size={12} className='ms-1' />
                 </Dropdown.Toggle>
                 <Dropdown.Menu
-                  className="custom-dropdown p-4"
+                  className='custom-dropdown p-4'
                   style={{ minWidth: "500px" }}
                 >
-                  <div className="row">
+                  <div className='row'>
                     {/* Brand */}
-                    <div className="col-md-4">
+                    <div className='col-md-4'>
                       {/* <Dropdown.Item as={Link} to="/add-company">
                         Add Company
                       </Dropdown.Item> */}
-                      <Dropdown.Item as={Link} to="/brand">
+                      <Dropdown.Item as={Link} to='/brand'>
                         Add Brand
                       </Dropdown.Item>
-                      <Dropdown.Item as={Link} to="/product">
+                      <Dropdown.Item as={Link} to='/product'>
                         Create Product
                       </Dropdown.Item>
-                      <Dropdown.Item as={Link} to="/Vendor-report">
+                      <Dropdown.Item as={Link} to='/Vendor-report'>
                         Add Vendor
                       </Dropdown.Item>
 
@@ -86,15 +86,15 @@ const Navbarfristn = () => {
                     </div>
 
                     {/* Product Master */}
-                    <div className="col-md-4">
-                      <Dropdown.Item as={Link} to="/add-customer">
+                    <div className='col-md-4'>
+                      <Dropdown.Item as={Link} to='/add-customer'>
                         Add Customer
                       </Dropdown.Item>
-                      <Dropdown.Item as={Link} to="/add-salesman">
+                      <Dropdown.Item as={Link} to='/add-salesman'>
                         Add Sales Man
                       </Dropdown.Item>
 
-                      <Dropdown.Item as={Link} to="/display-salesman">
+                      <Dropdown.Item as={Link} to='/display-salesman'>
                         Display Sales Man
                       </Dropdown.Item>
                       {/* <Dropdown.Item as={Link} to="/display-billing-report">
@@ -106,18 +106,18 @@ const Navbarfristn = () => {
               </Dropdown>
 
               {/* Purchasing */}
-              <Dropdown as={Nav.Item} className="nav-item dropdown-hover">
+              <Dropdown as={Nav.Item} className='nav-item dropdown-hover'>
                 <Dropdown.Toggle as={Nav.Link}>
-                  <FiLayers className="nav-icon" />
-                  Purchasing <FiChevronDown size={12} className="ms-1" />
+                  <FiLayers className='nav-icon' />
+                  Purchasing <FiChevronDown size={12} className='ms-1' />
                 </Dropdown.Toggle>
                 <Dropdown.Menu
-                  className="custom-dropdown p-4"
+                  className='custom-dropdown p-4'
                   style={{ minWidth: "200px" }}
                 >
-                  <div className="row">
-                    <div className="col-md-4">
-                      <Dropdown.Item as={Link} to="/purchase">
+                  <div className='row'>
+                    <div className='col-md-4'>
+                      <Dropdown.Item as={Link} to='/purchase'>
                         Purchase
                       </Dropdown.Item>
                     </div>
@@ -126,23 +126,23 @@ const Navbarfristn = () => {
               </Dropdown>
 
               {/*Billing Product Invoice  */}
-              <Dropdown as={Nav.Item} className="nav-item dropdown-hover">
+              <Dropdown as={Nav.Item} className='nav-item dropdown-hover'>
                 <Dropdown.Toggle as={Nav.Link}>
-                  <FiLayers className="nav-icon" />
-                  Billing <FiChevronDown size={12} className="ms-1" />
+                  <FiLayers className='nav-icon' />
+                  Billing <FiChevronDown size={12} className='ms-1' />
                 </Dropdown.Toggle>
                 <Dropdown.Menu
-                  className="custom-dropdown p-4"
+                  className='custom-dropdown p-4'
                   style={{ minWidth: "300px" }}
                 >
-                  <div className="row">
-                    <div className="col-md-4">
+                  <div className='row'>
+                    <div className='col-md-4'>
                       {/* Invoice */}
-                      <Dropdown.Item as={Link} to="/add-invoice">
+                      <Dropdown.Item as={Link} to='/add-invoice'>
                         Add New Billing
                       </Dropdown.Item>
 
-                      <Dropdown.Item as={Link} to="/display-invoice">
+                      <Dropdown.Item as={Link} to='/display-invoice'>
                         View Billing
                       </Dropdown.Item>
                     </div>
@@ -151,18 +151,18 @@ const Navbarfristn = () => {
               </Dropdown>
 
               {/* Report */}
-              <Dropdown as={Nav.Item} className="nav-item dropdown-hover">
+              <Dropdown as={Nav.Item} className='nav-item dropdown-hover'>
                 <Dropdown.Toggle as={Nav.Link}>
-                  <FiLayers className="nav-icon" />
+                  <FiLayers className='nav-icon' />
                   Report
-                  <FiChevronDown size={12} className="ms-1" />
+                  <FiChevronDown size={12} className='ms-1' />
                 </Dropdown.Toggle>
                 <Dropdown.Menu
-                  className="custom-dropdown p-4"
+                  className='custom-dropdown p-4'
                   style={{ minWidth: "300px" }}
                 >
-                  <div className="row">
-                    <div className="col-md-2"></div>
+                  <div className='row'>
+                    <div className='col-md-2'></div>
                   </div>
                 </Dropdown.Menu>
               </Dropdown>
