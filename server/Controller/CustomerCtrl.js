@@ -16,7 +16,7 @@ exports.getAllCustomers = async (req, res) => {
   try {
     const customers = await Customer.find();
     res.json(customers);
-    console.log(customers, "get all customer");
+    // console.log(customers, "get all customer");
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

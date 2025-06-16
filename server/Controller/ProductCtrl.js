@@ -90,6 +90,8 @@ const getProducts = async (req, res) => {
     res.status(500).json({ error: "Server error." });
   }
 };
+
+
 const UpdateProductQuantity = async (req, res) => {
   const { productId, quantity } = req.body;
   try {
@@ -127,20 +129,20 @@ const updateProduct = async (req, res) => {
 
   try {
     // Validation
-    if (
-      !companyId ||
-      !productName ||
-      // !unit ||
-      primaryUnit === "" ||
-      secondaryUnit === "" ||
-      primaryPrice === "" ||
-      secondaryPrice === "" ||
-      mrp === "" ||
-      salesRate === "" ||
-      purchaseRate === ""
-    ) {
-      return res.status(400).json({ error: "Missing required fields." });
-    }
+    // if (
+    //   !companyId ||
+    //   !productName ||
+    //   // !unit ||
+    //   primaryUnit === "" ||
+    //   secondaryUnit === "" ||
+    //   primaryPrice === "" ||
+    //   secondaryPrice === "" ||
+    //   mrp === "" ||
+    //   salesRate === "" ||
+    //   purchaseRate === ""
+    // ) {
+    //   return res.status(400).json({ error: "Missing required fields." });
+    // }
     if (availableQty < 0 || mrp < 0 || salesRate < 0 || purchaseRate < 0) {
       return res
         .status(400)

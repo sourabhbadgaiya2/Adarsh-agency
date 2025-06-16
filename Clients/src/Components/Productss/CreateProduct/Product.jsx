@@ -6,7 +6,18 @@ const API_BASE = import.meta.env.VITE_API;
 const IMAGE_BASE = import.meta.env.VITE_API.replace(/\/api$/, "");
 import Image from "react-bootstrap/Image";
 
-const Product = () => {
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  Button,
+  Card,
+  Table,
+  Modal,
+} from "react-bootstrap";
+
+const Product = ({ onSuccess, onCancel }) => {
   const [products, setProducts] = useState([]);
   const [editIndex, setEditIndex] = useState(null);
   // const [photo, setPhoto] = useState(null);
@@ -67,7 +78,7 @@ const Product = () => {
     fetchDropdownData();
     fetchProducts(); // Load products on initial mount
   }, []);
-  console.log(products, "products");
+  // console.log(products, "products");
 
   const handleChange = (e) => {
     const { name, value, type } = e.target;
@@ -183,6 +194,8 @@ const Product = () => {
       setPhoto(null); // Reset image
       setEditIndex(null);
       fetchProducts();
+
+      if (onSuccess) onSuccess();
     } catch (err) {
       console.error("Error submitting product:", err);
       alert("Failed to submit product.");
@@ -295,28 +308,28 @@ const Product = () => {
   // };
 
   return (
-    <div className="container mt-2">
-      <h3 className="mb-3">Create Product</h3>
-      <div className="row-2">
+    <div className='container mt-2'>
+      <h3 className='mb-3'>Create Product</h3>
+      <div className='row-2'>
         {/* Form Section */}
-        <div className="col-md-12 mb-4">
-          <div className="card shadow border-0">
-            <div className="card-body">
-              <h5 className="card-title text-primary mb-3">
+        <div className='col-md-12 mb-4'>
+          <div className='card shadow border-0'>
+            <div className='card-body'>
+              <h5 className='card-title text-primary mb-3'>
                 {editIndex !== null ? "Edit Product" : "Add New Product"}
               </h5>
               <form onSubmit={handleSubmit}>
-                <div className="row">
+                <div className='row'>
                   {/* Brand */}
-                  <div className="col-md-6 mb-3">
+                  <div className='col-md-6 mb-3'>
                     <label>Brand</label>
                     <select
-                      name="companyId"
+                      name='companyId'
                       value={formData.companyId}
                       onChange={handleChange}
-                      className="form-control"
+                      className='form-control'
                     >
-                      <option value="">Select Brand</option>
+                      <option value=''>Select Brand</option>
                       {companies.map((c) => (
                         <option key={c._id} value={c._id}>
                           {c.name}
@@ -325,24 +338,24 @@ const Product = () => {
                     </select>
                   </div>
                   {/* Other inputs */}
-                  <div className="col-md-6 mb-3">
+                  <div className='col-md-6 mb-3'>
                     <label>Product Name</label>
                     <input
-                      type="text"
-                      name="productName"
+                      type='text'
+                      name='productName'
                       value={formData.productName}
                       onChange={handleChange}
-                      className="form-control"
+                      className='form-control'
                     />
                   </div>
 
-                  <div className="col-md-6 mb-3">
+                  <div className='col-md-6 mb-3'>
                     <label>Product Image</label>
                     <input
-                      type="file"
-                      name="productImg"
+                      type='file'
+                      name='productImg'
                       onChange={handlePhotoChange}
-                      className="form-control"
+                      className='form-control'
                     />
                   </div>
 
@@ -385,49 +398,49 @@ const Product = () => {
                   </div> */}
 
                   {/* ------------Primary and Secondary Unit / Price code------------------- */}
-                  <div className="col-md-3 mb-3">
+                  <div className='col-md-3 mb-3'>
                     <label>Unit (e.g. KG) </label>
                     <input
-                      type="text"
-                      name="primaryUnit"
-                      placeholder="e.g. KG"
+                      type='text'
+                      name='primaryUnit'
+                      placeholder='e.g. KG'
                       value={formData.primaryUnit}
                       onChange={handleChange}
-                      className="form-control"
+                      className='form-control'
                     />
                   </div>
 
-                  <div className="col-md-3 mb-3">
+                  <div className='col-md-3 mb-3'>
                     <label>KG Price</label>
                     <input
-                      type="number"
-                      name="primaryPrice"
+                      type='number'
+                      name='primaryPrice'
                       value={formData.primaryPrice}
                       onChange={handleChange}
-                      className="form-control"
+                      className='form-control'
                     />
                   </div>
 
-                  <div className="col-md-3 mb-3">
+                  <div className='col-md-3 mb-3'>
                     <label>Unit (e.g. Pieces) </label>
                     <input
-                      type="text"
-                      name="secondaryUnit"
-                      placeholder="e.g. Pcs"
+                      type='text'
+                      name='secondaryUnit'
+                      placeholder='e.g. Pcs'
                       value={formData.secondaryUnit}
                       onChange={handleChange}
-                      className="form-control"
+                      className='form-control'
                     />
                   </div>
 
-                  <div className="col-md-3 mb-3">
+                  <div className='col-md-3 mb-3'>
                     <label>Pieces Price</label>
                     <input
-                      type="number"
-                      name="secondaryPrice"
+                      type='number'
+                      name='secondaryPrice'
                       value={formData.secondaryPrice}
                       onChange={handleChange}
-                      className="form-control"
+                      className='form-control'
                     />
                   </div>
 
@@ -460,156 +473,160 @@ const Product = () => {
 
                   {/* MRP */}
 
-                  <div className="col-md-3 mb-3">
+                  <div className='col-md-3 mb-3'>
                     <label>MRP</label>
                     <input
-                      type="number"
-                      name="mrp"
+                      type='number'
+                      name='mrp'
                       value={formData.mrp}
                       onChange={handleChange}
-                      className="form-control"
+                      className='form-control'
                     />
                   </div>
 
                   {/* Purchase Rate */}
-                  <div className="col-md-3 mb-3">
+                  <div className='col-md-3 mb-3'>
                     <label>Purchase Rate</label>
                     <input
-                      type="number"
-                      name="purchaseRate"
+                      type='number'
+                      name='purchaseRate'
                       value={formData.purchaseRate}
                       onChange={handleChange}
-                      className="form-control"
+                      className='form-control'
                     />
                   </div>
 
                   {/* sales Rate */}
-                  <div className="col-md-3 mb-3">
+                  <div className='col-md-3 mb-3'>
                     <label>Sales Rate</label>
                     <input
-                      type="number"
-                      name="salesRate"
+                      type='number'
+                      name='salesRate'
                       value={formData.salesRate}
                       onChange={handleChange}
-                      className="form-control"
+                      className='form-control'
                     />
                   </div>
                   {/* ------------------------------------------------------------------------------------- */}
 
-                  <div className="col-md-2 mb-3">
+                  <div className='col-md-2 mb-3'>
                     <label>Available Qty</label>
                     <input
-                      type="number"
-                      name="availableQty"
+                      type='number'
+                      name='availableQty'
                       value={formData.availableQty}
                       onChange={handleChange}
-                      className="form-control"
+                      className='form-control'
                     />
                   </div>
                   {/* HSN */}
-                  <div className="col-md-3 mb-3">
+                  <div className='col-md-3 mb-3'>
                     <label>HSN Code</label>
                     <input
-                      type="text"
-                      name="hsnCode"
+                      type='text'
+                      name='hsnCode'
                       value={formData.hsnCode}
                       onChange={handleChange}
-                      className="form-control"
+                      className='form-control'
                     />
                   </div>
 
                   {/* gst */}
-                  <div className="col-md-3 mb-3">
+                  <div className='col-md-3 mb-3'>
                     <label>GST %</label>
                     <input
-                      type="Number"
-                      name="gstPercent"
+                      type='Number'
+                      name='gstPercent'
                       value={formData.gstPercent}
                       onChange={handleChange}
-                      className="form-control"
+                      className='form-control'
                     />
                   </div>
                 </div>
-                <button type="submit" className="btn btn-primary mt-3">
-                  {editIndex !== null ? "Update Product" : "Create Product"}
-                </button>
+                <div className=''>
+                  <button type='submit' className='btn btn-primary'>
+                    {editIndex !== null ? "Update Product" : "Create Product"}
+                  </button>
+                </div>
               </form>
             </div>
           </div>
         </div>
 
         {/* Product List Table Section */}
-        <div className="col-md-12 mb-4">
-          <div className="card shadow border-0">
-            <div className="card-body">
-              <h5 className="card-title text-success mb-3">Product List</h5>
-              {products.length === 0 ? (
-                <p>No products added yet.</p>
-              ) : (
-                <div className="table-responsive">
-                  <table className="table table-bordered mt-4">
-                    <thead className="thead-light">
-                      <tr>
-                        <th>Product Image</th>
-                        <th>Product Name</th>
-                        <th>Brand</th>
-                        <th>MRP</th>
-                        <th>Sales Rate</th>
-                        <th>Purchase Rate</th>
-                        {/* <th>Primary Unit</th>
+        {!onSuccess && (
+          <div className='col-md-12 mb-4'>
+            <div className='card shadow border-0'>
+              <div className='card-body'>
+                <h5 className='card-title text-success mb-3'>Product List</h5>
+                {products.length === 0 ? (
+                  <p>No products added yet.</p>
+                ) : (
+                  <div className='table-responsive'>
+                    <table className='table table-bordered mt-4'>
+                      <thead className='thead-light'>
+                        <tr>
+                          <th>Product Image</th>
+                          <th>Product Name</th>
+                          <th>Brand</th>
+                          <th>MRP</th>
+                          <th>Sales Rate</th>
+                          <th>Purchase Rate</th>
+                          {/* <th>Primary Unit</th>
                         <th>Primary Price</th>
                         <th>Secondary Unit</th>
                         <th>Secondary Price</th> */}
-                        <th>Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {products.map((product, index) => (
-                        <tr key={product._id}>
-                          <td>
-                            {product.productImg ? (
-                              <Image
-                                src={`${IMAGE_BASE}/Images/${product.productImg}`}
-                                roundedCircle
-                                width={50}
-                                height={50}
-                              />
-                            ) : (
-                              "No Photo"
-                            )}
-                          </td>
-                          <td>{product.productName}</td>
-                          <td>{product.companyId?.name || "-"}</td>
-                          <td>{product.mrp}</td>
-                          <td>{product.salesRate}</td>
-                          <td>{product.purchaseRate}</td>
-                          {/*  <td>{product.primaryUnit}</td>
+                          <th>Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {products.map((product, index) => (
+                          <tr key={product._id}>
+                            <td>
+                              {product.productImg ? (
+                                <Image
+                                  src={`${IMAGE_BASE}/Images/${product.productImg}`}
+                                  roundedCircle
+                                  width={50}
+                                  height={50}
+                                />
+                              ) : (
+                                "No Photo"
+                              )}
+                            </td>
+                            <td>{product.productName}</td>
+                            <td>{product.companyId?.name || "-"}</td>
+                            <td>{product.mrp}</td>
+                            <td>{product.salesRate}</td>
+                            <td>{product.purchaseRate}</td>
+                            {/*  <td>{product.primaryUnit}</td>
                           <td>{product.primaryPrice}</td>
                           <td>{product.secondaryUnit}</td>
                           <td>{product.secondaryPrice}</td> */}
-                          <td>
-                            <button
-                              className="btn btn-sm btn-warning me-2"
-                              onClick={() => handleEdit(index)}
-                            >
-                              <PencilFill />
-                            </button>
-                            <button
-                              className="btn btn-sm btn-danger"
-                              onClick={() => handleDelete(index)}
-                            >
-                              <TrashFill />
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
+                            <td>
+                              <button
+                                className='btn btn-sm btn-warning me-2'
+                                onClick={() => handleEdit(index)}
+                              >
+                                <PencilFill />
+                              </button>
+                              <button
+                                className='btn btn-sm btn-danger'
+                                onClick={() => handleDelete(index)}
+                              >
+                                <TrashFill />
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

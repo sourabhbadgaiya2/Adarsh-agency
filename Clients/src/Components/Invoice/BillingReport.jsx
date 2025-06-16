@@ -1,16 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "../../Config/axios";
 import ProductBillingReport from "./ProductBillingReport";
 import CustomerBilling from "./CustomerBilling";
-import { ToastContainer, toast } from "react-toastify";
+import toast from "react-hot-toast";
 import "react-toastify/dist/ReactToastify.css";
 import Loader from "../Loader";
-// import { useNavigate } from "react-router-dom"; // ✅ Correct import
+import { useNavigate } from "react-router-dom";
 
 function BillingReport() {
   const [billingData, setBillingData] = useState([]);
   const [customerData, setCustomerData] = useState({});
-  // const navigate = useNavigate(); // ✅ Correct hook
+  const navigate = useNavigate(); // ✅ Correct hook
   const [finalAmount, setFinalAmount] = useState(0);
   const [resetKey, setResetKey] = useState(0);
 
@@ -28,7 +28,7 @@ function BillingReport() {
     setBillingData([]);
     setCustomerData({});
     setFinalAmount(0);
-    setResetKey((prev) => prev + 1); // 🔁 Trigger re-mount of children
+    setResetKey((prev) => prev + 1);
   };
 
   const handleSubmit = async () => {
@@ -48,17 +48,17 @@ function BillingReport() {
       const response = await axios.post("/pro-billing", finalData);
       toast.success("Invoice saved successfully!");
 
-      console.log(response.data, "Response from server"); // ✅ Log the response
-      // const invoiceId = response._id;
+      // console.log(response.data, "Response from server"); // ✅ Log the response
+      const invoiceId = response.data.invoice._id;
 
       // 🔁 Reset form after toast (e.g., after 3 seconds)
       setTimeout(() => {
         resetForm();
       }, 3000);
-      // navigate(`/generate-invoice/${invoiceId}`); // ✅ Works correctly now
+      navigate(`/generate-invoice/${invoiceId}`); // ✅ Works correctly now
       // console.log("Response from server:", response.data);
     } catch (error) {
-      toast.error("Failed to save invoice");
+      toast.error(error?.response?.data?.details || "Failed to save invoice");
       console.error("Error saving invoice:", error);
     } finally {
       setLoading(false);
@@ -71,18 +71,19 @@ function BillingReport() {
 
   return (
     <>
-      <ProductBillingReport
-        onBillingDataChange={handleBillingDataChange}
-        key={resetKey}
-      />
       <CustomerBilling
         key={resetKey + 100} // avoid collision
         onDataChange={handleCustomerDataChange}
+      />
+      <ProductBillingReport
+        onBillingDataChange={handleBillingDataChange}
+        key={resetKey}
       />
 
       <hr />
       <div className='text-center mt-4'>
         <button
+          disabled={!customerData.customerId || billingData.length === 0}
           className='btn btn-primary px-4 py-2'
           onClick={handleSubmit}
           style={{ fontWeight: "bold", fontSize: "16px", borderRadius: "8px" }}
@@ -90,8 +91,6 @@ function BillingReport() {
           Submit
         </button>
       </div>
-
-      <ToastContainer position='top-right' autoClose={3000} />
     </>
   );
 }
