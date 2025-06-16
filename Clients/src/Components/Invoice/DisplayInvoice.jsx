@@ -4,22 +4,28 @@ import { Table, Button } from "react-bootstrap";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import Loader from "../Loader";
 
 const DisplayInvoice = () => {
   const [invoices, setInvoices] = useState([]);
   const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchInvoices();
   }, []);
 
   const fetchInvoices = async () => {
+    setLoading(true);
     try {
       const response = await axios.get("/pro-billing");
       setInvoices(response.data);
     } catch (error) {
       toast.error("Failed to fetch invoices");
       console.error("Failed to fetch invoices:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -30,6 +36,7 @@ const DisplayInvoice = () => {
   const handleDelete = async (invoiceId) => {
     if (!window.confirm("Are you sure you want to delete this invoice?"))
       return;
+    setLoading(true);
 
     try {
       await axios.delete(`/pro-billing/${invoiceId}`);
@@ -38,8 +45,14 @@ const DisplayInvoice = () => {
     } catch (error) {
       toast.error("Failed to delete invoice");
       console.error("Delete error:", error);
+    } finally {
+      setLoading(false);
     }
   };
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <div className='w-full mt-4 px-3'>

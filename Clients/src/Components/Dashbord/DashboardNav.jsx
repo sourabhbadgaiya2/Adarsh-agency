@@ -32,54 +32,54 @@ const Navbarfristn = () => {
   };
 
   return (
-    <div className="vpfinancial-navbar">
-      <div className="blue-header">
+    <div className='vpfinancial-navbar'>
+      <div className='blue-header'>
         <Container>
-          <h1 className="brand-title">Adarsh Agency</h1>
+          <h1 className='brand-title'>Adarsh Agency</h1>
         </Container>
       </div>
 
-      <div className="dashboard-section">
+      <div className='dashboard-section'>
         <Container>
-          <div className="dashboard-header">
-            <h2 className="dashboard-title">Dashboard</h2>
-            <div className="breadcrumb">Lexa &gt; Dashboard</div>
+          <div className='dashboard-header'>
+            <h2 className='dashboard-title'>Dashboard</h2>
+            <div className='breadcrumb'>Lexa &gt; Dashboard</div>
           </div>
         </Container>
       </div>
 
-      <Navbar bg="white" expand="lg" className="main-navigation">
+      <Navbar bg='white' expand='lg' className='main-navigation'>
         <Container fluid>
           <Navbar.Toggle
-            aria-controls="main-navbar-nav"
-            className="navbar-toggler-custom"
+            aria-controls='main-navbar-nav'
+            className='navbar-toggler-custom'
           >
-            <FiMenu className="toggle-icon" />
+            <FiMenu className='toggle-icon' />
           </Navbar.Toggle>
 
-          <Navbar.Collapse id="main-navbar-nav">
-            <Nav className="mx-auto">
-              <Nav.Link as={Link} to="/dashboard" className="nav-item">
-                <FiGrid className="nav-icon" />
-                <span className="nav-text">Dashboard</span>
+          <Navbar.Collapse id='main-navbar-nav'>
+            <Nav className='mx-auto'>
+              <Nav.Link as={Link} to='/dashboard' className='nav-item'>
+                <FiGrid className='nav-icon' />
+                <span className='nav-text'>Dashboard</span>
               </Nav.Link>
 
               {/* Masters Dropdown */}
-              <Dropdown as={Nav.Item} className="nav-item dropdown-hover">
-                <Dropdown.Toggle as={Nav.Link} className="nav-link">
-                  <FiLayers className="nav-icon" />
-                  <span className="nav-text">
+              <Dropdown as={Nav.Item} className='nav-item dropdown-hover'>
+                <Dropdown.Toggle as={Nav.Link} className='nav-link'>
+                  <FiLayers className='nav-icon' />
+                  <span className='nav-text'>
                     Masters{" "}
                     <FiChevronDown
                       size={12}
-                      className="ms-1 dropdown-chevron"
+                      className='ms-1 dropdown-chevron'
                     />
                   </span>
                 </Dropdown.Toggle>
-                <Dropdown.Menu className="p-3" style={{ minWidth: "400px" }}>
-                  <div className="row">
+                <Dropdown.Menu className='p-3' style={{ minWidth: "400px" }}>
+                  <div className='row'>
                     {dropdownItems.masters.map((item, index) => (
-                      <div className="col-md-6" key={index}>
+                      <div className='col-md-6' key={index}>
                         <Dropdown.Item as={Link} to={item.to}>
                           {item.name}
                         </Dropdown.Item>
@@ -91,21 +91,21 @@ const Navbarfristn = () => {
               </Dropdown>
 
               {/* Customers Dropdown */}
-              <Dropdown as={Nav.Item} className="nav-item dropdown-hover">
-                <Dropdown.Toggle as={Nav.Link} className="nav-link">
-                  <FiUsers className="nav-icon" />
-                  <span className="nav-text">
+              <Dropdown as={Nav.Item} className='nav-item dropdown-hover'>
+                <Dropdown.Toggle as={Nav.Link} className='nav-link'>
+                  <FiUsers className='nav-icon' />
+                  <span className='nav-text'>
                     Customers{" "}
                     <FiChevronDown
                       size={12}
-                      className="ms-1 dropdown-chevron"
+                      className='ms-1 dropdown-chevron'
                     />
                   </span>
                 </Dropdown.Toggle>
-                <Dropdown.Menu className="p-3" style={{ minWidth: "400px" }}>
-                  <div className="row">
+                <Dropdown.Menu className='p-3' style={{ minWidth: "400px" }}>
+                  <div className='row'>
                     {dropdownItems.customers.map((item, index) => (
-                      <div className="col-md-6" key={index}>
+                      <div className='col-md-6' key={index}>
                         <Dropdown.Item as={Link} to={item.to}>
                           {item.name}
                         </Dropdown.Item>
@@ -116,21 +116,21 @@ const Navbarfristn = () => {
               </Dropdown>
 
               {/* Employee Dropdown */}
-              <Dropdown as={Nav.Item} className="nav-item dropdown-hover">
-                <Dropdown.Toggle as={Nav.Link} className="nav-link">
-                  <FiUser className="nav-icon" />
-                  <span className="nav-text">
+              <Dropdown as={Nav.Item} className='nav-item dropdown-hover'>
+                <Dropdown.Toggle as={Nav.Link} className='nav-link'>
+                  <FiUser className='nav-icon' />
+                  <span className='nav-text'>
                     Employee{" "}
                     <FiChevronDown
                       size={12}
-                      className="ms-1 dropdown-chevron"
+                      className='ms-1 dropdown-chevron'
                     />
                   </span>
                 </Dropdown.Toggle>
-                <Dropdown.Menu className="p-3" style={{ minWidth: "400px" }}>
-                  <div className="row">
+                <Dropdown.Menu className='p-3' style={{ minWidth: "400px" }}>
+                  <div className='row'>
                     {dropdownItems.employee.map((item, index) => (
-                      <div className="col-md-6" key={index}>
+                      <div className='col-md-6' key={index}>
                         <Dropdown.Item as={Link} to={item.to}>
                           {item.name}
                         </Dropdown.Item>
@@ -140,32 +140,32 @@ const Navbarfristn = () => {
                 </Dropdown.Menu>
               </Dropdown>
 
-              <Nav.Link as={Link} to="/departments" className="nav-item">
-                <FiBriefcase className="nav-icon" />
-                <span className="nav-text">Departments</span>
+              <Nav.Link as={Link} to='/departments' className='nav-item'>
+                <FiBriefcase className='nav-icon' />
+                <span className='nav-text'>Departments</span>
               </Nav.Link>
 
-              <Nav.Link as={Link} to="/office" className="nav-item">
-                <FiHome className="nav-icon" />
-                <span className="nav-text">Office</span>
+              <Nav.Link as={Link} to='/office' className='nav-item'>
+                <FiHome className='nav-icon' />
+                <span className='nav-text'>Office</span>
               </Nav.Link>
 
               {/* CRM Dropdown */}
-              <Dropdown as={Nav.Item} className="nav-item dropdown-hover">
-                <Dropdown.Toggle as={Nav.Link} className="nav-link">
-                  <FiMessageSquare className="nav-icon" />
-                  <span className="nav-text">
+              <Dropdown as={Nav.Item} className='nav-item dropdown-hover'>
+                <Dropdown.Toggle as={Nav.Link} className='nav-link'>
+                  <FiMessageSquare className='nav-icon' />
+                  <span className='nav-text'>
                     CRM{" "}
                     <FiChevronDown
                       size={12}
-                      className="ms-1 dropdown-chevron"
+                      className='ms-1 dropdown-chevron'
                     />
                   </span>
                 </Dropdown.Toggle>
-                <Dropdown.Menu className="p-3" style={{ minWidth: "400px" }}>
-                  <div className="row">
+                <Dropdown.Menu className='p-3' style={{ minWidth: "400px" }}>
+                  <div className='row'>
                     {dropdownItems.crm.map((item, index) => (
-                      <div className="col-md-6" key={index}>
+                      <div className='col-md-6' key={index}>
                         <Dropdown.Item as={Link} to={item.to}>
                           {item.name}
                         </Dropdown.Item>
@@ -175,27 +175,27 @@ const Navbarfristn = () => {
                 </Dropdown.Menu>
               </Dropdown>
 
-              <Nav.Link as={Link} to="/task" className="nav-item">
-                <FiCheckSquare className="nav-icon" />
-                <span className="nav-text">Task</span>
+              <Nav.Link as={Link} to='/task' className='nav-item'>
+                <FiCheckSquare className='nav-icon' />
+                <span className='nav-text'>Task</span>
               </Nav.Link>
 
               {/* Reports Dropdown */}
-              <Dropdown as={Nav.Item} className="nav-item dropdown-hover">
-                <Dropdown.Toggle as={Nav.Link} className="nav-link">
-                  <FiFileText className="nav-icon" />
-                  <span className="nav-text">
+              <Dropdown as={Nav.Item} className='nav-item dropdown-hover'>
+                <Dropdown.Toggle as={Nav.Link} className='nav-link'>
+                  <FiFileText className='nav-icon' />
+                  <span className='nav-text'>
                     Reports{" "}
                     <FiChevronDown
                       size={12}
-                      className="ms-1 dropdown-chevron"
+                      className='ms-1 dropdown-chevron'
                     />
                   </span>
                 </Dropdown.Toggle>
-                <Dropdown.Menu className="p-3" style={{ minWidth: "400px" }}>
-                  <div className="row">
+                <Dropdown.Menu className='p-3' style={{ minWidth: "400px" }}>
+                  <div className='row'>
                     {dropdownItems.reports.map((item, index) => (
-                      <div className="col-md-6" key={index}>
+                      <div className='col-md-6' key={index}>
                         <Dropdown.Item as={Link} to={item.to}>
                           {item.name}
                         </Dropdown.Item>
