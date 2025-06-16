@@ -168,7 +168,10 @@ const ProductBillingReport = ({ onBillingDataChange }) => {
         amount: parseFloat(r.Amount) || 0,
       }));
 
-    onBillingDataChange(filteredBillingData);
+    // onBillingDataChange(filteredBillingData);
+
+    onBillingDataChange(filteredBillingData, finalTotal); // New
+    submitBillingDataToBackend(filteredBillingData, finalTotalAmount); // New
   };
 
   const handleKeyDown = (e, rowIndex) => {
@@ -219,6 +222,7 @@ const ProductBillingReport = ({ onBillingDataChange }) => {
 
       setFinalTotalAmount(recalculatedFinalTotal);
       onBillingDataChange(filteredBillingData, recalculatedFinalTotal);
+      submitBillingDataToBackend(filteredBillingData, recalculatedFinalTotal); // ✅ correct value
     }
   };
 

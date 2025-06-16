@@ -448,31 +448,6 @@ const GenerateInvoice = () => {
         </button>
       </div>
 
-      {/* Print Styles */}
-      {/* <style>
-        {`
-        @media print {
-          .d-print-none {
-            display: none !important;
-          }
-
-          body {
-            margin: 0;
-            -webkit-print-color-adjust: exact !important;
-            print-color-adjust: exact !important;
-          }
-          .invoice-page {
-            page-break-after: always;
-          }
-
-           @page {
-        margin: 10mm;
-        size: A4 portrait;
-      }
-        }
-        `}
-      </style> */}
-
       <style>
         {`
   @media print {
@@ -695,10 +670,12 @@ const GenerateInvoice = () => {
               <div
                 style={{
                   display: "flex",
-                  justifyContent: "space-between",
+                  // justifyContent: "space-between",
+
                   paddingTop: "20px",
                   marginTop: "10px",
                   fontSize: "12px",
+                  gap: "25px",
                 }}
               >
                 <div>
@@ -739,7 +716,7 @@ const GenerateInvoice = () => {
                   style={{
                     textAlign: "center",
                     borderLeft: "1px solid black",
-                    paddingLeft: "5px",
+                    paddingLeft: "35px",
                   }}
                 >
                   <h5>Bill Amount (R): {invoice.finalAmount?.toFixed(2)}</h5>
