@@ -513,7 +513,7 @@ const GenerateInvoice = () => {
             key={pageIndex}
             // className={pageIndex < billingChunks.length - 1 ? "page-break" : ""}
             style={{
-              width: "210mm",
+              width: "260mm",
               minHeight: "297mm",
               margin: "auto",
               padding: "15mm",
@@ -712,15 +712,38 @@ const GenerateInvoice = () => {
                   </p>
                   <p>E.&.O.E</p>
                 </div>
+
+                <div
+                  className=''
+                  style={{
+                    // textAlign: "center",
+                    borderLeft: "1px solid black",
+                    paddingLeft: "10px",
+                  }}
+                >
+                  <p>12%: SGST 191.04, CGST 191.04 = 382.08 / 3183.93</p>
+
+                  <p
+                    style={{
+                      borderTop: "1px solid black",
+                      paddingLeft: "5px",
+                      paddingTop: "15px",
+                      borderTopStyle: "dashed",
+                    }}
+                  >
+                    SGST AMT 191.04, CGST AMT : 191.04{" "}
+                  </p>
+                </div>
+
                 <div
                   style={{
                     textAlign: "center",
                     borderLeft: "1px solid black",
-                    paddingLeft: "20px",
+                    paddingLeft: "5px",
                   }}
                 >
                   <h5>Bill Amount (R): {invoice.finalAmount?.toFixed(2)}</h5>
-                  <p
+                  {/* <p
                     style={{ borderTop: "1px dashed black", paddingTop: "5px" }}
                   >
                     For: ADARSH AGENCY
@@ -737,7 +760,7 @@ const GenerateInvoice = () => {
                       )}{" "}
                       Only
                     </p>
-                  )}
+                  )} */}
                 </div>
               </div>
             </div>

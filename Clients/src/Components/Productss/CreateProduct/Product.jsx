@@ -5,6 +5,8 @@ import axios from "../../../Config/axios";
 const API_BASE = import.meta.env.VITE_API;
 const IMAGE_BASE = import.meta.env.VITE_API.replace(/\/api$/, "");
 import Image from "react-bootstrap/Image";
+import Loader from "../../Loader";
+import toast from "react-hot-toast";
 
 import {
   Container,
@@ -18,9 +20,10 @@ import {
 } from "react-bootstrap";
 
 const Product = ({ onSuccess, onCancel }) => {
+  const [loading, setLoading] = useState(false);
+
   const [products, setProducts] = useState([]);
   const [editIndex, setEditIndex] = useState(null);
-  // const [photo, setPhoto] = useState(null);
   const [formData, setFormData] = useState({
     companyId: "",
     productName: "",
@@ -41,16 +44,17 @@ const Product = ({ onSuccess, onCancel }) => {
   });
 
   const [companies, setCompanies] = useState([]);
-  // const [categories, setCategories] = useState([]);
-  // const [subCategories, setSubCategories] = useState([]);
 
   const fetchProducts = async () => {
     try {
+      setLoading(true);
       const res = await axios.get("/product");
-      console.log(res.data, "res.data");
+      // console.log(res.data, "res.data");
       setProducts(res.data || []);
     } catch (err) {
       console.error("Failed to fetch products:", err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -78,14 +82,13 @@ const Product = ({ onSuccess, onCancel }) => {
     fetchDropdownData();
     fetchProducts(); // Load products on initial mount
   }, []);
-  // console.log(products, "products");
 
   const handleChange = (e) => {
     const { name, value, type } = e.target;
     let processedValue = value;
     if (type === "number" && value !== "") {
       processedValue = Number(value);
-      // Ensure quantity is never negative
+
       if (name === "availableQty" && processedValue < 0) {
         processedValue = 0;
       }
@@ -103,6 +106,11 @@ const Product = ({ onSuccess, onCancel }) => {
   };
   // ---------------------------------------------------
   const handleEdit = (index) => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+
     const selectedProduct = products[index];
     setFormData({
       _id: selectedProduct._id, // <-- Add this
@@ -122,9 +130,10 @@ const Product = ({ onSuccess, onCancel }) => {
     });
     setEditIndex(index);
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
     try {
       if (photo) {
         const data = new FormData();
@@ -148,7 +157,7 @@ const Product = ({ onSuccess, onCancel }) => {
           },
         });
 
-        alert("Product created successfully with image!");
+        toast.success("Product created successfully with image!");
       } else {
         const productData = {
           companyId: formData.companyId,
@@ -168,10 +177,10 @@ const Product = ({ onSuccess, onCancel }) => {
 
         if (formData._id) {
           await axios.put(`/product/${formData._id}`, productData);
-          alert("Product updated successfully!");
+          toast.success("Product updated successfully!");
         } else {
           await axios.post("/product", productData);
-          alert("Product created successfully!");
+          toast.success("Product created successfully!");
         }
       }
 
@@ -198,114 +207,31 @@ const Product = ({ onSuccess, onCancel }) => {
       if (onSuccess) onSuccess();
     } catch (err) {
       console.error("Error submitting product:", err);
-      alert("Failed to submit product.");
+      toast.error("Failed to submit product.");
+    } finally {
+      setLoading(false);
     }
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   try {
-  //     const productData = {
-  //       companyId: formData.companyId,
-  //       productName: formData.productName,
-  //       // unit: formData.unit,
-  //       mrp: formData.mrp,
-  //       salesRate: formData.salesRate,
-  //       purchaseRate: formData.purchaseRate,
-  //       availableQty: formData.availableQty || 0,
-  //       hsnCode: formData.hsnCode,
-  //       gstPercent: formData.gstPercent,
-  //       primaryUnit: formData.primaryUnit,
-  //       secondaryUnit: formData.secondaryUnit,
-  //       primaryPrice: formData.primaryPrice,
-  //       secondaryPrice: formData.secondaryPrice,
-  //       lastUpdated: new Date(),
-  //     };
-
-  //     if (formData._id) {
-  //       // Edit mode - update existing product
-  //       await axios.put(`/product/${formData._id}`, productData);
-  //       alert("Product updated successfully!");
-  //     } else {
-  //       // Create mode - add new product
-  //       await axios.post("/product", productData);
-  //       alert("Product created successfully!");
-  //       console.log(" new product with data:", productData);
-  //     }
-
-  //     // Reset form and refresh list
-  //     setFormData({
-  //       companyId: "",
-  //       productName: "",
-  //       // unit: "",
-  //       mrp: "",
-  //       salesRate: "",
-  //       purchaseRate: "",
-  //       availableQty: 0,
-  //       hsnCode: "",
-  //       gstPercent: 9,
-  //       primaryUnit: "",
-  //       secondaryUnit: "",
-  //       primaryPrice: "",
-  //       secondaryPrice: "",
-  //     });
-  //     setEditIndex(null);
-  //     fetchProducts();
-  //   } catch (err) {
-  //     console.error("Error submitting product:", err);
-  //     alert("Failed to submit product.");
-  //   }
-  // };
-
   const handleDelete = async (index) => {
+    setLoading(true);
     const productToDelete = products[index];
     if (!productToDelete?._id) return;
-
     try {
       await axios.delete(`/product/${productToDelete._id}`);
-      alert("Product deleted successfully!");
+      toast.success("Product deleted successfully!");
       fetchProducts();
     } catch (err) {
       console.error("Error deleting product:", err);
-      alert("Failed to delete product.");
+      toast.error("Failed to delete product.");
+    } finally {
+      setLoading(false);
     }
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const productData = {
-  //       ...formData,
-  //       lastUpdated: new Date(),
-  //     };
-
-  //     await axios.post("/product", productData);
-  //     alert("Product created successfully!");
-  //     setFormData({
-  //       companyId: "",
-  //       categoryId: "",
-  //       subCategoryId: "",
-  //       productName: "",
-  //       primaryUnit: "",
-  //       secondaryUnit: "",
-  //       primaryPrice: "",
-  //       secondaryPrice: "",
-  //       availableQty: 0,
-  //       hsnCode: "",
-  //       gstPercent: 9,
-  //     });
-  //     fetchProducts();
-  //     // Refresh product list after creation
-  //   } catch (err) {
-  //     console.error("Error creating product:", err);
-  //     alert("Failed to create product.");
-  //   }
-  // };
-
-  //  const handlePhotoChange = (e) => {
-  //   setPhoto(e.target.files[0]);
-  // };
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <div className='container mt-2'>
