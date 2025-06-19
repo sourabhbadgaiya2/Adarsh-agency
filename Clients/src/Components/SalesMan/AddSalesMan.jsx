@@ -959,7 +959,7 @@ function AddSalesMan() {
                     }
                   />
                 </Col>
-                <Col md={5}>
+                {/* <Col md={5}>
                   <Form.Control
                     type='text'
                     placeholder='Pin Code'
@@ -968,7 +968,7 @@ function AddSalesMan() {
                       handleBeatChange(index, "pinCode", e.target.value)
                     }
                   />
-                </Col>
+                </Col> */}
                 <Col md={2}>
                   <Button
                     variant='danger'
