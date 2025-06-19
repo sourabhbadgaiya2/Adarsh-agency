@@ -12,11 +12,17 @@ const salesmanSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    beat: [
+      {
+        type: String,
+      },
+    ],
     mobile: {
       type: String,
       required: true,
       unique: true,
     },
+
     email: {
       type: String,
       trim: true,

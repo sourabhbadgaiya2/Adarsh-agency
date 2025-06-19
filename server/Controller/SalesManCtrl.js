@@ -12,6 +12,7 @@ const createSalesman = async (req, res) => {
       alternateMobile,
       username,
       password,
+      beat,
     } = req.body;
 
     const photo = req.file ? req.file.filename : null;
@@ -26,6 +27,7 @@ const createSalesman = async (req, res) => {
       alternateMobile,
       username,
       password,
+      beat,
       photo,
     });
 
