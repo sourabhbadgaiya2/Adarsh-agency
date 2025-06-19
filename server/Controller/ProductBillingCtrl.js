@@ -64,36 +64,72 @@ const createBilling = async (req, res) => {
 
   try {
     const {
-      customer,
+      customer, // This is the customerDetails object from frontend
       billing,
       finalAmount,
-      companyId,
-      salesmanId,
-      customerId,
+      // These are top-level IDs, which is good for direct referencing
+      companyId, // Assuming companyId is also sent at top-level if required
+      salesmanId, // This should ideally be customer.selectedSalesmanId
+      customerId, // This should ideally be customer.selectedCustomerId
     } = req.body;
 
-    // ✅ Clean customer data before saving
-    const cleanedCustomer = {
-      CustomerName: customer.customerName || "",
+    // --- IMPORTANT: Aligning Frontend Payload with Backend Model ---
+    // The frontend sends:
+    // {
+    //   "customer": {
+    //     "Billdate": "2025-06-19",
+    //     "advanceAmt": "",
+    //     "paymentMode": "Card",
+    //     "selectedSalesmanId": "...", // This is the salesmanId for the customer
+    //     "selectedBeatId": null,
+    //     "selectedCustomerId": "...", // This is the customerId for the customer
+    //     "customerName": "customerFirm",
+    //     "salesmanName": "sales badgaiya"
+    //   },
+    //   "billing": [...],
+    //   "finalAmount": 4.72,
+    //   // Potentially top-level companyId, salesmanId, customerId from the frontend BillingReport component
+    //   // companyId: "...",
+    //   // salesmanId: "...", // From frontend: customerData.selectedSalesmanId
+    //   // customerId: "..." // From frontend: customerData.selectedCustomerId
+    // }
+
+    // It's best to use the IDs directly from the nested 'customer' object if they're reliable,
+    // or ensure they are consistently sent at the top-level by the frontend.
+    // Given your frontend sends `customerData.selectedSalesmanId` and `customerData.selectedCustomerId`
+    // as part of the `customer` object, let's use those for consistency.
+
+    // Prepare the customer object for the schema, ensuring types and defaults
+    const customerForInvoice = {
+      CustomerName: customer.customerName || "", // Maps to `customerName` in frontend
       Billdate: new Date(customer.Billdate),
       advanceAmt: Number(customer.advanceAmt || 0),
       paymentMode: customer.paymentMode || "Cash",
+      salesmanName: customer.salesmanName || "", // Directly from payload
+      selectedSalesmanId: customer.selectedSalesmanId || null, // Directly from payload
+      selectedCustomerId: customer.selectedCustomerId || null, // Directly from payload
+      selectedBeatId: customer.selectedBeatId || null, // Directly from payload
     };
 
-    // ✅ Create invoice document
+    // Create invoice document
     const invoice = new Invoice({
-      companyId,
-      salesmanId,
-      customerId,
-      customer: cleanedCustomer,
-      billing,
-      finalAmount,
+      companyId: companyId, // Ensure frontend sends this or derive it on backend
+      salesmanId: customerForInvoice.selectedSalesmanId, // Use the ID from the nested customer object
+      customerId: customerForInvoice.selectedCustomerId, // Use the ID from the nested customer object
+      customer: customerForInvoice, // Assign the prepared object
+      billing: billing,
+      finalAmount: finalAmount,
     });
 
     await invoice.save();
 
-    // ✅ Update stock
+    // Update stock
     for (const item of billing) {
+      // Validate productId presence
+      if (!item.productId) {
+        throw new Error(`Product ID is missing for an item.`);
+      }
+
       const totalQtyToDeduct = (item.qty || 0) + (item.Free || 0);
       const product = await Product.findById(item.productId);
 
@@ -108,6 +144,8 @@ const createBilling = async (req, res) => {
       }
 
       product.availableQty -= totalQtyToDeduct;
+      // No need to set lastUpdated if it's already defined with default: Date.now on schema update.
+      // If product schema has 'lastUpdated' and you want to explicitly update it:
       product.lastUpdated = new Date();
       await product.save();
     }
@@ -115,12 +153,18 @@ const createBilling = async (req, res) => {
     res.status(201).json({ message: "Invoice saved successfully", invoice });
   } catch (error) {
     console.error("Error saving invoice:", error);
-    res
-      .status(500)
-      .json({ error: "Failed to save invoice", details: error.message });
+    // Provide a more user-friendly error message based on the error type
+    let errorMessage = "Failed to save invoice.";
+    if (error.message.includes("Insufficient stock")) {
+      errorMessage = error.message;
+    } else if (error.message.includes("Product not found")) {
+      errorMessage = error.message;
+    }
+    // You can add more specific checks for validation errors etc.
+
+    res.status(500).json({ error: errorMessage, details: error.message });
   }
 };
-
 const getAllInvoices = async (req, res) => {
   try {
     const invoices = await Invoice.find()

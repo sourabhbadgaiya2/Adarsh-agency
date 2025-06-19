@@ -824,6 +824,7 @@ const GenerateInvoice = () => {
       acc.sgst = (acc.sgst || 0) + (parseFloat(item.sgst) || 0);
       acc.cgst = (acc.cgst || 0) + (parseFloat(item.cgst) || 0);
       acc.total = (acc.total || 0) + (parseFloat(item.total) || 0);
+      acc.totalQty = (acc.totalQty || 0) + (parseFloat(item.qty) || 0); // ✅ Add this
       return acc;
     }, {});
   };
@@ -839,9 +840,7 @@ const GenerateInvoice = () => {
     return result;
   };
 
-  // The number of items per page. You might need to adjust this value
-  // based on your exact layout and font sizes to ensure it fits well on an A4 page.
-  const itemsPerPage = 14;
+  const itemsPerPage = 16;
   const billingChunks = chunkArray(billing, itemsPerPage);
 
   return (
@@ -907,6 +906,7 @@ const GenerateInvoice = () => {
         {billingChunks.map((chunk, pageIndex) => (
           <div
             key={pageIndex}
+            className='invoice-page'
             style={{
               width: "260mm",
               minHeight: "297mm",
@@ -916,10 +916,9 @@ const GenerateInvoice = () => {
               border: "1px solid #ccc",
               fontSize: "12px",
               boxSizing: "border-box",
-              // The page-break-after is handled by the .invoice-page class in print CSS for better control
             }}
           >
-            <div className='invoice-page'>
+            <div>
               {/* Header */}
               <div
                 style={{
@@ -1060,27 +1059,7 @@ const GenerateInvoice = () => {
                   {chunk.length < itemsPerPage &&
                     pageIndex === billingChunks.length - 1 &&
                     Array.from({ length: itemsPerPage - chunk.length }).map(
-                      (_, i) => (
-                        <tr key={`empty-${i}`}>
-                          <td
-                            className='border border-black p-1'
-                            style={{ height: "24px" }}
-                          ></td>
-                          <td className='border border-black p-1'></td>
-                          <td className='border border-black p-1'></td>
-                          <td className='border border-black p-1'></td>
-                          <td className='border border-black p-1'></td>
-                          <td className='border border-black p-1'></td>
-                          <td className='border border-black p-1'></td>
-                          <td className='border border-black p-1'></td>
-                          <td className='border border-black p-1'></td>
-                          <td className='border border-black p-1'></td>
-                          <td className='border border-black p-1'></td>
-                          <td className='border border-black p-1'></td>
-                          <td className='border border-black p-1'></td>
-                          <td className='border border-black p-1'></td>
-                        </tr>
-                      )
+                      (_, i) => <tr key={`empty-${i}`}></tr>
                     )}
 
                   {/* Totals row only on the last page */}
@@ -1088,21 +1067,28 @@ const GenerateInvoice = () => {
                     <tr style={{ fontWeight: "bold" }}>
                       <td className='border border-black p-1'></td>
                       <td className='border border-black p-1' colSpan={1}>
-                        Basic Amount: {totals.basicAmount?.toFixed(2) || "0.00"}
+                        Basic Amount: {totals.total?.toFixed(2) || "0.00"}
+                        {/* {totals.total?.toFixed(2) || "0.00"} */}
                       </td>
                       {/* <td className=''>QTY: </td>
                       <td className=''>C/S 0</td>
                       <td className=''>PCS 0</td> */}
                       <td
                         className='p-1'
-                        style={{ borderBottom: "1px solid black" }}
+                        style={{
+                          borderBottom: "1px solid black",
+                          borderTop: "1px solid black",
+                        }}
                       >
                         QTY:{" "}
                       </td>{" "}
                       {/* HSN Code (3) */}
                       <td
                         className='p-1'
-                        style={{ borderBottom: "1px solid black" }}
+                        style={{
+                          borderBottom: "1px solid black",
+                          borderTop: "1px solid black",
+                        }}
                       >
                         C/S 0
                       </td>{" "}
@@ -1112,9 +1098,10 @@ const GenerateInvoice = () => {
                         style={{
                           borderBottom: "1px solid black",
                           borderRight: "1px solid black",
+                          borderTop: "1px solid black",
                         }}
                       >
-                        PCS {totals.totalQty || 0}
+                        PCS : {totals.totalQty || 0}
                       </td>{" "}
                       {/* Qty (5) */}
                       {/* <td className='border border-black'></td> */}
@@ -1134,7 +1121,9 @@ const GenerateInvoice = () => {
                         {totals.total?.toFixed(2) || "0.00"}
                       </td>
                       <td className='border border-black p-1'>
-                        {totals.sgst?.toFixed(2) || "0.00"}
+                        {/* {totals.sgst?.toFixed(2) || "0.00"}asd */}
+                        {/* SGST (6% of total) */}
+                        {((totals.total || 0) * 0.06).toFixed(2)}
                       </td>
                       <td className='border border-black p-1'>
                         {totals.cgst?.toFixed(2) || "0.00"}
@@ -1184,7 +1173,11 @@ const GenerateInvoice = () => {
                       paddingLeft: "10px",
                     }}
                   >
-                    <p>12%: SGST 191.04, CGST 191.04 = 382.08 / 3183.93</p>
+                    <p>
+                      12%: SGST 191.04, CGST 191.04 ={" "}
+                      {((totals.total || 0) * 0.06).toFixed(2)} /{" "}
+                      {totals.total?.toFixed(2) || "0.00"}
+                    </p>
 
                     <p
                       style={{
@@ -1206,7 +1199,7 @@ const GenerateInvoice = () => {
                     }}
                   >
                     <h5>Bill Amount (R): {invoice.finalAmount?.toFixed(2)}</h5>
-                    <p
+                    {/* <p
                       style={{
                         borderTop: "1px dashed black",
                         paddingTop: "5px",
@@ -1226,7 +1219,7 @@ const GenerateInvoice = () => {
                         )}{" "}
                         Only
                       </p>
-                    )}
+                    )} */}
                   </div>
                 </div>
               )}

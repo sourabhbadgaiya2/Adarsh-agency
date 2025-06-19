@@ -28,6 +28,11 @@ const InvoiceSchema = new mongoose.Schema({
     Billdate: Date,
     advanceAmt: Number,
     paymentMode: String,
+
+    salesmanName: String, // ✅ add this
+    selectedSalesmanId: mongoose.Schema.Types.ObjectId, // ✅ optional, if needed
+    selectedCustomerId: mongoose.Schema.Types.ObjectId, // ✅ optional
+    selectedBeatId: mongoose.Schema.Types.ObjectId, // ✅ optional
   },
   billing: [BillingItemSchema],
   finalAmount: { type: Number, default: 0 },
