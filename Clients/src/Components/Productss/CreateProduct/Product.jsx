@@ -19,7 +19,7 @@ import {
   Modal,
 } from "react-bootstrap";
 
-const Product = ({ onSuccess, onCancel }) => {
+const Product = ({ onSuccess, onCancel, productToEdit }) => {
   const [loading, setLoading] = useState(false);
 
   const [products, setProducts] = useState([]);
@@ -82,6 +82,27 @@ const Product = ({ onSuccess, onCancel }) => {
     fetchDropdownData();
     fetchProducts(); // Load products on initial mount
   }, []);
+
+  // ! EDit
+  useEffect(() => {
+    if (productToEdit) {
+      setFormData({
+        _id: productToEdit._id || "",
+        companyId: productToEdit.companyId?._id || "",
+        productName: productToEdit.productName || "",
+        mrp: productToEdit.mrp || "",
+        salesRate: productToEdit.salesRate || "",
+        purchaseRate: productToEdit.purchaseRate || "",
+        availableQty: productToEdit.availableQty || "",
+        hsnCode: productToEdit.hsnCode || "",
+        gstPercent: productToEdit.gstPercent || 9,
+        primaryUnit: productToEdit.primaryUnit || "",
+        secondaryUnit: productToEdit.secondaryUnit || "",
+        primaryPrice: productToEdit.primaryPrice || "",
+        secondaryPrice: productToEdit.secondaryPrice || "",
+      });
+    }
+  }, [productToEdit]);
 
   const handleChange = (e) => {
     const { name, value, type } = e.target;
@@ -235,7 +256,7 @@ const Product = ({ onSuccess, onCancel }) => {
 
   return (
     <div className='container mt-2'>
-      <h3 className='mb-3'>Create Product</h3>
+      {/* <h3 className='mb-3'>Create Product</h3> */}
       <div className='row-2'>
         {/* Form Section */}
         <div className='col-md-12 mb-4'>
@@ -471,7 +492,9 @@ const Product = ({ onSuccess, onCancel }) => {
                 </div>
                 <div className=''>
                   <button type='submit' className='btn btn-primary'>
-                    {editIndex !== null ? "Update Product" : "Create Product"}
+                    {editIndex !== null || productToEdit
+                      ? "Update Product"
+                      : "Create Product"}
                   </button>
                 </div>
               </form>

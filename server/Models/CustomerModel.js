@@ -28,10 +28,17 @@ const customerSchema = new mongoose.Schema(
       type: Number,
       // required: true,
     },
+
     designation: {
       type: String,
       // required: true,
     },
+    beats: [
+      {
+        type: String,
+        // required: true,
+      },
+    ],
     city: {
       type: String,
       // required: true,

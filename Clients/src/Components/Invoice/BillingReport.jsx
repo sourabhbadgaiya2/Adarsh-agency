@@ -16,6 +16,8 @@ function BillingReport() {
 
   const [loading, setLoading] = useState(false);
 
+  console.log(customerData, "LION");
+
   const handleBillingDataChange = (data, totalAmount) => {
     setBillingData(data);
     setFinalAmount(parseFloat(totalAmount)); // ✅ Now correct
@@ -32,6 +34,8 @@ function BillingReport() {
   };
 
   const handleSubmit = async () => {
+    console.log("LLL");
+
     setLoading(true);
 
     try {
@@ -72,18 +76,18 @@ function BillingReport() {
   return (
     <>
       <CustomerBilling
-        key={resetKey + 100} // avoid collision
+        // key={resetKey + 100} // avoid collision
         onDataChange={handleCustomerDataChange}
+        resetTrigger={resetKey}
       />
       <ProductBillingReport
         onBillingDataChange={handleBillingDataChange}
         key={resetKey}
       />
-
       <hr />
       <div className='text-center mt-4'>
         <button
-          disabled={!customerData.customerId || billingData.length === 0}
+          // disabled={!customerData.customerId || billingData.length === 0}
           className='btn btn-primary px-4 py-2'
           onClick={handleSubmit}
           style={{ fontWeight: "bold", fontSize: "16px", borderRadius: "8px" }}
