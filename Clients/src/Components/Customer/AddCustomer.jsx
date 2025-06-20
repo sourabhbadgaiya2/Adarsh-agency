@@ -590,8 +590,8 @@ function AddCustomer({ refresh, editingCustomer, setEditingCustomer }) {
   });
 
   useEffect(() => {
-    console.log("--- useEffect Triggered ---");
-    console.log("1. editingCustomer prop received:", editingCustomer);
+    // console.log("--- useEffect Triggered ---");
+    // console.log("1. editingCustomer prop received:", editingCustomer);
 
     if (editingCustomer) {
       console.log("2. Inside if (editingCustomer) block.");
