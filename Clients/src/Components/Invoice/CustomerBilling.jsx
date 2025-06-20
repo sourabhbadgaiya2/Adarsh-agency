@@ -631,7 +631,7 @@ const CustomerBilling = ({ onDataChange, resetTrigger = { resetKey } }) => {
           </div>
 
           {/* Beat */}
-          <div className='form-group col-md-6'>
+          {/* <div className='form-group col-md-6'>
             <label>
               <strong>Select Beat</strong>
             </label>
@@ -648,6 +648,85 @@ const CustomerBilling = ({ onDataChange, resetTrigger = { resetKey } }) => {
               isDisabled={!selectedSalesman}
               menuPortalTarget={document.body}
               styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
+            />
+          </div> */}
+          {/* Beat */}
+          <div className='form-group col-md-6'>
+            <label>
+              <strong>Select Beat</strong>
+            </label>
+            {/* <Select
+              options={beatsOptions}
+              value={
+                selectedBeat
+                  ? {
+                      value: selectedBeat._id,
+                      label: `${selectedBeat.areaName} ${
+                        selectedBeat.pinCode ? `(${selectedBeat.pinCode})` : ""
+                      }`,
+                    }
+                  : null
+              }
+              onChange={(selectedOption) => {
+                setSelectedBeat(selectedOption?.beatObject || null);
+              }}
+              placeholder='Select a Beat...'
+              isDisabled={!selectedSalesman}
+              menuPortalTarget={document.body}
+              styles={{
+                menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+                menu: (base) => ({ ...base, zIndex: 9999 }),
+              }}
+            /> */}
+
+            <Select
+              options={beatsOptions}
+              value={
+                selectedBeat
+                  ? {
+                      value: selectedBeat._id,
+                      label: `${selectedBeat.areaName} ${
+                        selectedBeat.pinCode ? `(${selectedBeat.pinCode})` : ""
+                      }`,
+                    }
+                  : null
+              }
+              onChange={handleBeatSelectChange}
+              placeholder='Select a Beat...'
+              isDisabled={!selectedSalesman}
+              menuPortalTarget={document.body}
+              styles={{
+                menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+                menu: (base) => ({ ...base, zIndex: 9999 }),
+
+                // ✅ Remove blue background on selected and focused options
+                option: (base, state) => ({
+                  ...base,
+                  backgroundColor:
+                    state.isSelected || state.isFocused
+                      ? "transparent"
+                      : base.backgroundColor,
+                  color: "#000", // you can change text color if needed
+                  cursor: "pointer",
+                }),
+
+                // ✅ Remove blue highlight in the control (selected option box)
+                control: (base) => ({
+                  ...base,
+                  boxShadow: "none",
+                  borderColor: "#ccc", // or any color you prefer
+                  "&:hover": {
+                    borderColor: "#aaa",
+                  },
+                }),
+
+                // ✅ Remove blue background in the singleValue (selected item inside box)
+                singleValue: (base) => ({
+                  ...base,
+                  backgroundColor: "transparent",
+                  color: "#000",
+                }),
+              }}
             />
           </div>
 
