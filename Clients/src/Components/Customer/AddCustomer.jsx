@@ -565,9 +565,7 @@
 
 // export default AddCustomer;
 
-
 // !0-------------
-
 
 import React, { useEffect, useState } from "react";
 import { Form, Button, Container, Card, Row, Col } from "react-bootstrap";
@@ -603,8 +601,13 @@ function AddCustomer({ refresh, editingCustomer, setEditingCustomer }) {
       let formattedBeats;
       if (editingCustomer.beats && Array.isArray(editingCustomer.beats)) {
         // Step 2: Map each string in 'beats' to an object { areaName: string }
-        formattedBeats = editingCustomer.beats.map(area => ({ areaName: area }));
-        console.log("4. Formatted beats for state (after mapping):", formattedBeats);
+        formattedBeats = editingCustomer.beats.map((area) => ({
+          areaName: area,
+        }));
+        console.log(
+          "4. Formatted beats for state (after mapping):",
+          formattedBeats
+        );
       } else {
         // Step 3: Fallback if beats is missing or not an array
         formattedBeats = [{ areaName: "" }];
@@ -623,15 +626,21 @@ function AddCustomer({ refresh, editingCustomer, setEditingCustomer }) {
         address: editingCustomer.address || "",
         gstNumber: editingCustomer.gstNumber || "",
         creditLimit: editingCustomer.creditLimit || "",
-        creditDay: editingCustomer.creditDay ? editingCustomer.creditDay.slice(0, 10) : "",
+        creditDay: editingCustomer.creditDay
+          ? editingCustomer.creditDay.slice(0, 10)
+          : "",
         beats: formattedBeats, // Set the formatted beats
       });
 
       // You might not see the immediate effect of setCustomer here due to async state updates,
       // but the logs above are what's critical for diagnosing.
-      console.log("5. setCustomer called with new state (check React DevTools for actual state update).");
+      console.log(
+        "5. setCustomer called with new state (check React DevTools for actual state update)."
+      );
     } else {
-        console.log("2. editingCustomer is null or undefined. Form is in 'Add' mode.");
+      console.log(
+        "2. editingCustomer is null or undefined. Form is in 'Add' mode."
+      );
     }
     console.log("--------------------------");
   }, [editingCustomer]); // Dependency array: useEffect runs when editingCustomer changes
@@ -645,8 +654,8 @@ function AddCustomer({ refresh, editingCustomer, setEditingCustomer }) {
     try {
       // Filter out any empty beat objects and convert back to array of strings for API
       const beatsForApi = customer.beats
-        .filter(b => b.areaName.trim() !== '') // Remove empty beat entries
-        .map(b => b.areaName); // Convert objects back to strings
+        .filter((b) => b.areaName.trim() !== "") // Remove empty beat entries
+        .map((b) => b.areaName); // Convert objects back to strings
 
       const customerToSubmit = {
         ...customer,
@@ -663,6 +672,8 @@ function AddCustomer({ refresh, editingCustomer, setEditingCustomer }) {
         toast.success("Customer saved successfully!");
       }
 
+      // Reset form after successful submission
+      // Reset form after successful submission
       // Reset form after successful submission
       setCustomer({
         firm: "",
@@ -814,21 +825,24 @@ function AddCustomer({ refresh, editingCustomer, setEditingCustomer }) {
 
               {/* Beats section */}
               <Form.Group as={Col} md={12} className='mb-3'>
-                <Form.Label>Beats</Form.Label>
+                <Form.Label>Area</Form.Label>
                 {/* Ensure customer.beats is always an array before mapping */}
-                {customer.beats && customer.beats.map((b, index) => (
-                  <Row key={index} className='mb-2 align-items-center'>
-                    <Col md={10}>
-                      <Form.Control
-                        type='text'
-                        placeholder='Area Name'
-                        value={b.areaName} // This should now correctly access the 'areaName' property
-                        onChange={(e) =>
-                          handleBeatChange(index, "areaName", e.target.value)
-                        }
-                      />
-                    </Col>
-                    <Col md={2}>
+                {/* Ensure customer.beats is always an array before mapping */}
+                {/* Ensure customer.beats is always an array before mapping */}
+                {customer.beats &&
+                  customer.beats.map((b, index) => (
+                    <Row key={index} className='mb-2 align-items-center'>
+                      <Col md={10}>
+                        <Form.Control
+                          type='text'
+                          placeholder='Area Name'
+                          value={b.areaName} // This should now correctly access the 'areaName' property
+                          onChange={(e) =>
+                            handleBeatChange(index, "areaName", e.target.value)
+                          }
+                        />
+                      </Col>
+                      {/* <Col md={2}>
                       {customer.beats.length > 1 && (
                         <Button
                           variant='danger'
@@ -846,9 +860,9 @@ function AddCustomer({ refresh, editingCustomer, setEditingCustomer }) {
                           ➕
                         </Button>
                       )}
-                    </Col>
-                  </Row>
-                ))}
+                    </Col> */}
+                    </Row>
+                  ))}
               </Form.Group>
 
               <Col md={6} className='mb-3'>
