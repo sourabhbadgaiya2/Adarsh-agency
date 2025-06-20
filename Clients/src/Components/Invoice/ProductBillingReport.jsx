@@ -550,53 +550,82 @@ const ProductBillingReport = ({ onBillingDataChange }) => {
     onBillingDataChange(filteredBillingData, finalTotal);
   };
 
+  // const handleKeyDown = (e, rowIndex) => {
+  //   if (e.altKey && e.key === "n") {
+  //     e.preventDefault();
+  //     if (rowIndex === rows.length - 1) {
+  //       setRows([...rows, { ...defaultRow }]);
+  //     }
+  //   }
+
+  //   if (e.key === "Delete" && rows.length > 1) {
+  //     e.preventDefault();
+  //     const updatedRows = rows.filter((_, i) => i !== rowIndex);
+  //     setRows(updatedRows);
+
+  //     const filteredBillingData = updatedRows
+  //       .filter(
+  //         (r) =>
+  //           r.product !== null &&
+  //           r.Qty !== "" &&
+  //           !isNaN(parseFloat(r.Qty)) &&
+  //           parseFloat(r.Qty) > 0
+  //       )
+  //       .map((r) => ({
+  //         productId: r.product._id,
+  //         itemName: r.product.productName,
+  //         hsnCode: r.product.hsnCode,
+  //         unit: r.Unit,
+  //         qty: parseFloat(r.Qty),
+  //         Free: parseFloat(r.Free) || 0,
+  //         rate: parseFloat(r.Basic),
+  //         sch: parseFloat(r.Sch) || 0,
+  //         schAmt: parseFloat(r.SchAmt) || 0,
+  //         cd: parseFloat(r.CD) || 0,
+  //         cdAmt: parseFloat(r.CDAmt) || 0,
+  //         total: parseFloat(r.Total) || 0,
+  //         gst: parseFloat(r.GST) || 0,
+  //         amount: parseFloat(r.Amount) || 0,
+  //       }));
+
+  //     const recalculatedFinalTotal = updatedRows
+  //       .reduce((sum, r) => {
+  //         const amt = parseFloat(r.Amount);
+  //         return sum + (isNaN(amt) ? 0 : amt);
+  //       }, 0)
+  //       .toFixed(2);
+
+  //     setFinalTotalAmount(recalculatedFinalTotal);
+  //     onBillingDataChange(filteredBillingData, recalculatedFinalTotal);
+  //   }
+  // };
+
   const handleKeyDown = (e, rowIndex) => {
-    if (e.altKey && e.key === "n") {
-      e.preventDefault();
-      if (rowIndex === rows.length - 1) {
-        setRows([...rows, { ...defaultRow }]);
+    if (e.key !== "Enter") return;
+
+    e.preventDefault();
+
+    const focusableSelectors =
+      "input:not([readonly]), select, .react-select__input input";
+    const allFocusable = Array.from(
+      document.querySelectorAll(focusableSelectors)
+    );
+
+    const currentIndex = allFocusable.indexOf(e.target);
+
+    // Move to next
+    let next = allFocusable[currentIndex + 1];
+
+    // If next is react-select, open dropdown
+    if (next) {
+      next.focus();
+      if (next.className.includes("react-select__input")) {
+        next.focus(); // focus twice to ensure open
       }
-    }
-
-    if (e.key === "Delete" && rows.length > 1) {
-      e.preventDefault();
-      const updatedRows = rows.filter((_, i) => i !== rowIndex);
-      setRows(updatedRows);
-
-      const filteredBillingData = updatedRows
-        .filter(
-          (r) =>
-            r.product !== null &&
-            r.Qty !== "" &&
-            !isNaN(parseFloat(r.Qty)) &&
-            parseFloat(r.Qty) > 0
-        )
-        .map((r) => ({
-          productId: r.product._id,
-          itemName: r.product.productName,
-          hsnCode: r.product.hsnCode,
-          unit: r.Unit,
-          qty: parseFloat(r.Qty),
-          Free: parseFloat(r.Free) || 0,
-          rate: parseFloat(r.Basic),
-          sch: parseFloat(r.Sch) || 0,
-          schAmt: parseFloat(r.SchAmt) || 0,
-          cd: parseFloat(r.CD) || 0,
-          cdAmt: parseFloat(r.CDAmt) || 0,
-          total: parseFloat(r.Total) || 0,
-          gst: parseFloat(r.GST) || 0,
-          amount: parseFloat(r.Amount) || 0,
-        }));
-
-      const recalculatedFinalTotal = updatedRows
-        .reduce((sum, r) => {
-          const amt = parseFloat(r.Amount);
-          return sum + (isNaN(amt) ? 0 : amt);
-        }, 0)
-        .toFixed(2);
-
-      setFinalTotalAmount(recalculatedFinalTotal);
-      onBillingDataChange(filteredBillingData, recalculatedFinalTotal);
+    } else {
+      // Optional: If last input, add new row or loop back
+      // addRow(); // your function to add new row if needed
+      allFocusable[0]?.focus(); // Loop to first
     }
   };
 

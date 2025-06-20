@@ -1130,12 +1130,92 @@ const PurchaseForm = () => {
     setItemsList((prev) => prev.filter((_, i) => i !== index));
   };
 
+  // const handleKeyDown = (e) => {
+  //   // Only add item to list if the active element is an input within the item form
+  //   // and not if the focus is on a button or select outside the item inputs.
+  // if (e.key === "Enter" && e.target.closest(".flex-nowrap")) {
+  //   e.preventDefault(); // Prevent form submission on Enter
+  //   addItemToList();
+  // }
+  // };
+
+  // const handleKeyDown = (e) => {
+  //   if (e.key === "Enter") {
+  //     e.preventDefault(); // Prevent form submit on Enter
+
+  //     const form = e.target.form;
+  //     const index = Array.prototype.indexOf.call(form, e.target);
+
+  //     // Check if inside the specific row (e.g., .flex-nowrap)
+  //     const isInsideRow = e.target.closest(".flex-nowrap");
+
+  //     if (!form || !isInsideRow) return;
+
+  //     // If it's the last input in the row, call addItemToList()
+  //     if (
+  //       index === form.length - 1 ||
+  //       form.elements[index + 1].closest(".flex-nowrap") !== isInsideRow
+  //     ) {
+  //       addItemToList();
+  //     } else {
+  //       // Move to next input in same row
+  //       let nextInput = form.elements[index + 1];
+
+  //       // Skip hidden/disabled fields
+  //       while (
+  //         nextInput &&
+  //         (nextInput.type === "hidden" || nextInput.disabled)
+  //       ) {
+  //         nextInput = form.elements[++index + 1];
+  //       }
+
+  //       if (nextInput) nextInput.focus();
+  //     }
+  //   }
+  // };
+
   const handleKeyDown = (e) => {
-    // Only add item to list if the active element is an input within the item form
-    // and not if the focus is on a button or select outside the item inputs.
-    if (e.key === "Enter" && e.target.closest(".flex-nowrap")) {
-      e.preventDefault(); // Prevent form submission on Enter
-      addItemToList();
+    if (e.key === "Enter") {
+      e.preventDefault();
+
+      const form = e.target.form;
+      const inputs = Array.from(form.elements).filter(
+        (el) =>
+          el.tagName === "INPUT" ||
+          el.tagName === "SELECT" ||
+          el.tagName === "TEXTAREA"
+      );
+
+      const index = inputs.indexOf(e.target);
+
+      const isInsideRow = e.target.closest(".flex-nowrap");
+
+      if (!form || !isInsideRow) return;
+
+      const isLastInput =
+        index === inputs.length - 1 ||
+        inputs[index + 1]?.closest(".flex-nowrap") !== isInsideRow;
+
+      if (isLastInput) {
+        // Action on last input
+        addItemToList();
+
+        // Focus back to first input in the same row
+        const firstInput = inputs.find(
+          (el) => el.closest(".flex-nowrap") === isInsideRow
+        );
+        if (firstInput) firstInput.focus();
+      } else {
+        // Move to next input
+        let nextInput = inputs[index + 1];
+        while (
+          nextInput &&
+          (nextInput.disabled || nextInput.type === "hidden")
+        ) {
+          nextInput = inputs[++index + 1];
+        }
+        if (nextInput) nextInput.focus();
+      }
     }
   };
 
@@ -1264,10 +1344,6 @@ const PurchaseForm = () => {
     setEditingId(purchase._id); // ✅ THIS IS CRUCIAL: Set the ID of the purchase being edited
     setEditItemIndex(null); // Ensure no individual item is in edit mode when starting a purchase edit
   };
-
-  // The `handlePurchaseUpdate` function you had was redundant because `handleSubmit`
-  // will now handle both add and update based on `editingId`.
-  // You can remove `handlePurchaseUpdate` if `handleSubmit` is updated to handle both.
 
   if (loading) {
     return <Loader />;
@@ -1581,14 +1657,6 @@ const PurchaseForm = () => {
                   <td>{p.vendorId?.name}</td>
                   <td>{p.items.length}</td>
                   <td>
-                    {/* {p.items.map((i, idx) => (
-                      <div key={idx}>
-                        {products.find((prod) => prod._id === i.productId)
-                          ?.productName || "N/A"}
-                        : {i.quantity}
-                      </div>
-                    ))} */}
-
                     {p.items.map((i, idx) => (
                       <div key={idx}>
                         {i.productId?.productName}: {i.quantity}
