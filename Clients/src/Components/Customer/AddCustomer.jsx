@@ -825,6 +825,8 @@ function AddCustomer({ refresh, editingCustomer, setEditingCustomer }) {
               <Form.Group as={Col} md={12} className='mb-3'>
                 <Form.Label>Area</Form.Label>
                 {/* Ensure customer.beats is always an array before mapping */}
+                {/* Ensure customer.beats is always an array before mapping */}
+                {/* Ensure customer.beats is always an array before mapping */}
                 {customer.beats &&
                   customer.beats.map((b, index) => (
                     <Row key={index} className='mb-2 align-items-center'>
