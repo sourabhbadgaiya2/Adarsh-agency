@@ -927,12 +927,14 @@ const GenerateInvoice = () => {
                 }}
               >
                 <h5 style={{ fontWeight: "bold", fontSize: "24px" }}>
-                  ADARSH AGENCY
+                  {/* ADARSH AGENCY */}
+                  SAMRIDDHI ENTERPRISES
                 </h5>
                 <p>H.NO.02, NAGAR NIGAM COLONY TIMBER MARKET CHHOLA BHOPAL</p>
                 <p>MOB: 9926793332, 9893315590</p>
                 <p>
-                  <strong>GSTIN: 23BENPR0816K1ZB</strong>
+                  {/* <strong>GSTIN: 23BENPR0816K1ZB</strong> */}
+                  <strong>GSTIN: 23BJUPR9537F1ZK</strong>
                 </p>
               </div>
 
