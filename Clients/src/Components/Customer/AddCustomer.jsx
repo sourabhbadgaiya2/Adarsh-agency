@@ -673,6 +673,8 @@ function AddCustomer({ refresh, editingCustomer, setEditingCustomer }) {
       }
 
       // Reset form after successful submission
+      // Reset form after successful submission
+      // Reset form after successful submission
       setCustomer({
         firm: "",
         name: "",
