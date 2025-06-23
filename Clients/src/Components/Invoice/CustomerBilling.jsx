@@ -9,7 +9,11 @@ const getCurrentDate = () => {
   return today.toISOString().split("T")[0];
 };
 
-const CustomerBilling = ({ onDataChange, resetTrigger = { resetKey } }) => {
+const CustomerBilling = ({
+  onNextFocus,
+  onDataChange,
+  resetTrigger = { resetKey },
+}) => {
   const isFirstRender = useRef(true);
   const [formData, setFormData] = useState({
     Billdate: getCurrentDate(),
@@ -27,6 +31,7 @@ const CustomerBilling = ({ onDataChange, resetTrigger = { resetKey } }) => {
   const [customersOptions, setCustomersOptions] = useState([]);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [allCustomers, setAllCustomers] = useState([]);
+
   // allBeatsRaw is currently not directly used in the logic, kept for potential future use.
   // const [allBeatsRaw, setAllBeatsRaw] = useState([]);
 
@@ -209,74 +214,20 @@ const CustomerBilling = ({ onDataChange, resetTrigger = { resetKey } }) => {
     // compileAndSendData will be called by the useEffect watching formData
   };
 
-  // const handleKeyDown = (e) => {
-  //   if (e.key === "Enter") {
-  //     e.preventDefault();
-
-  //     const form = e.target.form;
-
-  //     // Get all focusable elements in order
-  //     const focusable = Array.from(
-  //       form.querySelectorAll(
-  //         "input:not([readonly]):not([disabled]), select:not([disabled]), .react-select__input input"
-  //       )
-  //     );
-
-  //     const index = focusable.indexOf(e.target);
-
-  //     const next = focusable[index + 1];
-
-  //     if (next) {
-  //       next.focus();
-
-  //       // For react-select, call focus again to ensure dropdown works
-  //       if (next.className.includes("react-select__input")) {
-  //         setTimeout(() => next.focus(), 10);
-  //       }
-  //     } else {
-  //       // Optional: loop to first field
-  //       focusable[0]?.focus();
-  //     }
-  //   }
-  // };
-
-  // const handleKeyDown = (e) => {
-  //   if (e.key !== "Enter") return;
-
-  //   e.preventDefault();
-
-  //   const form = e.target.form;
-
-  //   const focusable = Array.from(
-  //     form.querySelectorAll(
-  //       "input:not([readonly]):not([disabled]), select:not([disabled]), .react-select__input input"
-  //     )
-  //   );
-
-  //   const index = focusable.indexOf(e.target);
-
-  //   const isReactSelect = e.target.className.includes("react-select__input");
-
-  //   if (isReactSelect) {
-  //     // If react-select and menu is already open, press Enter = select + move on
-  //     const next = focusable[index + 1];
-  //     setTimeout(() => {
-  //       next?.focus();
-  //     }, 100);
-  //   } else {
-  //     // Standard inputs or selects
-  //     const next = focusable[index + 1];
-  //     if (next) next.focus();
-  //   }
-  // };
-
+  const [isSalesmanSelectOpen, setSalesmanSelectOpen] = useState(false);
   const handleKeyDown = (e) => {
     if (e.key !== "Enter") return;
+
+    const isReactSelectInput =
+      e.target.classList.contains("react-select__input") ||
+      e.target.closest(".react-select__input");
+
+    // Let react-select handle Enter for selection
+    if (isReactSelectInput) return;
 
     e.preventDefault();
 
     const form = e.target.form;
-
     const focusable = Array.from(
       form.querySelectorAll(
         "input:not([readonly]):not([disabled]), select:not([disabled]), .react-select__input input"
@@ -284,7 +235,6 @@ const CustomerBilling = ({ onDataChange, resetTrigger = { resetKey } }) => {
     );
 
     const index = focusable.indexOf(e.target);
-
     const next = focusable[index + 1];
     if (next) next.focus();
   };
@@ -320,13 +270,15 @@ const CustomerBilling = ({ onDataChange, resetTrigger = { resetKey } }) => {
               <strong>Select Salesman</strong>
             </label>
             <Select
-              onKeyDown={handleKeyDown}
+              id='salesman-select'
+              onFocus={() => setSalesmanSelectOpen(true)}
+              onBlur={() => setSalesmanSelectOpen(false)}
+              menuIsOpen={isSalesmanSelectOpen}
               options={salesmen.map((s) => ({
                 label: s.name,
                 value: s._id,
                 salesmanObject: s,
               }))}
-              // Correctly setting the value for react-select
               value={
                 selectedSalesman
                   ? {
@@ -335,9 +287,17 @@ const CustomerBilling = ({ onDataChange, resetTrigger = { resetKey } }) => {
                     }
                   : null
               }
-              onChange={handleSalesmanSelectChange}
+              onChange={(option) => {
+                handleSalesmanSelectChange(option);
+                setTimeout(() => {
+                  const next = document.querySelector("#beat-select input");
+                  if (next) next.focus();
+                }, 50);
+              }}
+              onKeyDown={handleKeyDown}
               placeholder='Select a Salesman...'
               menuPortalTarget={document.body}
+              classNamePrefix='react-select'
               styles={{
                 menuPortal: (base) => ({ ...base, zIndex: 9999 }),
               }}
@@ -345,55 +305,12 @@ const CustomerBilling = ({ onDataChange, resetTrigger = { resetKey } }) => {
           </div>
 
           {/* Beat */}
-          {/* <div className='form-group col-md-6'>
-            <label>
-              <strong>Select Beat</strong>
-            </label>
-            <Select
-              options={beatsOptions}
-              // Correctly setting the value for react-select
-              value={
-                selectedBeat
-                  ? beatsOptions.find((b) => b.value === selectedBeat._id)
-                  : null
-              }
-              onChange={handleBeatSelectChange}
-              placeholder='Select a Beat...'
-              isDisabled={!selectedSalesman}
-              menuPortalTarget={document.body}
-              styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
-            />
-          </div> */}
-          {/* Beat */}
           <div className='form-group col-md-6'>
             <label>
               <strong>Select Beat</strong>
             </label>
-            {/* <Select
-              options={beatsOptions}
-              value={
-                selectedBeat
-                  ? {
-                      value: selectedBeat._id,
-                      label: `${selectedBeat.areaName} ${
-                        selectedBeat.pinCode ? `(${selectedBeat.pinCode})` : ""
-                      }`,
-                    }
-                  : null
-              }
-              onChange={(selectedOption) => {
-                setSelectedBeat(selectedOption?.beatObject || null);
-              }}
-              placeholder='Select a Beat...'
-              isDisabled={!selectedSalesman}
-              menuPortalTarget={document.body}
-              styles={{
-                menuPortal: (base) => ({ ...base, zIndex: 9999 }),
-                menu: (base) => ({ ...base, zIndex: 9999 }),
-              }}
-            /> */}
-
             <Select
+              id='beat-select'
               options={beatsOptions}
               classNamePrefix='react-select'
               onKeyDown={handleKeyDown}
@@ -407,36 +324,64 @@ const CustomerBilling = ({ onDataChange, resetTrigger = { resetKey } }) => {
                     }
                   : null
               }
-              onChange={handleBeatSelectChange}
+              onChange={(option) => {
+                handleBeatSelectChange(option);
+                setTimeout(() => {
+                  const next = document.querySelector("#customer-select input");
+                  if (next) next.focus();
+                }, 50);
+              }}
               placeholder='Select a Beat...'
               isDisabled={!selectedSalesman}
               menuPortalTarget={document.body}
+              // styles={{
+              //   menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+              //   menu: (base) => ({ ...base, zIndex: 9999 }),
+              //   option: (base, state) => ({
+              //     ...base,
+              //     backgroundColor:
+              //       state.isSelected || state.isFocused
+              //         ? "transparent"
+              //         : base.backgroundColor,
+              //     color: "#000",
+              //     cursor: "pointer",
+              //   }),
+              //   control: (base) => ({
+              //     ...base,
+              //     boxShadow: "none",
+              //     borderColor: "#ccc",
+              //     "&:hover": {
+              //       borderColor: "#aaa",
+              //     },
+              //   }),
+              //   singleValue: (base) => ({
+              //     ...base,
+              //     backgroundColor: "transparent",
+              //     color: "#000",
+              //   }),
+              // }}
+
               styles={{
                 menuPortal: (base) => ({ ...base, zIndex: 9999 }),
                 menu: (base) => ({ ...base, zIndex: 9999 }),
-
-                // ✅ Remove blue background on selected and focused options
                 option: (base, state) => ({
                   ...base,
-                  backgroundColor:
-                    state.isSelected || state.isFocused
-                      ? "transparent"
-                      : base.backgroundColor,
-                  color: "#000", // you can change text color if needed
+                  backgroundColor: state.isFocused
+                    ? "#e6f0ff" // light blue for focused (arrow keys or mouse hover)
+                    : state.isSelected
+                    ? "#00000" // slightly darker for selected
+                    : base.backgroundColor,
+                  color: "#000",
                   cursor: "pointer",
                 }),
-
-                // ✅ Remove blue highlight in the control (selected option box)
-                control: (base) => ({
+                control: (base, state) => ({
                   ...base,
-                  boxShadow: "none",
-                  borderColor: "#ccc", // or any color you prefer
+                  boxShadow: state.isFocused ? "0 0 0 2px #2684FF" : "none",
+                  borderColor: state.isFocused ? "#2684FF" : "#ccc",
                   "&:hover": {
-                    borderColor: "#aaa",
+                    borderColor: state.isFocused ? "#2684FF" : "#aaa",
                   },
                 }),
-
-                // ✅ Remove blue background in the singleValue (selected item inside box)
                 singleValue: (base) => ({
                   ...base,
                   backgroundColor: "transparent",
@@ -452,9 +397,9 @@ const CustomerBilling = ({ onDataChange, resetTrigger = { resetKey } }) => {
               <strong>Select Customer</strong>
             </label>
             <Select
+              id='customer-select'
               options={customersOptions}
               onKeyDown={handleKeyDown}
-              // Correctly setting the value for react-select
               value={
                 selectedCustomer
                   ? customersOptions.find(
@@ -462,10 +407,17 @@ const CustomerBilling = ({ onDataChange, resetTrigger = { resetKey } }) => {
                     )
                   : null
               }
-              onChange={handleCustomerSelectChange}
+              onChange={(option) => {
+                handleCustomerSelectChange(option);
+                setTimeout(() => {
+                  const next = document.querySelector("input[name='Billdate']");
+                  if (next) next.focus();
+                }, 50);
+              }}
               placeholder='Select a Customer...'
               isDisabled={!selectedBeat}
               menuPortalTarget={document.body}
+              classNamePrefix='react-select'
               styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
             />
           </div>
@@ -502,18 +454,6 @@ const CustomerBilling = ({ onDataChange, resetTrigger = { resetKey } }) => {
               <option value='Cheque'>Cheque</option>
             </select>
           </div>
-
-          {/* Advance Amount */}
-          {/* <div className='form-group col-md-6'>
-            <label>Advance Amount</label>
-            <input
-              type='number'
-              className='form-control'
-              name='advanceAmt'
-              value={formData.advanceAmt}
-              onChange={handleInputChange}
-            />
-          </div> */}
         </div>
       </form>
     </div>

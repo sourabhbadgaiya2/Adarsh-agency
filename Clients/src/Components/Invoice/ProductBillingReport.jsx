@@ -1,6 +1,13 @@
 // !-------------------------------------------
 
-import React, { useEffect, useState } from "react";
+import React, {
+  useEffect,
+  useState,
+  forwardRef,
+  useImperativeHandle,
+  useRef,
+} from "react";
+
 import axios from "../../Config/axios";
 import Select from "react-select";
 import { ToastContainer, toast } from "react-toastify";
@@ -22,10 +29,18 @@ const defaultRow = {
   Amount: 0,
 };
 
-const ProductBillingReport = ({ onBillingDataChange }) => {
+const ProductBillingReport = ({ onBillingDataChange }, ref) => {
   const [rows, setRows] = useState([{ ...defaultRow }]);
   const [products, setProducts] = useState([]);
   const [finalTotalAmount, setFinalTotalAmount] = useState("0.00");
+
+  const itemInputRef = useRef();
+
+  useImperativeHandle(ref, () => ({
+    focusItemName: () => {
+      itemInputRef.current?.focus();
+    },
+  }));
 
   const fields = [
     "ItemName",
@@ -393,6 +408,7 @@ const ProductBillingReport = ({ onBillingDataChange }) => {
                   <td key={colIndex} style={{ minWidth: "150px" }}>
                     {field === "ItemName" ? (
                       <Select
+                        ref={itemInputRef}
                         className='w-100'
                         options={products.map((p) => ({
                           label: `${p.productName}`,
