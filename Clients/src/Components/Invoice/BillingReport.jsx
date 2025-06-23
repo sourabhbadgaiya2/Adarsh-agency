@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from "../../Config/axios";
 import ProductBillingReport from "./ProductBillingReport";
 import CustomerBilling from "./CustomerBilling";
@@ -16,7 +16,7 @@ function BillingReport() {
 
   const [loading, setLoading] = useState(false);
 
-  console.log(customerData, "LION");
+  // console.log(customerData, "LION");
 
   const handleBillingDataChange = (data, totalAmount) => {
     setBillingData(data);
@@ -69,6 +69,14 @@ function BillingReport() {
     }
   };
 
+  const productRef = useRef(); // 👈 Step 1: Create a ref
+
+  // ... your state and handlers
+
+  const focusNextComponent = () => {
+    productRef.current?.focusItemName(); // 👈 Step 2: Call this when needed
+  };
+
   if (loading) {
     return <Loader />;
   }
@@ -79,8 +87,10 @@ function BillingReport() {
         // key={resetKey + 100} // avoid collision
         onDataChange={handleCustomerDataChange}
         resetTrigger={resetKey}
+        onNextFocus={focusNextComponent} // 👈 Step 3: pass function to child
       />
       <ProductBillingReport
+        ref={productRef} // 👈 Step 4: attach ref
         onBillingDataChange={handleBillingDataChange}
         key={resetKey}
       />
