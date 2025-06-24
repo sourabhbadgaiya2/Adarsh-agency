@@ -1,0 +1,114 @@
+[
+  {
+    "ledger": "A TO Z SUPER BAZAR",
+    "group": "SUNDY DEBTORS",
+    "name": "A TO Z SUPER BAZAR",
+    "address1": "MITTAL COLLEGE ROAD (BHANPUR)",
+    "mobile": "9522289442",
+    "area": "BHANPUR"
+  },
+  {
+    "ledger": "AGARWAL KIRANA",
+    "group": "SUNDY DEBTORS",
+    "name": "AGARWAL KIRANA",
+    "address1": "NEAR SAI KIRANA MITTAL ROAD",
+    "mobile": "9893587797",
+    "area": "BHANPUR"
+  },
+  {
+    "ledger": "ARIHANT GROCERY",
+    "group": "SUNDY DEBTORS",
+    "name": "ARIHANT GROCERY",
+    "address1": "COREL KASA MITTAL",
+    "mobile": "9981590665",
+    "area": "BHANPUR"
+  },
+  {
+    "ledger": "HARI OM SUPER BAZAR",
+    "group": "SUNDY DEBTORS",
+    "name": "HARI OM SUPER BAZAR",
+    "address1": "BHANPUR",
+    "mobile": "9926405143",
+    "area": "BHANPUR"
+  },
+  {
+    "ledger": "HARSIDDHI KIRANA",
+    "group": "SUNDY DEBTORS",
+    "name": "HARSIDDHI KIRANA",
+    "address1": "COREL KANSA",
+    "mobile": "8839504419",
+    "area": "BHANPUR"
+  },
+  {
+    "ledger": "JAY BHOLE KIRANA",
+    "group": "SUNDY DEBTORS",
+    "name": "JAY BHOLE KIRANA",
+    "address1": "NEAR PAL KIRANA",
+    "mobile": "9933085571",
+    "area": "BHANPUR"
+  },
+  {
+    "ledger": "MAHAKAL AYURVEDIC",
+    "group": "SUNDY DEBTORS",
+    "name": "MAHAKAL AYURVEDIC",
+    "address1": "NEAR AGARWAL KIRANA MITTAL ROAD",
+    "mobile": "9617564321",
+    "area": "BHANPUR"
+  },
+  {
+    "ledger": "NILANJANA KIRANA",
+    "group": "SUNDY DEBTORS",
+    "name": "NILANJANA KIRANA",
+    "address1": "MITTAL COLLAGE ROAD",
+    "mobile": "9340433941",
+    "area": "BHANPUR"
+  },
+  {
+    "ledger": "PARI DUDH DAIRY",
+    "group": "SUNDY DEBTORS",
+    "name": "PARI DUDH DAIRY",
+    "address1": "NEAR AGARWAL KIRANA MITTAL ROAD",
+    "mobile": "9630116419",
+    "area": "BHANPUR"
+  },
+  {
+    "ledger": "SAI KIRANA",
+    "group": "SUNDY DEBTORS",
+    "name": "SAI KIRANA",
+    "address1": "NEAR AGARWAL KIRANA MITTAL ROAD",
+    "mobile": "9893423893",
+    "area": "BHANPUR"
+  },
+  {
+    "ledger": "SHIV SHANKAR TRADRES",
+    "group": "SUNDY DEBTORS",
+    "name": "SHIV SHANKAR TRADRES",
+    "address1": "NEAR SHREEJI KIRANA",
+    "mobile": "9907564641",
+    "area": "BHANPUR"
+  },
+  {
+    "ledger": "SHREE JI KIRANA",
+    "group": "SUNDY DEBTORS",
+    "name": "SHREE JI KIRANA",
+    "address1": "NEAR SHIV SHANKAR TRADRES",
+    "mobile": "7067565447",
+    "area": "BHANPUR"
+  },
+  {
+    "ledger": "SONAL KIRANA",
+    "group": "SUNDY DEBTORS",
+    "name": "SONAL KIRANA",
+    "address1": "NEAR HARI OM SUPER BAZAR",
+    "mobile": "9926817479",
+    "area": "BHANPUR"
+  },
+  {
+    "ledger": "YASH TRADRES",
+    "group": "SUNDY DEBTORS",
+    "name": "YASH TRADRES",
+    "address1": "COREL KASA",
+    "mobile": "9393979480",
+    "area": "BHANPUR"
+  }
+]

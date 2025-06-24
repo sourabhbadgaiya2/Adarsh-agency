@@ -2,25 +2,32 @@ import React, { useEffect, useState } from "react";
 import { Container, Table, Image, Button } from "react-bootstrap";
 import axios from "../../Config/axios";
 import { useNavigate } from "react-router-dom";
+import Loader from "../Loader";
+import toast from "react-hot-toast";
 
 const API_BASE = import.meta.env.VITE_API;
 const IMAGE_BASE = import.meta.env.VITE_API.replace(/\/api$/, "");
 
 function DisplaySalesMan() {
   const [salesmen, setSalesmen] = useState(null);
-
-  useEffect(() => {
-    fetchSalesmen();
-  }, []);
+  const [loading, setLoading] = useState(false);
 
   const fetchSalesmen = async () => {
+    setLoading(true);
     try {
       const response = await axios.get("/salesman");
       setSalesmen(response.data);
     } catch (error) {
       console.error("Error fetching salesmen:", error);
+    } finally {
+      setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchSalesmen();
+  }, []);
+
   const navigate = useNavigate();
 
   const handleEdit = (id) => {
@@ -30,25 +37,33 @@ function DisplaySalesMan() {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this salesman?")) {
       try {
+        setLoading(true);
         await axios.delete(`/salesman/${id}`);
         fetchSalesmen(); // Refresh the list
+        toast.success("Delete Successfully");
       } catch (error) {
         console.error("Error deleting salesman:", error);
+      } finally {
+        setLoading(false);
       }
     }
   };
 
+  if (loading) {
+    return <Loader />;
+  }
+
   return (
-    <Container className="my-4">
+    <Container className='my-4'>
       <h3>Salesman List</h3>
       <Table striped bordered hover responsive>
         <thead>
           <tr>
             <th>Photo</th>
             <th>Name</th>
-            <th>Designation</th>
+            {/* <th>Designation</th> */}
             <th>Mobile</th>
-            <th>Email</th>
+            {/* <th>Email</th> */}
             <th>City</th>
             <th>Username</th>
             <th>Action</th>
@@ -71,23 +86,23 @@ function DisplaySalesMan() {
                   )}
                 </td>
                 <td>{s.name}</td>
-                <td>{s.designation}</td>
+                {/* <td>{s.designation}</td> */}
                 <td>{s.mobile}</td>
-                <td>{s.email}</td>
+                {/* <td>{s.email}</td> */}
                 <td>{s.city}</td>
                 <td>{s.username}</td>
                 <td>
-                  <div className="btn-group" role="group">
+                  <div className='btn-group' role='group'>
                     <Button
-                      variant="link"
-                      className="text-primary"
+                      variant='link'
+                      className='text-primary'
                       onClick={() => handleEdit(s._id)}
                     >
                       Edit
                     </Button>
                     <Button
-                      variant="link"
-                      className="text-danger"
+                      variant='link'
+                      className='text-danger'
                       onClick={() => handleDelete(s._id)}
                     >
                       Delete

@@ -1,0 +1,1674 @@
+[{
+  "_id": {
+    "$oid": "68592e7d43649c13aa7b6b7a"
+  },
+  "code": 1,
+  "type": "OTHERS",
+  "ledger": "APPU TARDRES",
+  "city": "ASHOKA GARDEN",
+  "area": "ASHOKA GARDEN",
+  "name": "APPU TARDRES",
+  "address1": "OLD SUBHASH NAGAR ASHOKA GARDEN",
+  "mobile": "8817743335"
+},
+{
+  "_id": {
+    "$oid": "68592e7d43649c13aa7b6b7b"
+  },
+  "code": 2,
+  "type": "OTHERS",
+  "ledger": "BOMBAY MEDCIAL",
+  "city": "ASHOKA GARDEN",
+  "area": "ASHOKA GARDEN",
+  "name": "BOMBAY MEDCIAL",
+  "address1": "NEAR PARBHAT PETROL PUMP  A.G",
+  "mobile": "9926501682"
+},
+{
+  "_id": {
+    "$oid": "68592e7d43649c13aa7b6b7c"
+  },
+  "code": 3,
+  "type": "OTHERS",
+  "ledger": "FAUJI KIRANA",
+  "city": "ASHOKA GARDEN",
+  "area": "ASHOKA GARDEN",
+  "name": "FAUJI KIRANA",
+  "address1": "ASHOKA GARDEN",
+  "mobile": "7879530125"
+},
+{
+  "_id": {
+    "$oid": "68592e7d43649c13aa7b6b7d"
+  },
+  "code": 4,
+  "type": "OTHERS",
+  "ledger": "GIRNAR TRADRES",
+  "city": "ASHOKA GARDEN",
+  "area": "ASHOKA GARDEN",
+  "name": "GIRNAR TRADRES",
+  "address1": "NEAR CHANDRA SWEETS (ASHOKA GARDEN)",
+  "mobile": "9993656186"
+},
+{
+  "_id": {
+    "$oid": "68592e7d43649c13aa7b6b7e"
+  },
+  "code": 5,
+  "type": "OTHERS",
+  "ledger": "GUPTA TADDERS",
+  "city": "ASHOKA GARDEN",
+  "area": "ASHOKA GARDEN",
+  "name": "GUPTA TADDERS",
+  "address1": "80 FEET ASHOKA GARDEN",
+  "mobile": "9593068527"
+},
+{
+  "_id": {
+    "$oid": "68592e7d43649c13aa7b6b7f"
+  },
+  "code": 6,
+  "type": "OTHERS",
+  "ledger": "JAIN KIRANA",
+  "city": "ASHOKA GARDEN",
+  "area": "ASHOKA GARDEN",
+  "name": "JAIN KIRANA",
+  "address1": "NEAR INDIAN BANK (SABJI MANDI ) AG",
+  "mobile": "9407932328"
+},
+{
+  "_id": {
+    "$oid": "68592e7d43649c13aa7b6b80"
+  },
+  "code": 7,
+  "type": "OTHERS",
+  "ledger": "KIRTI MEDICAL",
+  "city": "ASHOKA GARDEN",
+  "area": "ASHOKA GARDEN",
+  "name": "KIRTI MEDICAL",
+  "address1": "80 FEET ASHOKA GARDEN",
+  "mobile": "9630461505"
+},
+{
+  "_id": {
+    "$oid": "68592e7d43649c13aa7b6b81"
+  },
+  "code": 8,
+  "type": "OTHERS",
+  "ledger": "LUCKY KIRANA",
+  "city": "ASHOKA GARDEN",
+  "area": "ASHOKA GARDEN",
+  "name": "LUCKY KIRANA",
+  "address1": "80 FEET ASHOKA GARDEN",
+  "mobile": "9425068120"
+},
+{
+  "_id": {
+    "$oid": "68592e7d43649c13aa7b6b82"
+  },
+  "code": 9,
+  "type": "OTHERS",
+  "ledger": "MA KARMA KIRANA",
+  "city": "ASHOKA GARDEN",
+  "area": "ASHOKA GARDEN",
+  "name": "MA KARMA KIRANA",
+  "address1": "NEAR PETROL PUMP GALI (ASHOKA GARDEN)",
+  "mobile": "8959322082"
+},
+{
+  "_id": {
+    "$oid": "68592e7d43649c13aa7b6b83"
+  },
+  "code": 10,
+  "type": "OTHERS",
+  "ledger": "MAHAVEER KIRANA",
+  "city": "ASHOKA GARDEN",
+  "area": "ASHOKA GARDEN",
+  "name": "MAHAVEER KIRANA",
+  "address1": "ASHOKA GARDEN",
+  "mobile": "9639172744"
+},
+{
+  "_id": {
+    "$oid": "68592e7d43649c13aa7b6b84"
+  },
+  "code": 11,
+  "type": "OTHERS",
+  "ledger": "PARAS KIRANA (A.G)",
+  "city": "ASHOKA GARDEN",
+  "area": "ASHOKA GARDEN",
+  "name": "PARAS KIRANA (A.G)",
+  "address1": "ASHOKA GARDEN SQUARE",
+  "mobile": "9891402048"
+},
+{
+  "_id": {
+    "$oid": "68592e7d43649c13aa7b6b85"
+  },
+  "code": 12,
+  "type": "OTHERS",
+  "ledger": "PATEL KIRANA",
+  "city": "ASHOKA GARDEN",
+  "area": "ASHOKA GARDEN",
+  "name": "PATEL KIRANA",
+  "address1": "80 FEET ASHOKA GARDEN",
+  "mobile": "9193051776"
+},
+{
+  "_id": {
+    "$oid": "68592e7d43649c13aa7b6b86"
+  },
+  "code": 13,
+  "type": "OTHERS",
+  "ledger": "QUALITY STORE",
+  "city": "ASHOKA GARDEN",
+  "area": "ASHOKA GARDEN",
+  "name": "QUALITY STORE",
+  "address1": "SABJI MANDI ASHOKA GARDEN",
+  "mobile": "9753031386"
+},
+{
+  "_id": {
+    "$oid": "68592e7d43649c13aa7b6b87"
+  },
+  "code": 14,
+  "type": "OTHERS",
+  "ledger": "RAJSHRI KIRANA (A.G)",
+  "city": "ASHOKA GARDEN",
+  "area": "ASHOKA GARDEN",
+  "name": "RAJSHRI KIRANA (A.G)",
+  "address1": "ASHOKA GARDEN CHAURAHA",
+  "mobile": "8319654094"
+},
+{
+  "_id": {
+    "$oid": "68592e7d43649c13aa7b6b88"
+  },
+  "code": 15,
+  "type": "OTHERS",
+  "ledger": "SAHU KIRANA",
+  "city": "ASHOKA GARDEN",
+  "area": "ASHOKA GARDEN",
+  "name": "SAHU KIRANA",
+  "address1": "SABJI MANDI ASHOKA GARDEN",
+  "mobile": "9993656186"
+},
+{
+  "_id": {
+    "$oid": "68592e7d43649c13aa7b6b89"
+  },
+  "code": 16,
+  "type": "OTHERS",
+  "ledger": "SAKLANI ENTERPRISES",
+  "city": "ASHOKA GARDEN",
+  "area": "ASHOKA GARDEN",
+  "name": "SAKLANI ENTERPRISES",
+  "address1": "80 FEET ASHOKA GARDEN",
+  "mobile": "8139273320"
+},
+{
+  "_id": {
+    "$oid": "68592e7d43649c13aa7b6b8a"
+  },
+  "code": 17,
+  "type": "OTHERS",
+  "ledger": "SHIV SHANKAR KIRANA",
+  "city": "ASHOKA GARDEN",
+  "area": "ASHOKA GARDEN",
+  "name": "SHIV SHANKAR KIRANA",
+  "address1": "NEAR SABJI MANDI AG",
+  "mobile": "8770542074"
+},
+{
+  "_id": {
+    "$oid": "68592e7d43649c13aa7b6b8b"
+  },
+  "code": 18,
+  "type": "OTHERS",
+  "ledger": "SHRADHA SUPER STORE",
+  "city": "ASHOKA GARDEN",
+  "area": "ASHOKA GARDEN",
+  "name": "SHRADHA SUPER STORE",
+  "address1": "NEAR PUNJABI BAGH ASHOKA GARDEN",
+  "mobile": "8449963777"
+},
+{
+  "_id": {
+    "$oid": "68592e7d43649c13aa7b6b8c"
+  },
+  "code": 19,
+  "type": "OTHERS",
+  "ledger": "SHREE JI GROCERY",
+  "city": "ASHOKA GARDEN",
+  "area": "ASHOKA GARDEN",
+  "name": "SHREE JI GROCERY",
+  "address1": "80 FEET ASHOKA GARDEN",
+  "mobile": "9165891341"
+},
+{
+  "_id": {
+    "$oid": "68592e7d43649c13aa7b6b8d"
+  },
+  "code": 20,
+  "type": "OTHERS",
+  "ledger": "SIDDHI VINAYAK",
+  "city": "ASHOKA GARDEN",
+  "area": "ASHOKA GARDEN",
+  "name": "SIDDHI VINAYAK",
+  "address1": "NEAR MAHAVEER KIRANA (ASHOKA GARDEN)",
+  "mobile": "9685903642"
+},
+{
+  "_id": {
+    "$oid": "68592e7d43649c13aa7b6b8e"
+  },
+  "code": 21,
+  "type": "OTHERS",
+  "ledger": "YADAV PROTEIN",
+  "city": "ASHOKA GARDEN",
+  "area": "ASHOKA GARDEN",
+  "name": "YADAV PROTEIN",
+  "address1": "DURGA DHAM MANDIR",
+  "mobile": "8517054668"
+},
+{
+  "_id": {
+    "$oid": "68592f1643649c13aa7b6b8f"
+  },
+  "ledger": "A TO Z SUPER BAZAR",
+  "group": "SUNDY DEBTORS",
+  "name": "A TO Z SUPER BAZAR",
+  "address1": "MITTAL COLLEGE ROAD (BHANPUR)",
+  "mobile": "9522289442",
+  "area": "BHANPUR"
+},
+{
+  "_id": {
+    "$oid": "68592f1643649c13aa7b6b90"
+  },
+  "ledger": "AGARWAL KIRANA",
+  "group": "SUNDY DEBTORS",
+  "name": "AGARWAL KIRANA",
+  "address1": "NEAR SAI KIRANA MITTAL ROAD",
+  "mobile": "9893587797",
+  "area": "BHANPUR"
+},
+{
+  "_id": {
+    "$oid": "68592f1643649c13aa7b6b91"
+  },
+  "ledger": "ARIHANT GROCERY",
+  "group": "SUNDY DEBTORS",
+  "name": "ARIHANT GROCERY",
+  "address1": "COREL KASA MITTAL",
+  "mobile": "9981590665",
+  "area": "BHANPUR"
+},
+{
+  "_id": {
+    "$oid": "68592f1643649c13aa7b6b92"
+  },
+  "ledger": "HARI OM SUPER BAZAR",
+  "group": "SUNDY DEBTORS",
+  "name": "HARI OM SUPER BAZAR",
+  "address1": "BHANPUR",
+  "mobile": "9926405143",
+  "area": "BHANPUR"
+},
+{
+  "_id": {
+    "$oid": "68592f1643649c13aa7b6b93"
+  },
+  "ledger": "HARSIDDHI KIRANA",
+  "group": "SUNDY DEBTORS",
+  "name": "HARSIDDHI KIRANA",
+  "address1": "COREL KANSA",
+  "mobile": "8839504419",
+  "area": "BHANPUR"
+},
+{
+  "_id": {
+    "$oid": "68592f1643649c13aa7b6b94"
+  },
+  "ledger": "JAY BHOLE KIRANA",
+  "group": "SUNDY DEBTORS",
+  "name": "JAY BHOLE KIRANA",
+  "address1": "NEAR PAL KIRANA",
+  "mobile": "9933085571",
+  "area": "BHANPUR"
+},
+{
+  "_id": {
+    "$oid": "68592f1643649c13aa7b6b95"
+  },
+  "ledger": "MAHAKAL AYURVEDIC",
+  "group": "SUNDY DEBTORS",
+  "name": "MAHAKAL AYURVEDIC",
+  "address1": "NEAR AGARWAL KIRANA MITTAL ROAD",
+  "mobile": "9617564321",
+  "area": "BHANPUR"
+},
+{
+  "_id": {
+    "$oid": "68592f1643649c13aa7b6b96"
+  },
+  "ledger": "NILANJANA KIRANA",
+  "group": "SUNDY DEBTORS",
+  "name": "NILANJANA KIRANA",
+  "address1": "MITTAL COLLAGE ROAD",
+  "mobile": "9340433941",
+  "area": "BHANPUR"
+},
+{
+  "_id": {
+    "$oid": "68592f1643649c13aa7b6b97"
+  },
+  "ledger": "PARI DUDH DAIRY",
+  "group": "SUNDY DEBTORS",
+  "name": "PARI DUDH DAIRY",
+  "address1": "NEAR AGARWAL KIRANA MITTAL ROAD",
+  "mobile": "9630116419",
+  "area": "BHANPUR"
+},
+{
+  "_id": {
+    "$oid": "68592f1643649c13aa7b6b98"
+  },
+  "ledger": "SAI KIRANA",
+  "group": "SUNDY DEBTORS",
+  "name": "SAI KIRANA",
+  "address1": "NEAR AGARWAL KIRANA MITTAL ROAD",
+  "mobile": "9893423893",
+  "area": "BHANPUR"
+},
+{
+  "_id": {
+    "$oid": "68592f1643649c13aa7b6b99"
+  },
+  "ledger": "SHIV SHANKAR TRADRES",
+  "group": "SUNDY DEBTORS",
+  "name": "SHIV SHANKAR TRADRES",
+  "address1": "NEAR SHREEJI KIRANA",
+  "mobile": "9907564641",
+  "area": "BHANPUR"
+},
+{
+  "_id": {
+    "$oid": "68592f1643649c13aa7b6b9a"
+  },
+  "ledger": "SHREE JI KIRANA",
+  "group": "SUNDY DEBTORS",
+  "name": "SHREE JI KIRANA",
+  "address1": "NEAR SHIV SHANKAR TRADRES",
+  "mobile": "7067565447",
+  "area": "BHANPUR"
+},
+{
+  "_id": {
+    "$oid": "68592f1643649c13aa7b6b9b"
+  },
+  "ledger": "SONAL KIRANA",
+  "group": "SUNDY DEBTORS",
+  "name": "SONAL KIRANA",
+  "address1": "NEAR HARI OM SUPER BAZAR",
+  "mobile": "9926817479",
+  "area": "BHANPUR"
+},
+{
+  "_id": {
+    "$oid": "68592f1643649c13aa7b6b9c"
+  },
+  "ledger": "YASH TRADRES",
+  "group": "SUNDY DEBTORS",
+  "name": "YASH TRADRES",
+  "address1": "COREL KASA",
+  "mobile": "9393979480",
+  "area": "BHANPUR"
+},
+{
+  "_id": {
+    "$oid": "68592f9b43649c13aa7b6b9d"
+  },
+  "type": "OTHERS",
+  "ledger": "AAKARTI KIRANA",
+  "name": "AAKARTI KIRANA",
+  "address1": "NEAR DUSSERHA MAINDAN",
+  "mobile": "8871009537",
+  "GST": "",
+  "PAN": "",
+  "area": "CHHOLA"
+},
+{
+  "_id": {
+    "$oid": "68592f9b43649c13aa7b6b9e"
+  },
+  "type": "OTHERS",
+  "ledger": "ASHIRWAD TRADRES",
+  "name": "ASHIRWAD TRADRES",
+  "address1": "NEAR CHAURASIA KIRANA",
+  "mobile": "9617667070",
+  "GST": "",
+  "PAN": "",
+  "area": "CHHOLA"
+},
+{
+  "_id": {
+    "$oid": "68592f9b43649c13aa7b6b9f"
+  },
+  "type": "OTHERS",
+  "ledger": "AZAD KIRANA",
+  "name": "AZAD KIRANA",
+  "address1": "NEAR CHAURASIA KIRANA",
+  "mobile": "9755822215",
+  "GST": "",
+  "PAN": "",
+  "area": "CHHOLA"
+},
+{
+  "_id": {
+    "$oid": "68592f9b43649c13aa7b6ba0"
+  },
+  "type": "OTHERS",
+  "ledger": "CHAURASIYA KIRANA",
+  "name": "CHAURASIYA KIRANA",
+  "address1": "NEAR AZAD KIRANA",
+  "mobile": "9756309276",
+  "GST": "",
+  "PAN": "",
+  "area": "CHHOLA"
+},
+{
+  "_id": {
+    "$oid": "68592f9b43649c13aa7b6ba1"
+  },
+  "type": "OTHERS",
+  "ledger": "CHOWKSE DAIRY",
+  "name": "CHOWKSE DAIRY",
+  "address1": "NEAR GANESH MANDIR",
+  "mobile": "9340752324",
+  "GST": "",
+  "PAN": "",
+  "area": "CHHOLA"
+},
+{
+  "_id": {
+    "$oid": "68592f9b43649c13aa7b6ba2"
+  },
+  "type": "OTHERS",
+  "ledger": "GOUR SUPER MARKET",
+  "name": "GOUR SUPER MARKET",
+  "address1": "NEAR GUPTA KIRANA",
+  "mobile": "7974595485",
+  "GST": "",
+  "PAN": "",
+  "area": "CHHOLA"
+},
+{
+  "_id": {
+    "$oid": "68592f9b43649c13aa7b6ba3"
+  },
+  "type": "OTHERS",
+  "ledger": "GUPTA KIRANA",
+  "name": "GUPTA KIRANA",
+  "address1": "NEAR KAKA ENTERPRISES",
+  "mobile": "8719801488",
+  "GST": "",
+  "PAN": "",
+  "area": "CHHOLA"
+},
+{
+  "_id": {
+    "$oid": "68592f9b43649c13aa7b6ba4"
+  },
+  "type": "OTHERS",
+  "ledger": "KAJAL KIRANA",
+  "name": "KAJAL KIRANA",
+  "address1": "NEAR SAINI KIRANA",
+  "mobile": "7745953193",
+  "GST": "",
+  "PAN": "",
+  "area": "CHHOLA"
+},
+{
+  "_id": {
+    "$oid": "68592f9b43649c13aa7b6ba5"
+  },
+  "type": "OTHERS",
+  "ledger": "KAKA ENTERPRISES",
+  "name": "KAKA ENTERPRISES",
+  "address1": "SHIV NAGAR CHHOLA",
+  "mobile": "7566724434",
+  "GST": "23APCPT5446A1Z7",
+  "PAN": "APCPT5446A",
+  "area": "CHHOLA"
+},
+{
+  "_id": {
+    "$oid": "68592f9b43649c13aa7b6ba6"
+  },
+  "type": "OTHERS",
+  "ledger": "LAXMI KIRANA",
+  "name": "LAXMI KIRANA",
+  "address1": "NEAR SINGH DAIRY",
+  "mobile": "9893820063",
+  "GST": "",
+  "PAN": "",
+  "area": "CHHOLA"
+},
+{
+  "_id": {
+    "$oid": "68592f9b43649c13aa7b6ba7"
+  },
+  "type": "OTHERS",
+  "ledger": "MA KARMA KIRANA",
+  "name": "MA KARMA KIRANA",
+  "address1": "NEAR SABJI MANDI GATE",
+  "mobile": "9977112848",
+  "GST": "",
+  "PAN": "",
+  "area": "CHHOLA"
+},
+{
+  "_id": {
+    "$oid": "68592f9b43649c13aa7b6ba8"
+  },
+  "type": "OTHERS",
+  "ledger": "MA SHARDA KIRANA",
+  "name": "MA SHARDA KIRANA",
+  "address1": "NEAR WINE SHOP",
+  "mobile": "9839611377",
+  "GST": "",
+  "PAN": "",
+  "area": "CHHOLA"
+},
+{
+  "_id": {
+    "$oid": "68592f9b43649c13aa7b6ba9"
+  },
+  "type": "OTHERS",
+  "ledger": "MA VIJASTYAN POOJAPAT",
+  "name": "MA VIJASTYAN POOJAPAT",
+  "address1": "NEAR KAJAL KIRANA",
+  "mobile": "9843510400",
+  "GST": "",
+  "PAN": "",
+  "area": "CHHOLA"
+},
+{
+  "_id": {
+    "$oid": "68592f9b43649c13aa7b6baa"
+  },
+  "type": "OTHERS",
+  "ledger": "NEW ANUSHKA KIRANA",
+  "name": "NEW ANUSHKA KIRANA",
+  "address1": "NEAR SHIV JYOTI KIRANA",
+  "mobile": "8770569327",
+  "GST": "",
+  "PAN": "",
+  "area": "CHHOLA"
+},
+{
+  "_id": {
+    "$oid": "68592f9b43649c13aa7b6bab"
+  },
+  "type": "OTHERS",
+  "ledger": "PATEL KIRANA SHIV NAGAR",
+  "name": "PATEL KIRANA SHIV NAGAR",
+  "address1": "NEAR CHAURASIA KIRANA",
+  "mobile": "7469097731",
+  "GST": "",
+  "PAN": "",
+  "area": "CHHOLA"
+},
+{
+  "_id": {
+    "$oid": "68592f9b43649c13aa7b6bac"
+  },
+  "type": "OTHERS",
+  "ledger": "PAWAN KIRANA",
+  "name": "PAWAN KIRANA",
+  "address1": "80 FEET ROAD",
+  "mobile": "",
+  "GST": "",
+  "PAN": "",
+  "area": "CHHOLA"
+},
+{
+  "_id": {
+    "$oid": "68592f9b43649c13aa7b6bad"
+  },
+  "type": "OTHERS",
+  "ledger": "RAHUL KIRANA",
+  "name": "RAHUL KIRANA",
+  "address1": "NEAR DUSSERHA MADAIN",
+  "mobile": "7777800554",
+  "GST": "",
+  "PAN": "",
+  "area": "CHHOLA"
+},
+{
+  "_id": {
+    "$oid": "68592f9b43649c13aa7b6bae"
+  },
+  "type": "OTHERS",
+  "ledger": "SAHUJI KIRANA",
+  "name": "SAHUJI KIRANA",
+  "address1": "NEAR MESHWERI KIRANA",
+  "mobile": "9691696892",
+  "GST": "",
+  "PAN": "",
+  "area": "CHHOLA"
+},
+{
+  "_id": {
+    "$oid": "68592f9b43649c13aa7b6baf"
+  },
+  "type": "OTHERS",
+  "ledger": "SAINI KIRANA",
+  "name": "SAINI KIRANA",
+  "address1": "NEAR CHOUSTIYA MANDIR",
+  "mobile": "9770613886",
+  "GST": "",
+  "PAN": "",
+  "area": "CHHOLA"
+},
+{
+  "_id": {
+    "$oid": "68592f9b43649c13aa7b6bb0"
+  },
+  "type": "OTHERS",
+  "ledger": "SHAKUNTALA KIRANA",
+  "name": "SHAKUNTALA KIRANA",
+  "address1": "NEAR AADISH KIRANA",
+  "mobile": "",
+  "GST": "",
+  "PAN": "",
+  "area": "CHHOLA"
+},
+{
+  "_id": {
+    "$oid": "68592f9b43649c13aa7b6bb1"
+  },
+  "type": "OTHERS",
+  "ledger": "SHAURYA TRADRES",
+  "name": "SHAURYA TRADRES",
+  "address1": "NEAR HARSIDDHI KIRANA",
+  "mobile": "9839142242",
+  "GST": "23AJTPV5623N1ZE",
+  "PAN": "AJTPV5623N",
+  "area": "CHHOLA"
+},
+{
+  "_id": {
+    "$oid": "68592f9b43649c13aa7b6bb2"
+  },
+  "type": "OTHERS",
+  "ledger": "SHREE KAMLESH KIRANA",
+  "name": "SHREE KAMLESH KIRANA",
+  "address1": "NEAR CHANDKIL KIRANA SAMNE",
+  "mobile": "",
+  "GST": "",
+  "PAN": "",
+  "area": "CHHOLA"
+},
+{
+  "_id": {
+    "$oid": "68592f9b43649c13aa7b6bb3"
+  },
+  "type": "OTHERS",
+  "ledger": "SHREE RAM DAIRY",
+  "name": "SHREE RAM DAIRY",
+  "address1": "NEAR LAXMI KIRANA",
+  "mobile": "7389023023",
+  "GST": "",
+  "PAN": "",
+  "area": "CHHOLA"
+},
+{
+  "_id": {
+    "$oid": "68592f9b43649c13aa7b6bb4"
+  },
+  "type": "OTHERS",
+  "ledger": "SUSHIL MEDCIAL",
+  "name": "SUSHIL MEDCIAL",
+  "address1": "SHIV NAGAR CUJAURAHA",
+  "mobile": "9300666162",
+  "GST": "",
+  "PAN": "",
+  "area": "CHHOLA"
+},
+{
+  "_id": {
+    "$oid": "6859304643649c13aa7b6bb5"
+  },
+  "type": "OTHERS",
+  "ledger": "AASHU TRADRES",
+  "name": "AASHU TRADRES",
+  "address1": "NEAR NAMASWI TRADRES (KAROND)",
+  "mobile": "7869122574",
+  "area": "KAROND"
+},
+{
+  "_id": {
+    "$oid": "6859304643649c13aa7b6bb6"
+  },
+  "type": "OTHERS",
+  "ledger": "ANIKET KIRANA",
+  "name": "ANIKET KIRANA",
+  "address1": "NEAR JIWMANI HOSPITAL (LAMBAKHEDA)",
+  "mobile": "8719000098",
+  "area": "KAROND"
+},
+{
+  "_id": {
+    "$oid": "6859304643649c13aa7b6bb7"
+  },
+  "type": "OTHERS",
+  "ledger": "ANKIT KIRANA",
+  "name": "ANKIT KIRANA (KAROND)",
+  "address1": "PIPAL SQUARE",
+  "mobile": "9826705984",
+  "area": "KAROND"
+},
+{
+  "_id": {
+    "$oid": "6859304643649c13aa7b6bb8"
+  },
+  "type": "OTHERS",
+  "ledger": "BAJGRANG TRADRES",
+  "name": "BAJGRANG TRADRES",
+  "address1": "NEAR NITIN TRADRES (KAROND)",
+  "mobile": "9755180345",
+  "area": "KAROND"
+},
+{
+  "_id": {
+    "$oid": "6859304643649c13aa7b6bb9"
+  },
+  "type": "OTHERS",
+  "ledger": "BALAJI MEDICAL",
+  "name": "BALAJI MEDICAL (JAIN ROAD)",
+  "address1": "NEAR JAIN KIRANA",
+  "mobile": "9826580900",
+  "area": "KAROND"
+},
+{
+  "_id": {
+    "$oid": "6859304643649c13aa7b6bba"
+  },
+  "type": "OTHERS",
+  "ledger": "CHITRAGUPT KIRANA",
+  "name": "CHITRAGUPT KIRANA",
+  "address1": "NEAR JAIL ROAD (KAROND)",
+  "mobile": "9632075895",
+  "area": "KAROND"
+},
+{
+  "_id": {
+    "$oid": "6859304643649c13aa7b6bbb"
+  },
+  "type": "OTHERS",
+  "ledger": "DEV KIRANA",
+  "name": "DEV KIRANA",
+  "address1": "NEAR MA YASHODA (LAMBAKHEDA)",
+  "mobile": "8962696924",
+  "area": "KAROND"
+},
+{
+  "_id": {
+    "$oid": "6859304643649c13aa7b6bbc"
+  },
+  "type": "OTHERS",
+  "ledger": "GOKULDHAM DAIRY",
+  "name": "GOKULDHAM DAIRY (KAROND)",
+  "address1": "SANJEEV NAGAR",
+  "mobile": "9425860334",
+  "area": "KAROND"
+},
+{
+  "_id": {
+    "$oid": "6859304643649c13aa7b6bbd"
+  },
+  "type": "OTHERS",
+  "ledger": "GOKULDHAM SANCHI PALOUR",
+  "name": "GOKULDHAM SANCHI PALOUR",
+  "address1": "JAIL ROAD",
+  "mobile": "7389158885",
+  "area": "KAROND"
+},
+{
+  "_id": {
+    "$oid": "6859304643649c13aa7b6bbe"
+  },
+  "type": "OTHERS",
+  "ledger": "JAIN KIRANA",
+  "name": "JAIN KIRANA GOKULDHAM",
+  "address1": "JAIL ROAD (KAROND)",
+  "mobile": "9893098036",
+  "area": "KAROND"
+},
+{
+  "_id": {
+    "$oid": "6859304643649c13aa7b6bbf"
+  },
+  "type": "OTHERS",
+  "ledger": "JAIN KIRANA STORE",
+  "name": "JAIN KIRANA STORE (KAROND)",
+  "address1": "PIPAL SQUARE (KAROND)",
+  "mobile": "8871552614",
+  "area": "KAROND"
+},
+{
+  "_id": {
+    "$oid": "6859304643649c13aa7b6bc0"
+  },
+  "type": "OTHERS",
+  "ledger": "JAY HIND KIRANA",
+  "name": "JAY HIND KIRANA (KAROND)",
+  "address1": "PIPAL SQUARE",
+  "mobile": "9826411353",
+  "area": "KAROND"
+},
+{
+  "_id": {
+    "$oid": "6859304643649c13aa7b6bc1"
+  },
+  "type": "OTHERS",
+  "ledger": "LUCKY KIRANA",
+  "name": "LUCKY KIRANA KAROND",
+  "address1": "VISHAL SHADI KE SAMNE (KAROND)",
+  "mobile": "7977643685",
+  "area": "KAROND"
+},
+{
+  "_id": {
+    "$oid": "6859304643649c13aa7b6bc2"
+  },
+  "type": "OTHERS",
+  "ledger": "MA KARMA MEDCIAL",
+  "name": "MA KARMA MEDCIAL",
+  "address1": "NEAR MA RUOMANI KIRANA (KAROND)",
+  "mobile": "",
+  "area": "KAROND"
+},
+{
+  "_id": {
+    "$oid": "6859304643649c13aa7b6bc3"
+  },
+  "type": "OTHERS",
+  "ledger": "MA RUOMANI KIRANA",
+  "name": "MA RUOMANI KIRANA (KAROND)",
+  "address1": "HANUMAN MANDIR KE SAMNE (KAROND)",
+  "mobile": "",
+  "area": "KAROND"
+},
+{
+  "_id": {
+    "$oid": "6859304643649c13aa7b6bc4"
+  },
+  "type": "OTHERS",
+  "ledger": "MA YASHODA KIRANA",
+  "name": "MA YASHODA KIRANA (KAROND)",
+  "address1": "NEAR MA KARMA SHADI HALL",
+  "mobile": "",
+  "area": "KAROND"
+},
+{
+  "_id": {
+    "$oid": "6859304643649c13aa7b6bc5"
+  },
+  "type": "OTHERS",
+  "ledger": "MA YASHODA (LAM)",
+  "name": "MA YASHODA (LAM)",
+  "address1": "NEAR DEV KIRANA (LAMBAKHEDA)",
+  "mobile": "8962696924",
+  "area": "KAROND"
+},
+{
+  "_id": {
+    "$oid": "6859304643649c13aa7b6bc6"
+  },
+  "type": "OTHERS",
+  "ledger": "MALI KIRANA",
+  "name": "MALI KIRANA (KAROND)",
+  "address1": "",
+  "mobile": "",
+  "area": "KAROND"
+},
+{
+  "_id": {
+    "$oid": "6859304643649c13aa7b6bc7"
+  },
+  "type": "OTHERS",
+  "ledger": "MODERN KIRANA",
+  "name": "MODERN KIRANA (KAROND)",
+  "address1": "JAIL ROAD",
+  "mobile": "",
+  "area": "KAROND"
+},
+{
+  "_id": {
+    "$oid": "6859304643649c13aa7b6bc8"
+  },
+  "type": "OTHERS",
+  "ledger": "NANDANI DAIRY",
+  "name": "NANDANI DAIRY",
+  "address1": "NEAR ROSHNI STATIONERY (SANJEEV NAGAR)",
+  "mobile": "7047795523",
+  "area": "KAROND"
+},
+{
+  "_id": {
+    "$oid": "6859304643649c13aa7b6bc9"
+  },
+  "type": "OTHERS",
+  "ledger": "ROSHANI KIRANA",
+  "name": "ROSHANI KIRANA",
+  "address1": "SANJEEV NAGAR (KAROND)",
+  "mobile": "",
+  "area": "KAROND"
+},
+{
+  "_id": {
+    "$oid": "6859304643649c13aa7b6bca"
+  },
+  "type": "OTHERS",
+  "ledger": "SHILIK CANTEEN",
+  "name": "SHILIK CANTEEN (KAROND)",
+  "address1": "JAIL ROAD (KAROND)",
+  "mobile": "",
+  "area": "KAROND"
+},
+{
+  "_id": {
+    "$oid": "6859304643649c13aa7b6bcb"
+  },
+  "type": "OTHERS",
+  "ledger": "SHIV JI KIRANA",
+  "name": "SHIV JI KIRANA (KAROND)",
+  "address1": "SANJEEV NAGAR (KAROND)",
+  "mobile": "",
+  "area": "KAROND"
+},
+{
+  "_id": {
+    "$oid": "6859304643649c13aa7b6bcc"
+  },
+  "type": "OTHERS",
+  "ledger": "SHIV SUPER STORE",
+  "name": "SHIV SUPER STORE",
+  "address1": "",
+  "mobile": "",
+  "area": "KAROND"
+},
+{
+  "_id": {
+    "$oid": "6859304643649c13aa7b6bcd"
+  },
+  "type": "OTHERS",
+  "ledger": "SHIVAY KIRANA",
+  "name": "SHIVAY KIRANA",
+  "address1": "NEAR SHAILA KIRANA (SANJEEV NAGAR)",
+  "mobile": "",
+  "area": "KAROND"
+},
+{
+  "_id": {
+    "$oid": "6859304643649c13aa7b6bce"
+  },
+  "type": "OTHERS",
+  "ledger": "SHREE KRISHNA KIRANA",
+  "name": "SHREE KRISHNA KIRANA (KAROND)",
+  "address1": "HANUMAN MANDIR (KAROND)",
+  "mobile": "",
+  "area": "KAROND"
+},
+{
+  "_id": {
+    "$oid": "6859304643649c13aa7b6bcf"
+  },
+  "type": "OTHERS",
+  "ledger": "SHREE SAI KIRANA",
+  "name": "SHREE SAI KIRANA",
+  "address1": "NEAR YASH KIRANA (KAROND)",
+  "mobile": "9630143357",
+  "area": "KAROND"
+},
+{
+  "_id": {
+    "$oid": "6859304643649c13aa7b6bd0"
+  },
+  "type": "OTHERS",
+  "ledger": "SOCIETY GROCERY",
+  "name": "SOCIETY GROCERY GOKULDHAM",
+  "address1": "JAIL ROAD (KAROND)",
+  "mobile": "9658438034",
+  "area": "KAROND"
+},
+{
+  "_id": {
+    "$oid": "6859304643649c13aa7b6bd1"
+  },
+  "type": "OTHERS",
+  "ledger": "YASH KIRANA",
+  "name": "YASH KIRANA",
+  "address1": "NEAR SHREE SAI KIRANA (KAROND)",
+  "mobile": "9827330358",
+  "area": "KAROND"
+},
+{
+  "_id": {
+    "$oid": "6859312243649c13aa7b6bd2"
+  },
+  "type": "OTHER",
+  "ledger": "ARIHANT KIRANA",
+  "area": "SEMRA",
+  "name": "ARIHANT KIRANA (SEMRA)",
+  "address1": "CHANDBAD GUPTA DAIRY KE PECHE",
+  "mobile": "8269460441"
+},
+{
+  "_id": {
+    "$oid": "6859312243649c13aa7b6bd3"
+  },
+  "type": "OTHER",
+  "ledger": "ARIHANT KIRANA",
+  "area": "SEMRA",
+  "name": "ARIHANT KIRANA (SHINKARCHARYA)",
+  "address1": "JAIN MANDIR ROAD (SHINKARCHARYA)",
+  "mobile": "9133737626"
+},
+{
+  "_id": {
+    "$oid": "6859312243649c13aa7b6bd4"
+  },
+  "type": "OTHER",
+  "ledger": "BALAJI SNACKS",
+  "area": "SEMRA",
+  "name": "BALAJI SNACKS",
+  "address1": "NEAR SHOBHA KIRANA (SEMRA)",
+  "mobile": "8983386284"
+},
+{
+  "_id": {
+    "$oid": "6859312243649c13aa7b6bd5"
+  },
+  "type": "OTHER",
+  "ledger": "BHARAT TRADING",
+  "area": "SEMRA",
+  "name": "BHARAT TRADING (SEMRA)",
+  "address1": "DVARKA NAGAR (SEMRA)",
+  "mobile": "7993270304"
+},
+{
+  "_id": {
+    "$oid": "6859312243649c13aa7b6bd6"
+  },
+  "type": "OTHER",
+  "ledger": "BIG DISCOUNT MART",
+  "area": "SEMRA",
+  "name": "BIG DISCOUNT MART (SEMRA)",
+  "address1": "KARARIYA",
+  "mobile": "8095018148"
+},
+{
+  "_id": {
+    "$oid": "6859312243649c13aa7b6bd7"
+  },
+  "type": "OTHER",
+  "ledger": "CHANCHAL KIRANA",
+  "area": "SEMRA",
+  "name": "CHANCHAL KIRANA (SEMRA)",
+  "address1": "NEAR SULAB COMPLEX CHANDBAD",
+  "mobile": ""
+},
+{
+  "_id": {
+    "$oid": "6859312243649c13aa7b6bd8"
+  },
+  "type": "OTHER",
+  "ledger": "CHOUSIYA KIRANA",
+  "area": "SEMRA",
+  "name": "CHOUSIYA KIRANA (SEMRA)",
+  "address1": "NEAR GAYATRI KIRANA (SEMRA)",
+  "mobile": ""
+},
+{
+  "_id": {
+    "$oid": "6859312243649c13aa7b6bd9"
+  },
+  "type": "OTHER",
+  "ledger": "GUPTA DAIRY",
+  "area": "SEMRA",
+  "name": "GUPTA DAIRY",
+  "address1": "NEAR SURESH KIRANA (CHANDBAD)",
+  "mobile": "8109514915"
+},
+{
+  "_id": {
+    "$oid": "6859312243649c13aa7b6bda"
+  },
+  "type": "OTHER",
+  "ledger": "JAIN KIRANA K",
+  "area": "SEMRA",
+  "name": "JAIN KIRANA K",
+  "address1": "NEAR RAJENDRA TRADRES (SEMRA)",
+  "mobile": ""
+},
+{
+  "_id": {
+    "$oid": "6859312243649c13aa7b6bdb"
+  },
+  "type": "OTHER",
+  "ledger": "JAIN KIRANA",
+  "area": "SEMRA",
+  "name": "JAIN KIRANA (SEMRA)",
+  "address1": "NEAR SHRI SHYAM SUPER (KARARIYA)",
+  "mobile": "7869411744"
+},
+{
+  "_id": {
+    "$oid": "6859312243649c13aa7b6bdc"
+  },
+  "type": "OTHER",
+  "ledger": "JAYA KIRANA",
+  "area": "SEMRA",
+  "name": "JAYA KIRANA (SEMRA)",
+  "address1": "",
+  "mobile": "9826377639"
+},
+{
+  "_id": {
+    "$oid": "6859312243649c13aa7b6bdd"
+  },
+  "type": "OTHER",
+  "ledger": "KANISHKA KIRANA",
+  "area": "SEMRA",
+  "name": "KANISHKA KIRANA (SEMRA)",
+  "address1": "SABJI MANDI (SEMRA)",
+  "mobile": "9302212103"
+},
+{
+  "_id": {
+    "$oid": "6859312243649c13aa7b6bde"
+  },
+  "type": "OTHER",
+  "ledger": "KHEMCHAND KIRANA",
+  "area": "SEMRA",
+  "name": "KHEMCHAND KIRANA",
+  "address1": "NEAR ARIHANT KIRANA (CHANDBAD)",
+  "mobile": "9393933251"
+},
+{
+  "_id": {
+    "$oid": "6859312243649c13aa7b6bdf"
+  },
+  "type": "OTHER",
+  "ledger": "MUKESH KIRANA",
+  "area": "SEMRA",
+  "name": "MUKESH KIRANA",
+  "address1": "KALASH NAGAR (SEMRA)",
+  "mobile": "7470304821"
+},
+{
+  "_id": {
+    "$oid": "6859312243649c13aa7b6be0"
+  },
+  "type": "OTHER",
+  "ledger": "NAMAN STATIONERY",
+  "area": "SEMRA",
+  "name": "NAMAN STATIONERY",
+  "address1": "NEAR JAIN MANDIR SHANKARCHARYA",
+  "mobile": "9393191890"
+},
+{
+  "_id": {
+    "$oid": "6859312243649c13aa7b6be1"
+  },
+  "type": "OTHER",
+  "ledger": "NEW PRATIBHA MEDCIAL",
+  "area": "SEMRA",
+  "name": "NEW PRATIBHA MEDCIAL",
+  "address1": "NEAR SHOBHA KIRANA KIRANA (SEMRA)",
+  "mobile": "9308161077"
+},
+{
+  "_id": {
+    "$oid": "6859312243649c13aa7b6be2"
+  },
+  "type": "OTHER",
+  "ledger": "NIRMALA KIRANA",
+  "area": "SEMRA",
+  "name": "NIRMALA KIRANA",
+  "address1": "NEAR SUNIL KIRANA (KARARIYA)",
+  "mobile": "7898338552"
+},
+{
+  "_id": {
+    "$oid": "6859312243649c13aa7b6be3"
+  },
+  "type": "OTHER",
+  "ledger": "OM GURUKRIPA KIRANA",
+  "area": "SEMRA",
+  "name": "OM GURUKRIPA KIRANA (SEMRA)",
+  "address1": "NEAR GAYATRI KIRANA (SEMRA)",
+  "mobile": "8109453557"
+},
+{
+  "_id": {
+    "$oid": "6859312243649c13aa7b6be4"
+  },
+  "type": "OTHER",
+  "ledger": "OM PRAKASH",
+  "area": "SEMRA",
+  "name": "OM PRAKASH (SEMRA)",
+  "address1": "DVARKA NAGAR (SEMRA)",
+  "mobile": "9750158353"
+},
+{
+  "_id": {
+    "$oid": "6859312243649c13aa7b6be5"
+  },
+  "type": "OTHER",
+  "ledger": "P PRAKASH",
+  "area": "SEMRA",
+  "name": "P PRAKASH (SEMRA)",
+  "address1": "NEAR RAILWAY STATION (SEMRA)",
+  "mobile": "7415383347"
+},
+{
+  "_id": {
+    "$oid": "6859312243649c13aa7b6be6"
+  },
+  "type": "OTHER",
+  "ledger": "PRAKASH KIRANA",
+  "area": "SEMRA",
+  "name": "PRAKASH KIRANA",
+  "address1": "JAIN MANDIR SHANKARCHARYA NAGAR",
+  "mobile": "9381837394"
+},
+{
+  "_id": {
+    "$oid": "6859312243649c13aa7b6be7"
+  },
+  "type": "OTHER",
+  "ledger": "PRIYA KIRANA",
+  "area": "SEMRA",
+  "name": "PRIYA KIRANA (SEMRA)",
+  "address1": "SEMRA ROAD (SEMRA)",
+  "mobile": "8120823961"
+},
+{
+  "_id": {
+    "$oid": "6859312243649c13aa7b6be8"
+  },
+  "type": "OTHER",
+  "ledger": "RAJ KIRANA",
+  "area": "SEMRA",
+  "name": "RAJ KIRANA (SEMRA)",
+  "address1": "DVARKA NAGAR (SEMRA)",
+  "mobile": "6207168855"
+},
+{
+  "_id": {
+    "$oid": "6859312243649c13aa7b6be9"
+  },
+  "type": "OTHER",
+  "ledger": "RAJENDRA TRADRES",
+  "area": "SEMRA",
+  "name": "RAJENDRA KIRANA",
+  "address1": "NEAR SEMRA",
+  "mobile": ""
+},
+{
+  "_id": {
+    "$oid": "6859312243649c13aa7b6bea"
+  },
+  "type": "OTHER",
+  "ledger": "RAM KIRANA",
+  "area": "SEMRA",
+  "name": "RAM KIRANA",
+  "address1": "DVARKA NAGAR",
+  "mobile": "8163074444"
+},
+{
+  "_id": {
+    "$oid": "6859312243649c13aa7b6beb"
+  },
+  "type": "OTHER",
+  "ledger": "RUBY KIRANA",
+  "area": "SEMRA",
+  "name": "RUBY KIRANA",
+  "address1": "NEAR PRIYA KIRANA (CHANDBAD)",
+  "mobile": "7067960021"
+},
+{
+  "_id": {
+    "$oid": "6859312243649c13aa7b6bec"
+  },
+  "type": "OTHER",
+  "ledger": "SAHU KIRANA",
+  "area": "SEMRA",
+  "name": "SAHU KIRANA (SEMRA)",
+  "address1": "NEAR GAYATRI KIRANA (SEMRA)",
+  "mobile": "8982433952"
+},
+{
+  "_id": {
+    "$oid": "6859312243649c13aa7b6bed"
+  },
+  "type": "OTHER",
+  "ledger": "SAHU KIRANA",
+  "area": "SEMRA",
+  "name": "SAHU KIRANA",
+  "address1": "",
+  "mobile": ""
+},
+{
+  "_id": {
+    "$oid": "6859312243649c13aa7b6bee"
+  },
+  "type": "OTHER",
+  "ledger": "SANDEEP KIRANA",
+  "area": "SEMRA",
+  "name": "SANDEEP KIRANA (SEMRA)",
+  "address1": "CHANDBAD RAM MANDIR (SEMRA)",
+  "mobile": "9329457204"
+},
+{
+  "_id": {
+    "$oid": "6859312243649c13aa7b6bef"
+  },
+  "type": "OTHER",
+  "ledger": "SANJAY KIRANA",
+  "area": "SEMRA",
+  "name": "SANJAY KIRANA (SHANKARCHARYA)",
+  "address1": "JAIN MANDIR ROAD (SHANKARCHARYA)",
+  "mobile": "7898541700"
+},
+{
+  "_id": {
+    "$oid": "6859312243649c13aa7b6bf0"
+  },
+  "type": "OTHER",
+  "ledger": "SATYA SAI TRADRES",
+  "area": "SEMRA",
+  "name": "SATYA SAI TRADRES (SEMRA)",
+  "address1": "SHOBHA HOTEL RESTAURANTS",
+  "mobile": ""
+},
+{
+  "_id": {
+    "$oid": "6859312243649c13aa7b6bf1"
+  },
+  "type": "OTHER",
+  "ledger": "SATYAM KIRANA",
+  "area": "SEMRA",
+  "name": "SATYAM KIRANA (SEMRA)",
+  "address1": "SHANKARCHARYA NAGAR (SEMRA)",
+  "mobile": ""
+},
+{
+  "_id": {
+    "$oid": "6859312243649c13aa7b6bf2"
+  },
+  "type": "OTHER",
+  "ledger": "SHRI SHYAM SUPER BAZAR",
+  "area": "SEMRA",
+  "name": "SHRI SHYAM SUPER BAZAR",
+  "address1": "KARARIYA",
+  "mobile": ""
+},
+{
+  "_id": {
+    "$oid": "6859312243649c13aa7b6bf3"
+  },
+  "type": "OTHER",
+  "ledger": "SHREE SAI KIRANA",
+  "area": "SEMRA",
+  "name": "SHREE SAI KIRANA (SEMRA)",
+  "address1": "NEAR SEMRA KIRANA (CHANDBAD)",
+  "mobile": "7228495728"
+},
+{
+  "_id": {
+    "$oid": "6859312243649c13aa7b6bf4"
+  },
+  "type": "OTHER",
+  "ledger": "SURESH KIRANA",
+  "area": "SEMRA",
+  "name": "SURESH KIRANA",
+  "address1": "NEAR SHREE SHYAM SUPER KE AAGE",
+  "mobile": "8889263932"
+},
+{
+  "_id": {
+    "$oid": "6859312243649c13aa7b6bf5"
+  },
+  "type": "OTHER",
+  "ledger": "SURESH KIRANA",
+  "area": "SEMRA",
+  "name": "SURESH KIRANA",
+  "address1": "NEAR SANDEEP KIRANA (CHANDBAD)",
+  "mobile": "7216459286"
+},
+{
+  "_id": {
+    "$oid": "6859312243649c13aa7b6bf6"
+  },
+  "type": "OTHER",
+  "ledger": "TAPTI MEDCIAL",
+  "area": "SEMRA",
+  "name": "TAPTI MEDCIAL",
+  "address1": "",
+  "mobile": ""
+},
+{
+  "_id": {
+    "$oid": "6859312243649c13aa7b6bf7"
+  },
+  "type": "OTHER",
+  "ledger": "VINOD KIRANA",
+  "area": "SEMRA",
+  "name": "VINOD KIRANA",
+  "address1": "KRISHAN NAGAR KARARIYA",
+  "mobile": ""
+},
+{
+  "_id": {
+    "$oid": "685931b043649c13aa7b6bf8"
+  },
+  "type": "OTHERS",
+  "ledger": "AASHIRWAD KIRANA",
+  "name": "AASHIRWAD KIRANA",
+  "address1": "NEAR TVS SHOWROOM DIG",
+  "mobile": "7509314645",
+  "area": "SHAHJAHANABAD"
+},
+{
+  "_id": {
+    "$oid": "685931b043649c13aa7b6bf9"
+  },
+  "type": "OTHERS",
+  "ledger": "ANSHU KIRANA STORE",
+  "name": "ANSHU KIRANA STORE",
+  "address1": "NEAR CHANCHAL KIRANA (NARIYALKHEDA)",
+  "mobile": "9893058396",
+  "area": "SHAHJAHANABAD"
+},
+{
+  "_id": {
+    "$oid": "685931b043649c13aa7b6bfa"
+  },
+  "type": "OTHERS",
+  "ledger": "BHAGWATI KIRANA",
+  "name": "BHAGWATI KIRANA",
+  "address1": "NEAR SATYA SAI KIRANA (PREM NAGAR)",
+  "mobile": "8305770159",
+  "area": "SHAHJAHANABAD"
+},
+{
+  "_id": {
+    "$oid": "685931b043649c13aa7b6bfb"
+  },
+  "type": "OTHERS",
+  "ledger": "BHUMI KIRANA",
+  "name": "BHUMI KIRANA",
+  "address1": "NEAR VISHAL KIRANA (NARIYALKHEDA)",
+  "mobile": "6260467287",
+  "area": "SHAHJAHANABAD"
+},
+{
+  "_id": {
+    "$oid": "685931b043649c13aa7b6bfc"
+  },
+  "type": "OTHERS",
+  "ledger": "ISHWAR KIRANA",
+  "name": "ISHWAR KIRANA",
+  "address1": "NEAR RITESH KIRANA (SAHAJANABAD TILA)",
+  "mobile": "9826679170",
+  "area": "SHAHJAHANABAD"
+},
+{
+  "_id": {
+    "$oid": "685931b043649c13aa7b6bfd"
+  },
+  "type": "OTHERS",
+  "ledger": "JAIN SUPER STORE",
+  "name": "JAIN SUPER STORE",
+  "address1": "REGIMANT ROAD (SHAHJAHANABAD)",
+  "mobile": "",
+  "area": "SHAHJAHANABAD"
+},
+{
+  "_id": {
+    "$oid": "685931b043649c13aa7b6bfe"
+  },
+  "type": "OTHERS",
+  "ledger": "MAHADEV KIRANA",
+  "name": "MAHADEV KIRANA",
+  "address1": "NEAR JYOTHI KIRANA (SAHAJANABAD)",
+  "mobile": "9713404050",
+  "area": "SHAHJAHANABAD"
+},
+{
+  "_id": {
+    "$oid": "685931b043649c13aa7b6bff"
+  },
+  "type": "OTHERS",
+  "ledger": "OM SAI RAM KIRANA",
+  "name": "OM SAI RAM KIRANA",
+  "address1": "NEAR ARCHANA KIRANA NARIYALKHEDA",
+  "mobile": "9300704981",
+  "area": "SHAHJAHANABAD"
+},
+{
+  "_id": {
+    "$oid": "685931b043649c13aa7b6c00"
+  },
+  "type": "OTHERS",
+  "ledger": "RITESH KIRANA",
+  "name": "RITESH KIRANA",
+  "address1": "NEAR POLICE STATION (TILA)",
+  "mobile": "9139766892",
+  "area": "SHAHJAHANABAD"
+},
+{
+  "_id": {
+    "$oid": "685931b043649c13aa7b6c01"
+  },
+  "type": "OTHERS",
+  "ledger": "SAI KIRANA",
+  "name": "SAI KIRANA",
+  "address1": "NEAR RITESH SIDDHI VINAYAK MANDIR (TILA)",
+  "mobile": "9644915098",
+  "area": "SHAHJAHANABAD"
+},
+{
+  "_id": {
+    "$oid": "685931b043649c13aa7b6c02"
+  },
+  "type": "OTHERS",
+  "ledger": "SANJAY KIRANA",
+  "name": "SANJAY KIRANA",
+  "address1": "NEAR NARIYAL KHEDA",
+  "mobile": "9302777930",
+  "area": "SHAHJAHANABAD"
+},
+{
+  "_id": {
+    "$oid": "685931b043649c13aa7b6c03"
+  },
+  "type": "OTHERS",
+  "ledger": "SHIV SHAKATI PROTEIN",
+  "name": "SHIV SHAKATI PROTEIN",
+  "address1": "NEAR ANSHU KIRANA (NARIYALKHEDA)",
+  "mobile": "9340011598",
+  "area": "SHAHJAHANABAD"
+},
+{
+  "_id": {
+    "$oid": "685931b043649c13aa7b6c04"
+  },
+  "type": "OTHERS",
+  "ledger": "SHIVAM KIRANA",
+  "name": "SHIVAM KIRANA",
+  "address1": "NEAR SANJAY KIRANA (NARIYALKHEDA)",
+  "mobile": "8982463832",
+  "area": "SHAHJAHANABAD"
+},
+{
+  "_id": {
+    "$oid": "685931b043649c13aa7b6c05"
+  },
+  "type": "OTHERS",
+  "ledger": "SHIYAM KIRANA",
+  "name": "SHIYAM KIRANA",
+  "address1": "REGIMENT ROAD (SHAHJAHANABAD)",
+  "mobile": "9644284024",
+  "area": "SHAHJAHANABAD"
+},
+{
+  "_id": {
+    "$oid": "685931b043649c13aa7b6c06"
+  },
+  "type": "OTHERS",
+  "ledger": "SHRI KAPIL KIRANA",
+  "name": "SHRI KAPIL KIRANA",
+  "address1": "NEAR 12 DARI (SHAHJAHANABAD)",
+  "mobile": "7898511399",
+  "area": "SHAHJAHANABAD"
+},
+{
+  "_id": {
+    "$oid": "685931b043649c13aa7b6c07"
+  },
+  "type": "OTHERS",
+  "ledger": "SHRI SAI PROVISON",
+  "name": "SHRI SAI PROVISON",
+  "address1": "NEAR CHANCHAL KIRANA (NARIYALKHEDA)",
+  "mobile": "8602604303",
+  "area": "SHAHJAHANABAD"
+},
+{
+  "_id": {
+    "$oid": "685931b043649c13aa7b6c08"
+  },
+  "type": "OTHERS",
+  "ledger": "SOURABH KIRANA",
+  "name": "SOURABH KIRANA",
+  "address1": "NEAR SANJAY KIRANA (NARIYALKHEDA)",
+  "mobile": "7869874380",
+  "area": "SHAHJAHANABAD"
+},
+{
+  "_id": {
+    "$oid": "685931b043649c13aa7b6c09"
+  },
+  "type": "OTHERS",
+  "ledger": "TARACHAND CHANDRAKALA DRY FOOD",
+  "name": "TARACHAND CHANDRAKALA DRY FOOD",
+  "address1": "NEAR DEEPAK KIRANA BGPT (DIG)",
+  "mobile": "7898142192",
+  "area": "SHAHJAHANABAD"
+}]

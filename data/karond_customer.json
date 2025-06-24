@@ -1,0 +1,234 @@
+[
+  {
+    "type": "OTHERS",
+    "ledger": "AASHU TRADRES",
+    "name": "AASHU TRADRES",
+    "address1": "NEAR NAMASWI TRADRES (KAROND)",
+    "mobile": "7869122574",
+    "area": "KAROND"
+  },
+  {
+    "type": "OTHERS",
+    "ledger": "ANIKET KIRANA",
+    "name": "ANIKET KIRANA",
+    "address1": "NEAR JIWMANI HOSPITAL (LAMBAKHEDA)",
+    "mobile": "8719000098",
+    "area": "KAROND"
+  },
+  {
+    "type": "OTHERS",
+    "ledger": "ANKIT KIRANA",
+    "name": "ANKIT KIRANA (KAROND)",
+    "address1": "PIPAL SQUARE",
+    "mobile": "9826705984",
+    "area": "KAROND"
+  },
+  {
+    "type": "OTHERS",
+    "ledger": "BAJGRANG TRADRES",
+    "name": "BAJGRANG TRADRES",
+    "address1": "NEAR NITIN TRADRES (KAROND)",
+    "mobile": "9755180345",
+    "area": "KAROND"
+  },
+  {
+    "type": "OTHERS",
+    "ledger": "BALAJI MEDICAL",
+    "name": "BALAJI MEDICAL (JAIN ROAD)",
+    "address1": "NEAR JAIN KIRANA",
+    "mobile": "9826580900",
+    "area": "KAROND"
+  },
+  {
+    "type": "OTHERS",
+    "ledger": "CHITRAGUPT KIRANA",
+    "name": "CHITRAGUPT KIRANA",
+    "address1": "NEAR JAIL ROAD (KAROND)",
+    "mobile": "9632075895",
+    "area": "KAROND"
+  },
+  {
+    "type": "OTHERS",
+    "ledger": "DEV KIRANA",
+    "name": "DEV KIRANA",
+    "address1": "NEAR MA YASHODA (LAMBAKHEDA)",
+    "mobile": "8962696924",
+    "area": "KAROND"
+  },
+  {
+    "type": "OTHERS",
+    "ledger": "GOKULDHAM DAIRY",
+    "name": "GOKULDHAM DAIRY (KAROND)",
+    "address1": "SANJEEV NAGAR",
+    "mobile": "9425860334",
+    "area": "KAROND"
+  },
+  {
+    "type": "OTHERS",
+    "ledger": "GOKULDHAM SANCHI PALOUR",
+    "name": "GOKULDHAM SANCHI PALOUR",
+    "address1": "JAIL ROAD",
+    "mobile": "7389158885",
+    "area": "KAROND"
+  },
+  {
+    "type": "OTHERS",
+    "ledger": "JAIN KIRANA",
+    "name": "JAIN KIRANA GOKULDHAM",
+    "address1": "JAIL ROAD (KAROND)",
+    "mobile": "9893098036",
+    "area": "KAROND"
+  },
+  {
+    "type": "OTHERS",
+    "ledger": "JAIN KIRANA STORE",
+    "name": "JAIN KIRANA STORE (KAROND)",
+    "address1": "PIPAL SQUARE (KAROND)",
+    "mobile": "8871552614",
+    "area": "KAROND"
+  },
+  {
+    "type": "OTHERS",
+    "ledger": "JAY HIND KIRANA",
+    "name": "JAY HIND KIRANA (KAROND)",
+    "address1": "PIPAL SQUARE",
+    "mobile": "9826411353",
+    "area": "KAROND"
+  },
+  {
+    "type": "OTHERS",
+    "ledger": "LUCKY KIRANA",
+    "name": "LUCKY KIRANA KAROND",
+    "address1": "VISHAL SHADI KE SAMNE (KAROND)",
+    "mobile": "7977643685",
+    "area": "KAROND"
+  },
+  {
+    "type": "OTHERS",
+    "ledger": "MA KARMA MEDCIAL",
+    "name": "MA KARMA MEDCIAL",
+    "address1": "NEAR MA RUOMANI KIRANA (KAROND)",
+    "mobile": "",
+    "area": "KAROND"
+  },
+  {
+    "type": "OTHERS",
+    "ledger": "MA RUOMANI KIRANA",
+    "name": "MA RUOMANI KIRANA (KAROND)",
+    "address1": "HANUMAN MANDIR KE SAMNE (KAROND)",
+    "mobile": "",
+    "area": "KAROND"
+  },
+  {
+    "type": "OTHERS",
+    "ledger": "MA YASHODA KIRANA",
+    "name": "MA YASHODA KIRANA (KAROND)",
+    "address1": "NEAR MA KARMA SHADI HALL",
+    "mobile": "",
+    "area": "KAROND"
+  },
+  {
+    "type": "OTHERS",
+    "ledger": "MA YASHODA (LAM)",
+    "name": "MA YASHODA (LAM)",
+    "address1": "NEAR DEV KIRANA (LAMBAKHEDA)",
+    "mobile": "8962696924",
+    "area": "KAROND"
+  },
+  {
+    "type": "OTHERS",
+    "ledger": "MALI KIRANA",
+    "name": "MALI KIRANA (KAROND)",
+    "address1": "",
+    "mobile": "",
+    "area": "KAROND"
+  },
+  {
+    "type": "OTHERS",
+    "ledger": "MODERN KIRANA",
+    "name": "MODERN KIRANA (KAROND)",
+    "address1": "JAIL ROAD",
+    "mobile": "",
+    "area": "KAROND"
+  },
+  {
+    "type": "OTHERS",
+    "ledger": "NANDANI DAIRY",
+    "name": "NANDANI DAIRY",
+    "address1": "NEAR ROSHNI STATIONERY (SANJEEV NAGAR)",
+    "mobile": "7047795523",
+    "area": "KAROND"
+  },
+  {
+    "type": "OTHERS",
+    "ledger": "ROSHANI KIRANA",
+    "name": "ROSHANI KIRANA",
+    "address1": "SANJEEV NAGAR (KAROND)",
+    "mobile": "",
+    "area": "KAROND"
+  },
+  {
+    "type": "OTHERS",
+    "ledger": "SHILIK CANTEEN",
+    "name": "SHILIK CANTEEN (KAROND)",
+    "address1": "JAIL ROAD (KAROND)",
+    "mobile": "",
+    "area": "KAROND"
+  },
+  {
+    "type": "OTHERS",
+    "ledger": "SHIV JI KIRANA",
+    "name": "SHIV JI KIRANA (KAROND)",
+    "address1": "SANJEEV NAGAR (KAROND)",
+    "mobile": "",
+    "area": "KAROND"
+  },
+  {
+    "type": "OTHERS",
+    "ledger": "SHIV SUPER STORE",
+    "name": "SHIV SUPER STORE",
+    "address1": "",
+    "mobile": "",
+    "area": "KAROND"
+  },
+  {
+    "type": "OTHERS",
+    "ledger": "SHIVAY KIRANA",
+    "name": "SHIVAY KIRANA",
+    "address1": "NEAR SHAILA KIRANA (SANJEEV NAGAR)",
+    "mobile": "",
+    "area": "KAROND"
+  },
+  {
+    "type": "OTHERS",
+    "ledger": "SHREE KRISHNA KIRANA",
+    "name": "SHREE KRISHNA KIRANA (KAROND)",
+    "address1": "HANUMAN MANDIR (KAROND)",
+    "mobile": "",
+    "area": "KAROND"
+  },
+  {
+    "type": "OTHERS",
+    "ledger": "SHREE SAI KIRANA",
+    "name": "SHREE SAI KIRANA",
+    "address1": "NEAR YASH KIRANA (KAROND)",
+    "mobile": "9630143357",
+    "area": "KAROND"
+  },
+  {
+    "type": "OTHERS",
+    "ledger": "SOCIETY GROCERY",
+    "name": "SOCIETY GROCERY GOKULDHAM",
+    "address1": "JAIL ROAD (KAROND)",
+    "mobile": "9658438034",
+    "area": "KAROND"
+  },
+  {
+    "type": "OTHERS",
+    "ledger": "YASH KIRANA",
+    "name": "YASH KIRANA",
+    "address1": "NEAR SHREE SAI KIRANA (KAROND)",
+    "mobile": "9827330358",
+    "area": "KAROND"
+  }
+]
