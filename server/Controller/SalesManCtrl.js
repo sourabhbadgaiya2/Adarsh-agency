@@ -1,43 +1,75 @@
 const Salesman = require("../Models/SalesManModel");
 
+// const createSalesman = async (req, res) => {
+//   try {
+//     const {
+//       name,
+//       designation,
+//       mobile,
+//       email,
+//       city,
+//       address,
+//       alternateMobile,
+//       username,
+//       password,
+//     } = req.body;
+
+//     // 🧠 Reconstruct beat array from form-data fields
+//     const beats = [];
+//     let index = 0;
+
+//     while (req.body[`beat[${index}][areaName]`] !== undefined) {
+//       beats.push({
+//         areaName: req.body[`beat[${index}][areaName]`],
+//         pinCode: req.body[`beat[${index}][pinCode]`] || "",
+//       });
+//       index++;
+//     }
+
+//     const photo = req.file ? req.file.filename : null;
+
+//     const newSalesman = new Salesman({
+//       name,
+//       designation,
+//       mobile,
+//       email,
+//       city,
+//       address,
+//       alternateMobile,
+//       username,
+//       password,
+//       beat: beats, // ✅ Now this is a proper array
+//       photo,
+//     });
+
+//     await newSalesman.save();
+//     res.status(201).json({
+//       message: "Salesman created successfully",
+//       salesman: newSalesman,
+//     });
+//   } catch (error) {
+//     console.error("Error creating salesman:", error);
+//     res.status(400).json({ message: error.message });
+//   }
+// };
+
 const createSalesman = async (req, res) => {
   try {
-    const {
-      name,
-      designation,
-      mobile,
-      email,
-      city,
-      address,
-      alternateMobile,
-      username,
-      password,
-      beat,
-    } = req.body;
+    const data = req.body;
+    if (req.file) {
+      data.photo = req.file.filename;
+    }
 
-    const photo = req.file ? req.file.filename : null;
+    data.beat = JSON.parse(data.beat); // ensure beat is parsed to array
 
-    const newSalesman = new Salesman({
-      name,
-      designation,
-      mobile,
-      email,
-      city,
-      address,
-      alternateMobile,
-      username,
-      password,
-      beat,
-      photo,
-    });
-
+    const newSalesman = new Salesman(data);
     await newSalesman.save();
-    res.status(201).json({
-      message: "Salesman created successfully",
-      salesman: newSalesman,
-    });
-  } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(201).json(newSalesman);
+  } catch (err) {
+    console.error("Create Error:", err);
+    res
+      .status(500)
+      .json({ message: "Failed to create salesman", error: err.message });
   }
 };
 

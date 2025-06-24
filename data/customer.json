@@ -1,0 +1,212 @@
+[
+  {
+    "code": 1,
+    "type": "OTHERS",
+    "ledger": "APPU TARDRES",
+    "city": "ASHOKA GARDEN",
+    "area": "ASHOKA GARDEN",
+    "name": "APPU TARDRES",
+    "address1": "OLD SUBHASH NAGAR ASHOKA GARDEN",
+    "mobile": "8817743335"
+  },
+  {
+    "code": 2,
+    "type": "OTHERS",
+    "ledger": "BOMBAY MEDCIAL",
+    "city": "ASHOKA GARDEN",
+    "area": "ASHOKA GARDEN",
+    "name": "BOMBAY MEDCIAL",
+    "address1": "NEAR PARBHAT PETROL PUMP  A.G",
+    "mobile": "9926501682"
+  },
+  {
+    "code": 3,
+    "type": "OTHERS",
+    "ledger": "FAUJI KIRANA",
+    "city": "ASHOKA GARDEN",
+    "area": "ASHOKA GARDEN",
+    "name": "FAUJI KIRANA",
+    "address1": "ASHOKA GARDEN",
+    "mobile": "7879530125"
+  },
+  {
+    "code": 4,
+    "type": "OTHERS",
+    "ledger": "GIRNAR TRADRES",
+    "city": "ASHOKA GARDEN",
+    "area": "ASHOKA GARDEN",
+    "name": "GIRNAR TRADRES",
+    "address1": "NEAR CHANDRA SWEETS (ASHOKA GARDEN)",
+    "mobile": "9993656186"
+  },
+  {
+    "code": 5,
+    "type": "OTHERS",
+    "ledger": "GUPTA TADDERS",
+    "city": "ASHOKA GARDEN",
+    "area": "ASHOKA GARDEN",
+    "name": "GUPTA TADDERS",
+    "address1": "80 FEET ASHOKA GARDEN",
+    "mobile": "9593068527"
+  },
+  {
+    "code": 6,
+    "type": "OTHERS",
+    "ledger": "JAIN KIRANA",
+    "city": "ASHOKA GARDEN",
+    "area": "ASHOKA GARDEN",
+    "name": "JAIN KIRANA",
+    "address1": "NEAR INDIAN BANK (SABJI MANDI ) AG",
+    "mobile": "9407932328"
+  },
+  {
+    "code": 7,
+    "type": "OTHERS",
+    "ledger": "KIRTI MEDICAL",
+    "city": "ASHOKA GARDEN",
+    "area": "ASHOKA GARDEN",
+    "name": "KIRTI MEDICAL",
+    "address1": "80 FEET ASHOKA GARDEN",
+    "mobile": "9630461505"
+  },
+  {
+    "code": 8,
+    "type": "OTHERS",
+    "ledger": "LUCKY KIRANA",
+    "city": "ASHOKA GARDEN",
+    "area": "ASHOKA GARDEN",
+    "name": "LUCKY KIRANA",
+    "address1": "80 FEET ASHOKA GARDEN",
+    "mobile": "9425068120"
+  },
+  {
+    "code": 9,
+    "type": "OTHERS",
+    "ledger": "MA KARMA KIRANA",
+    "city": "ASHOKA GARDEN",
+    "area": "ASHOKA GARDEN",
+    "name": "MA KARMA KIRANA",
+    "address1": "NEAR PETROL PUMP GALI (ASHOKA GARDEN)",
+    "mobile": "8959322082"
+  },
+  {
+    "code": 10,
+    "type": "OTHERS",
+    "ledger": "MAHAVEER KIRANA",
+    "city": "ASHOKA GARDEN",
+    "area": "ASHOKA GARDEN",
+    "name": "MAHAVEER KIRANA",
+    "address1": "ASHOKA GARDEN",
+    "mobile": "9639172744"
+  },
+  {
+    "code": 11,
+    "type": "OTHERS",
+    "ledger": "PARAS KIRANA (A.G)",
+    "city": "ASHOKA GARDEN",
+    "area": "ASHOKA GARDEN",
+    "name": "PARAS KIRANA (A.G)",
+    "address1": "ASHOKA GARDEN SQUARE",
+    "mobile": "9891402048"
+  },
+  {
+    "code": 12,
+    "type": "OTHERS",
+    "ledger": "PATEL KIRANA",
+    "city": "ASHOKA GARDEN",
+    "area": "ASHOKA GARDEN",
+    "name": "PATEL KIRANA",
+    "address1": "80 FEET ASHOKA GARDEN",
+    "mobile": "9193051776"
+  },
+  {
+    "code": 13,
+    "type": "OTHERS",
+    "ledger": "QUALITY STORE",
+    "city": "ASHOKA GARDEN",
+    "area": "ASHOKA GARDEN",
+    "name": "QUALITY STORE",
+    "address1": "SABJI MANDI ASHOKA GARDEN",
+    "mobile": "9753031386"
+  },
+  {
+    "code": 14,
+    "type": "OTHERS",
+    "ledger": "RAJSHRI KIRANA (A.G)",
+    "city": "ASHOKA GARDEN",
+    "area": "ASHOKA GARDEN",
+    "name": "RAJSHRI KIRANA (A.G)",
+    "address1": "ASHOKA GARDEN CHAURAHA",
+    "mobile": "8319654094"
+  },
+  {
+    "code": 15,
+    "type": "OTHERS",
+    "ledger": "SAHU KIRANA",
+    "city": "ASHOKA GARDEN",
+    "area": "ASHOKA GARDEN",
+    "name": "SAHU KIRANA",
+    "address1": "SABJI MANDI ASHOKA GARDEN",
+    "mobile": "9993656186"
+  },
+  {
+    "code": 16,
+    "type": "OTHERS",
+    "ledger": "SAKLANI ENTERPRISES",
+    "city": "ASHOKA GARDEN",
+    "area": "ASHOKA GARDEN",
+    "name": "SAKLANI ENTERPRISES",
+    "address1": "80 FEET ASHOKA GARDEN",
+    "mobile": "8139273320"
+  },
+  {
+    "code": 17,
+    "type": "OTHERS",
+    "ledger": "SHIV SHANKAR KIRANA",
+    "city": "ASHOKA GARDEN",
+    "area": "ASHOKA GARDEN",
+    "name": "SHIV SHANKAR KIRANA",
+    "address1": "NEAR SABJI MANDI AG",
+    "mobile": "8770542074"
+  },
+  {
+    "code": 18,
+    "type": "OTHERS",
+    "ledger": "SHRADHA SUPER STORE",
+    "city": "ASHOKA GARDEN",
+    "area": "ASHOKA GARDEN",
+    "name": "SHRADHA SUPER STORE",
+    "address1": "NEAR PUNJABI BAGH ASHOKA GARDEN",
+    "mobile": "8449963777"
+  },
+  {
+    "code": 19,
+    "type": "OTHERS",
+    "ledger": "SHREE JI GROCERY",
+    "city": "ASHOKA GARDEN",
+    "area": "ASHOKA GARDEN",
+    "name": "SHREE JI GROCERY",
+    "address1": "80 FEET ASHOKA GARDEN",
+    "mobile": "9165891341"
+  },
+  {
+    "code": 20,
+    "type": "OTHERS",
+    "ledger": "SIDDHI VINAYAK",
+    "city": "ASHOKA GARDEN",
+    "area": "ASHOKA GARDEN",
+    "name": "SIDDHI VINAYAK",
+    "address1": "NEAR MAHAVEER KIRANA (ASHOKA GARDEN)",
+    "mobile": "9685903642"
+  },
+  {
+    "code": 21,
+    "type": "OTHERS",
+    "ledger": "YADAV PROTEIN",
+    "city": "ASHOKA GARDEN",
+    "area": "ASHOKA GARDEN",
+    "name": "YADAV PROTEIN",
+    "address1": "DURGA DHAM MANDIR",
+    "mobile": "8517054668"
+  }
+]

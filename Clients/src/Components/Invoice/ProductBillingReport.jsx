@@ -20,9 +20,9 @@ const defaultRow = {
   Free: "",
   Basic: "", // Without GST
   Rate: "", // With GST
-  Sch: "",
+  Sch: "0.00",
   SchAmt: "",
-  CD: "",
+  CD: "0.00",
   CDAmt: "",
   Total: "",
   GST: "",
@@ -34,15 +34,21 @@ const ProductBillingReport = ({ onBillingDataChange }, ref) => {
   const [products, setProducts] = useState([]);
   const [finalTotalAmount, setFinalTotalAmount] = useState("0.00");
 
-  const itemInputRef = useRef();
+  const selectRef = useRef(); // 👈 ref for Select input
 
   useImperativeHandle(ref, () => ({
     focusItemName: () => {
-      itemInputRef.current?.focus();
+      console.log("Focusing ItemName input...");
+      try {
+        selectRef.current?.focus(); // ✅ Best way to focus react-select
+      } catch (err) {
+        console.log("Focus failed:", err);
+      }
     },
   }));
 
   const fields = [
+    "SR",
     "ItemName",
     "Qty",
     "Unit",
@@ -368,7 +374,7 @@ const ProductBillingReport = ({ onBillingDataChange }, ref) => {
           <strong>Shortcuts:</strong>
           <div className='d-flex align-items-center gap-3'>
             <span>
-              <strong>New Line:</strong> Alt + N
+              <strong>New Line:</strong> Enter
             </span>
             <span>
               <strong>Save Row:</strong> Enter
@@ -406,9 +412,11 @@ const ProductBillingReport = ({ onBillingDataChange }, ref) => {
               <tr key={rowIndex} onKeyDown={(e) => handleKeyDown(e, rowIndex)}>
                 {fields.map((field, colIndex) => (
                   <td key={colIndex} style={{ minWidth: "150px" }}>
-                    {field === "ItemName" ? (
+                    {field === "SR" ? (
+                      rowIndex + 1
+                    ) : field === "ItemName" ? (
                       <Select
-                        ref={itemInputRef}
+                        ref={rowIndex === 0 ? selectRef : null} // ✅ Attach ref only to first row
                         className='w-100'
                         options={products.map((p) => ({
                           label: `${p.productName}`,
@@ -435,25 +443,52 @@ const ProductBillingReport = ({ onBillingDataChange }, ref) => {
                         }}
                       />
                     ) : field === "Unit" ? (
-                      <select
-                        className='form-control'
-                        value={row.Unit}
-                        onChange={(e) =>
-                          handleChange(rowIndex, "Unit", e.target.value)
+                      <Select
+                        className='w-100'
+                        value={
+                          row.Unit ? { label: row.Unit, value: row.Unit } : null
                         }
-                      >
-                        <option value=''>Select Unit</option>
-                        {row.product?.primaryUnit && (
-                          <option value={row.product?.primaryUnit}>
-                            {row.product?.primaryUnit}
-                          </option>
-                        )}
-                        {row.product?.secondaryUnit && (
-                          <option value={row.product?.secondaryUnit}>
-                            {row.product?.secondaryUnit}
-                          </option>
-                        )}
-                      </select>
+                        options={[
+                          row.product?.primaryUnit && {
+                            label: row.product.primaryUnit,
+                            value: row.product.primaryUnit,
+                          },
+                          row.product?.secondaryUnit && {
+                            label: row.product.secondaryUnit,
+                            value: row.product.secondaryUnit,
+                          },
+                        ].filter(Boolean)}
+                        onChange={(selectedOption) => {
+                          handleChange(rowIndex, "Unit", selectedOption.value);
+                        }}
+                        onKeyDown={(e) => {
+                          const key = e.key.toLowerCase();
+
+                          // Select primaryUnit on 'p'
+                          if (key === "p" && row.product?.primaryUnit) {
+                            e.preventDefault();
+                            handleChange(
+                              rowIndex,
+                              "Unit",
+                              row.product.primaryUnit
+                            );
+                          }
+
+                          // Select secondaryUnit on 'c'
+                          if (key === "c" && row.product?.secondaryUnit) {
+                            e.preventDefault();
+                            handleChange(
+                              rowIndex,
+                              "Unit",
+                              row.product.secondaryUnit
+                            );
+                          }
+                        }}
+                        menuPortalTarget={document.body}
+                        styles={{
+                          menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+                        }}
+                      />
                     ) : [
                         "SchAmt",
                         "CDAmt",
@@ -503,4 +538,5 @@ const ProductBillingReport = ({ onBillingDataChange }, ref) => {
   );
 };
 
-export default ProductBillingReport;
+// export default ProductBillingReport;
+export default forwardRef(ProductBillingReport);

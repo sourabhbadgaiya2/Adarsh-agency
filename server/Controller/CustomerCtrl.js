@@ -1,16 +1,15 @@
 const Customer = require("../Models/CustomerModel");
 
 // CREATE customer
-// exports.createCustomer = async (req, res) => {
-//   try {
-//     console.log(req.body, "OP");
-//     const customer = await Customer.create(req.body);
-
-//     res.status(201).json(customer);
-//   } catch (err) {
-//     res.status(400).json({ error: err.message });
-//   }
-// };
+exports.createCustomer = async (req, res) => {
+  try {
+    const customer = await Customer.create(req.body);
+    await customer.save();
+    res.status(201).json(customer);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
 
 // exports.createCustomer = async (req, res) => {
 //   try {
@@ -36,28 +35,6 @@ const Customer = require("../Models/CustomerModel");
 //     res.status(400).json({ error: err.message });
 //   }
 // };
-
-exports.createCustomer = async (req, res) => {
-  try {
-    console.log(req.body, "asdasdasd");
-
-    const customerData = {
-      ...req.body,
-      mobile: Number(req.body.mobile),
-      alternateMobile: Number(req.body.alternateMobile),
-      whatsapp: Number(req.body.whatsapp),
-      creditLimit: Number(req.body.creditLimit),
-      creditDay: new Date(req.body.creditDay),
-      beats: req.body.beats || [],  // ✅ Use existing beats array directly
-    };
-
-    const customer = await Customer.create(customerData);
-    res.status(201).json(customer);
-  } catch (err) {
-    console.error("Error creating customer:", err);
-    res.status(400).json({ error: err.message });
-  }
-};
 
 // READ all customers
 exports.getAllCustomers = async (req, res) => {

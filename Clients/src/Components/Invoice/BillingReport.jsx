@@ -16,8 +16,6 @@ function BillingReport() {
 
   const [loading, setLoading] = useState(false);
 
-  // console.log(customerData, "LION");
-
   const handleBillingDataChange = (data, totalAmount) => {
     setBillingData(data);
     setFinalAmount(parseFloat(totalAmount)); // ✅ Now correct
@@ -74,6 +72,7 @@ function BillingReport() {
   // ... your state and handlers
 
   const focusNextComponent = () => {
+    console.log("Calling productRef.focusItemName()");
     productRef.current?.focusItemName(); // 👈 Step 2: Call this when needed
   };
 

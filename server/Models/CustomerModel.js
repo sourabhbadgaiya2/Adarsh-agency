@@ -2,19 +2,24 @@ const mongoose = require("mongoose");
 
 const customerSchema = new mongoose.Schema(
   {
-    firm: {
+    ledger: {
       type: String,
-      required: true,
+      // required: true,
     },
     name: {
       type: String,
-      required: true,
+      // required: true,
+    },
+    address1: {
+      type: String,
+      // required: true,
     },
     mobile: {
       type: Number,
       // required: true,
       // unique: true,
     },
+
     alternateMobile: {
       type: Number,
       // required: true,
@@ -33,31 +38,41 @@ const customerSchema = new mongoose.Schema(
       type: String,
       // required: true,
     },
-    beats: [
+    // beats: [
+    //   {
+    //     type: String,
+    //     // required: true,
+    //   },
+    // ],
+    area: {
+      type: String,
+      required: true,
+    },
+    beat: [
       {
-        type: String,
-        // required: true,
+        areaName: {
+          type: String,
+          // required: true,
+        },
       },
     ],
+
     city: {
       type: String,
       // required: true,
     },
-    address: {
-      type: String,
-      // required: true,
-    },
+
     creditLimit: {
       type: Number,
-      required: true,
+      // required: true,
     },
     gstNumber: {
       type: String,
-      required: true,
+      // required: true,
     },
     creditDay: {
       type: Date,
-      required: true,
+      // required: true,
     },
   },
   { timestamps: true }

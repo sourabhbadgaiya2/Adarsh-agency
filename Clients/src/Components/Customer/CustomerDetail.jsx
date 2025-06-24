@@ -3,18 +3,23 @@ import { Container, Card, Tabs, Tab, Table, Button } from "react-bootstrap";
 import axios from "../../Config/axios";
 import AddCustomer from "./AddCustomer";
 import { ToastContainer, toast } from "react-toastify";
+import Loader from "../Loader";
 
 function CustomerDetail() {
   const [customers, setCustomers] = useState([]);
   const [activeTab, setActiveTab] = useState("details");
+  const [loading, setLoading] = useState(false);
 
   const fetchCustomers = async () => {
+    setLoading(true);
     try {
       const res = await axios.get("/customer");
       setCustomers(res.data);
     } catch (err) {
       // toast.error("Failed to fetch customers");
       console.error(err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -23,6 +28,7 @@ function CustomerDetail() {
   }, []);
 
   const handleDelete = async (id) => {
+    setLoading(true);
     try {
       await axios.delete(`/customer/${id}`);
       setCustomers(customers.filter((cust) => cust._id !== id));
@@ -30,6 +36,8 @@ function CustomerDetail() {
     } catch (error) {
       toast.error("Failed to delete customer");
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
   // Add this to CustomerDetail.js
@@ -40,8 +48,12 @@ function CustomerDetail() {
     setActiveTab("add"); // Switch to "Add Customer" tab
   };
 
+  if (loading) {
+    return <Loader />;
+  }
+
   return (
-    <Container className="mt-4">
+    <Container className='mt-4'>
       <Card>
         <Card.Body>
           <Tabs
@@ -50,15 +62,15 @@ function CustomerDetail() {
               setActiveTab(k);
               if (k === "details") fetchCustomers();
             }}
-            className="mb-3"
+            className='mb-3'
           >
-            <Tab eventKey="details" title="Customer Detail">
+            <Tab eventKey='details' title='Customer Detail'>
               <Table bordered hover responsive>
                 <thead>
                   <tr>
                     <th>#</th>
                     <th>Firm Name</th>
-                    <th>Contract Person</th>
+                    {/* <th>Contract Person</th> */}
                     <th>Credit Limit</th>
                     <th>Credit Day</th>
                     <th>Actions</th>
@@ -68,22 +80,22 @@ function CustomerDetail() {
                   {customers.map((cust, index) => (
                     <tr key={cust._id}>
                       <td>{index + 1}</td>
-                      <td>{cust.firm || "N/A"}</td>
-                      <td>{cust.name}</td>
+                      <td>{cust.ledger || "N/A"}</td>
+                      {/* <td>{cust.name}</td> */}
                       <td>{cust.creditLimit}</td>
                       <td>{new Date(cust.creditDay).toLocaleDateString()}</td>
                       <td>
                         <Button
-                          variant="warning"
-                          size="sm"
-                          className="me-2"
+                          variant='warning'
+                          size='sm'
+                          className='me-2'
                           onClick={() => handleEdit(cust)}
                         >
                           Edit
                         </Button>
                         <Button
-                          variant="danger"
-                          size="sm"
+                          variant='danger'
+                          size='sm'
                           onClick={() => handleDelete(cust._id)}
                         >
                           Delete
@@ -95,7 +107,7 @@ function CustomerDetail() {
               </Table>
             </Tab>
 
-            <Tab eventKey="add" title="Add Customer">
+            <Tab eventKey='add' title='Add Customer'>
               <AddCustomer
                 refresh={fetchCustomers}
                 editingCustomer={editingCustomer}
@@ -106,7 +118,7 @@ function CustomerDetail() {
         </Card.Body>
       </Card>
 
-      <ToastContainer position="top-right" autoClose={3000} />
+      <ToastContainer position='top-right' autoClose={3000} />
     </Container>
   );
 }

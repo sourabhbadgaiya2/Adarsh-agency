@@ -12,20 +12,26 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import AddTask from "./AddCompany";
+import toast from "react-hot-toast";
+import Loader from "../../Loader";
 
 const CompanyDetail = () => {
   // State for active tab
   const [activeTab, setActiveTab] = useState("view");
   const [companies, setCompanies] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const fetchCompanies = async () => {
+    setLoading(true);
     try {
       const res = await axios.get("/company");
       console.log(res.data);
       setCompanies(res.data);
     } catch (err) {
       console.error(err);
-      alert("Failed to fetch companies");
+      toast.success("Failed to fetch companies");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -34,13 +40,16 @@ const CompanyDetail = () => {
   }, []);
 
   const deleteCompany = async (id) => {
+    setLoading(true);
     try {
       await axios.delete(`/company/${id}`);
       alert("Company deleted");
       fetchCompanies();
     } catch (err) {
       console.error(err);
-      alert("Failed to delete company");
+      toast.error("Failed to delete company");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -110,35 +119,39 @@ const CompanyDetail = () => {
   const currentEntries = tasks.slice(indexOfFirstEntry, indexOfLastEntry);
   const totalPages = Math.ceil(tasks.length / entriesPerPage);
 
+  if (loading) {
+    return <Loader />;
+  }
+
   return (
-    <div className="container mt-2 mb-4">
+    <div className='container mt-2 mb-4'>
       <h4>Create Brand</h4>
-      <div className="row">
-        <div className="col-md-12">
-          <div className="card card-primary card-outline">
-            <div style={{ backgroundColor: "black" }} className="card-header">
+      <div className='row'>
+        <div className='col-md-12'>
+          <div className='card card-primary card-outline'>
+            <div style={{ backgroundColor: "black" }} className='card-header'>
               <Tabs
-                id="task-tabs"
+                id='task-tabs'
                 activeKey={activeTab}
                 onSelect={(k) => setActiveTab(k)}
-                className="mb-3"
+                className='mb-3'
               >
-                <Tab eventKey="view" title={<b>View Brand</b>} />
-                <Tab eventKey="add" title={<b>Add Brand</b>} />
+                <Tab eventKey='view' title={<b>View Brand</b>} />
+                <Tab eventKey='add' title={<b>Add Brand</b>} />
               </Tabs>
             </div>
 
-            <div className="card-body">
+            <div className='card-body'>
               {activeTab === "view" && (
-                <div className="table-responsive">
+                <div className='table-responsive'>
                   {/* <div className=" "> */}
-                  <div className="row mb-6 py-2 dataTables_filter float-center">
+                  <div className='row mb-6 py-2 dataTables_filter float-center'>
                     <label>
                       Search:
                       <input
-                        type="search"
-                        className="form-control form-control-sm"
-                        placeholder=""
+                        type='search'
+                        className='form-control form-control-sm'
+                        placeholder=''
                       />
                     </label>
                   </div>
@@ -178,7 +191,7 @@ const CompanyDetail = () => {
                           </td>
                           <td>
                             <button
-                              className="btn btn-danger btn-sm"
+                              className='btn btn-danger btn-sm'
                               onClick={() => deleteCompany(c._id)}
                             >
                               Delete
@@ -189,16 +202,16 @@ const CompanyDetail = () => {
                     </tbody>
                   </Table>
 
-                  <div className="row">
-                    <div className="col-sm-5">
-                      <div className="dataTables_info">
+                  <div className='row'>
+                    <div className='col-sm-5'>
+                      <div className='dataTables_info'>
                         Showing {indexOfFirstEntry + 1} to{" "}
                         {Math.min(indexOfLastEntry, tasks.length)} of{" "}
                         {tasks.length} entries
                       </div>
                     </div>
-                    <div className="col-sm-7">
-                      <Pagination className="float-right">
+                    <div className='col-sm-7'>
+                      <Pagination className='float-right'>
                         <Pagination.Prev
                           disabled={currentPage === 1}
                           onClick={() => setCurrentPage(currentPage - 1)}
@@ -236,7 +249,7 @@ const CompanyDetail = () => {
       <Modal
         show={showDetailModal}
         onHide={() => setShowDetailModal(false)}
-        size="lg"
+        size='lg'
       >
         <Modal.Header closeButton>
           <Modal.Title>
@@ -247,7 +260,7 @@ const CompanyDetail = () => {
           {currentTask?.description || "No description available"}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowDetailModal(false)}>
+          <Button variant='secondary' onClick={() => setShowDetailModal(false)}>
             Close
           </Button>
         </Modal.Footer>
@@ -271,7 +284,7 @@ const CompanyDetail = () => {
         </Modal.Body>
         <Modal.Footer>
           <Button
-            variant="secondary"
+            variant='secondary'
             onClick={() => setShowChecklistModal(false)}
           >
             Close
@@ -289,7 +302,7 @@ const CompanyDetail = () => {
           {currentTask?.sms || "No SMS template available"}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowSmsModal(false)}>
+          <Button variant='secondary' onClick={() => setShowSmsModal(false)}>
             Close
           </Button>
         </Modal.Footer>
@@ -298,7 +311,7 @@ const CompanyDetail = () => {
       <Modal
         show={showEmailModal}
         onHide={() => setShowEmailModal(false)}
-        size="lg"
+        size='lg'
       >
         <Modal.Header closeButton>
           <Modal.Title>
@@ -313,7 +326,7 @@ const CompanyDetail = () => {
           />
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowEmailModal(false)}>
+          <Button variant='secondary' onClick={() => setShowEmailModal(false)}>
             Close
           </Button>
         </Modal.Footer>

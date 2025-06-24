@@ -1354,7 +1354,6 @@ const PurchaseForm = () => {
       <Card className='p-4 mb-4'>
         <h4 className='mb-3'>{editingId ? "Edit Purchase" : "Add Purchase"}</h4>
         <Form onSubmit={handleSubmit}>
-          {" "}
           {/* Removed onKeyDown from Form directly */}
           {/* Vendor and Date */}
           <Row className='mb-3 d-flex justify-content-between align-items-end'>
