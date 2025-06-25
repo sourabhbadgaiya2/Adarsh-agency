@@ -463,24 +463,24 @@ const ProductBillingReport = ({ onBillingDataChange }, ref) => {
                         }}
                         onKeyDown={(e) => {
                           const key = e.key.toLowerCase();
-
-                          // Select primaryUnit on 'p'
-                          if (key === "p" && row.product?.primaryUnit) {
-                            e.preventDefault();
-                            handleChange(
-                              rowIndex,
-                              "Unit",
-                              row.product.primaryUnit
-                            );
-                          }
-
-                          // Select secondaryUnit on 'c'
-                          if (key === "c" && row.product?.secondaryUnit) {
+                          //!
+                          // Select secondaryUnit on 'p'
+                          if (key === "p" && row.product?.secondaryUnit) {
                             e.preventDefault();
                             handleChange(
                               rowIndex,
                               "Unit",
                               row.product.secondaryUnit
+                            );
+                          }
+
+                          // Select primaryUnit  on 'c'
+                          if (key === "c" && row.product?.primaryUnit) {
+                            e.preventDefault();
+                            handleChange(
+                              rowIndex,
+                              "Unit",
+                              row.product.primaryUnit
                             );
                           }
                         }}

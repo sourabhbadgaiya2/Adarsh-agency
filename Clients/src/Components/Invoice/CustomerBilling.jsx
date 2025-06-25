@@ -519,6 +519,7 @@ const CustomerBilling = ({ onDataChange, resetTrigger, onNextFocus }) => {
   const [formData, setFormData] = useState({
     Billdate: getCurrentDate(),
     paymentMode: "",
+    billingType: "",
     selectedSalesmanId: null,
     selectedBeatId: null,
     selectedCustomerId: null,
@@ -878,6 +879,26 @@ const CustomerBilling = ({ onDataChange, resetTrigger, onNextFocus }) => {
               <option value='UPI'>UPI</option>
               <option value='Net Banking'>Net Banking</option>
               <option value='Cheque'>Cheque</option>
+            </select>
+          </div>
+
+          {/* Credit */}
+          {/* Credit / Cash Selection */}
+          <div className='form-group col-md-6'>
+            <label>
+              <strong>Billing Type</strong>
+            </label>
+            <select
+              name='billingType'
+              className='form-control'
+              value={formData.billingType || ""}
+              onChange={handleInputChange}
+              onKeyDown={handleKeyDown}
+              required
+            >
+              <option value=''>-- Select --</option>
+              <option value='Credit'>Credit</option>
+              <option value='Cash'>Cash</option>
             </select>
           </div>
         </div>

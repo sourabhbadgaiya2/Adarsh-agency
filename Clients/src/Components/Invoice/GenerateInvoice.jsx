@@ -174,7 +174,7 @@ const GenerateInvoice = () => {
         left: 0;
         top: 0;
         width: 100%;
-        font-size: 18px !important; /* Print font size */
+      
       }
 
       .d-print-none {
@@ -187,8 +187,9 @@ const GenerateInvoice = () => {
       }
 
       @page {
-        size: A5 landscape;
-        margin: 10mm;
+        {/* size: A5 landscape; */}
+        size: A5 ;
+        margin:0;
       }
 
       /* Footer only on last page */
@@ -202,6 +203,8 @@ const GenerateInvoice = () => {
       }
     }
 
+
+
     /* Hidden by default — shown only during print on non-last pages */
     .to-be-continued {
       display: none;
@@ -209,7 +212,12 @@ const GenerateInvoice = () => {
       margin-top: 20px;
       font-weight: bold;
     }
+
+
+  
   `}
+
+        {/* margin: 10mm; */}
       </style>
 
       <div id='print-area'>
@@ -224,6 +232,7 @@ const GenerateInvoice = () => {
               padding: "1mm",
               // backgroundColor: "#fff",
               // border: "1px solid #ccc",
+              fontFamily: "monospace",
               fontSize: "12px",
               // boxSizing: "border-box",
             }}
@@ -232,19 +241,44 @@ const GenerateInvoice = () => {
               {/* Header */}
               <div
                 style={{
-                  textAlign: "center",
                   borderBottom: "2px dashed black",
+                  paddingBottom: "4px",
+                  marginBottom: "1px",
+                  marginTop: "0px",
                 }}
               >
-                <h5 style={{ fontWeight: "bold", fontSize: "24px" }}>
-                  {/* ADARSH AGENCY */}
-                  SAMRIDDHI ENTERPRISES
-                </h5>
-                <p>H.NO.02, NAGAR NIGAM COLONY TIMBER MARKET CHHOLA BHOPAL</p>
-                <p>MOB: 9926793332, 9893315590</p>
-                <p>
-                  {/* <strong>GSTIN: 23BENPR0816K1ZB</strong> */}
+                <p style={{ margin: "0 0 5px 0", fontSize: "14px" }}>
                   <strong>GSTIN: 23BJUPR9537F1ZK</strong>
+                </p>
+
+                <h2
+                  style={{
+                    fontWeight: "bold",
+                    fontSize: "22px",
+                    textAlign: "center",
+                    margin: "-3px",
+                  }}
+                >
+                  SAMRIDDHI ENTERPRISES
+                </h2>
+
+                <p
+                  style={{
+                    margin: "0",
+                    textAlign: "center",
+                    fontSize: "13px",
+                  }}
+                >
+                  H.NO.02, NAGAR NIGAM COLONY, TIMBER MARKET, CHHOLA, BHOPAL
+                </p>
+                <p
+                  style={{
+                    margin: "-3px",
+                    textAlign: "center",
+                    fontSize: "13px",
+                  }}
+                >
+                  MOB: 9926793332, 9893315590
                 </p>
               </div>
 
@@ -253,25 +287,29 @@ const GenerateInvoice = () => {
                 style={{
                   display: "flex",
                   justifyContent: "space-between",
-                  borderBottom: "2px solid black",
-                  marginTop: "15px",
-                  paddingBottom: "10px",
+                  // borderBottom: "1px solid black",
+                  marginTop: "0px",
+                  paddingBottom: "0px",
                   fontSize: "13px",
+                  fontFamily: "monospace",
                 }}
               >
-                <div style={{ width: "48%" }}>
-                  <strong>Customer Name:</strong>{" "}
+                <div style={{ width: "35.2%" }}>
                   {fullCustomer?.ledger || "N/A"} <br />
-                  <strong>Address:</strong> {fullCustomer?.address1 || "N/A"}{" "}
-                  <br />
-                  <strong>Mobile:</strong> {fullCustomer?.mobile || "N/A"}{" "}
-                  <br />
+                  {fullCustomer?.address1 || "N/A"}&nbsp;
+                  {fullCustomer?.mobile || "N/A"} <br />
                   <strong>GSTIN:</strong> {fullCustomer?.gstNumber || "N/A"}
                 </div>
                 <div style={{ textAlign: "right", width: "48%" }}>
-                  <strong>Bill No:</strong> {invoice._id?.slice(-6)} <br />
+                  <strong>Bill No:</strong>{" "}
+                  <span>{invoice._id?.slice(-6)}</span> <br />
                   <strong>Date:</strong>{" "}
-                  {new Date(customer?.Billdate).toLocaleDateString("en-GB")}{" "}
+                  {new Date(customer?.Billdate).toLocaleDateString("en-GB")}
+                  <strong style={{ fontWeight: "bold", fontSize: "15px" }}>
+                    {" "}
+                    {invoice.billingType}
+                  </strong>
+                  {console.log(invoice.billingType, "LL")}
                   <br />
                   <strong>Salesman:</strong> {salesmanId?.name || "N/A"} <br />
                   <strong>Number:</strong> {salesmanId?.mobile || "-"}
@@ -281,7 +319,7 @@ const GenerateInvoice = () => {
               {/* Table */}
               <Table
                 bordered
-                className='mt-3 table-sm'
+                className='mt-1 table-sm'
                 style={{ border: "1px solid #000", fontSize: "12px" }}
               >
                 <thead>
@@ -306,7 +344,7 @@ const GenerateInvoice = () => {
                         key={i}
                         style={{
                           border: "1px solid black",
-                          padding: "4px",
+                          padding: "2px",
                           textAlign: "center",
                         }}
                       >
@@ -321,46 +359,91 @@ const GenerateInvoice = () => {
                     const gst = product?.gstPercent || 0;
                     return (
                       <tr key={index}>
-                        <td className='border border-black p-1 text-center'>
+                        <td
+                          className=''
+                          style={{
+                            borderLeft: "1px solid black",
+                            borderRight: "1px solid black",
+                          }}
+                        >
                           {pageIndex * itemsPerPage + index + 1}
                         </td>
-                        <td className='border border-black p-1 text-center'>
+                        <td
+                          style={{ borderRight: "1px solid black" }}
+                          className=''
+                        >
                           {item.itemName || "N/A"}
                         </td>
-                        <td className='border border-black p-1 text-center'>
+                        <td
+                          style={{ borderRight: "1px solid black" }}
+                          className=''
+                        >
                           {product.hsnCode || "N/A"}
                         </td>
-                        <td className='border border-black p-1 text-center'>
+                        <td
+                          style={{ borderRight: "1px solid black" }}
+                          className=''
+                        >
                           {product.mrp || 0}
                         </td>
-                        <td className='border border-black p-1 text-center'>
+                        <td
+                          style={{ borderRight: "1px solid black" }}
+                          className=''
+                        >
                           {item.qty || 0}
                         </td>
-                        <td className='border border-black p-1 text-center'>
+                        <td
+                          style={{ borderRight: "1px solid black" }}
+                          className=''
+                        >
                           {item.Free || 0}
                         </td>
-                        <td className='border border-black p-1 text-center'>
+                        <td
+                          style={{ borderRight: "1px solid black" }}
+                          className=''
+                        >
                           {item.rate || 0}
                         </td>
-                        <td className='border border-black p-1 text-center'>
+                        <td
+                          style={{ borderRight: "1px solid black" }}
+                          className=''
+                        >
                           {item.sch || 0}
                         </td>
-                        <td className='border border-black p-1 text-center'>
+                        <td
+                          style={{ borderRight: "1px solid black" }}
+                          className=''
+                        >
                           {item.schAmt || 0}
                         </td>
-                        <td className='border border-black p-1 text-center'>
+                        <td
+                          style={{ borderRight: "1px solid black" }}
+                          className=''
+                        >
                           {item.cd || 0}
                         </td>
-                        <td className='border border-black p-1 text-center'>
+                        <td
+                          style={{ borderRight: "1px solid black" }}
+                          className=''
+                        >
                           {item.total || 0}
                         </td>
-                        <td className='border border-black p-1 text-center'>
+                        <td
+                          style={{ borderRight: "1px solid black" }}
+                          className=''
+                        >
                           {gst / 2}
                         </td>
-                        <td className='border border-black p-1 text-center'>
+                        <td
+                          style={{ borderRight: "1px solid black" }}
+                          className=''
+                        >
                           {gst / 2}
                         </td>
-                        <td className='border border-black p-1 text-center'>
+                        <td
+                          className=''
+                          style={{ borderRight: "1px solid black" }}
+                        >
                           {item.amount || 0}
                         </td>
                       </tr>
@@ -460,16 +543,20 @@ const GenerateInvoice = () => {
                   style={{
                     display: "flex",
                     // justifyContent: "space-between", // Adjust as needed
-                    padding: "10px",
+                    padding: "5px",
+                    paddingBottom: "0",
                     marginTop: "-16px",
-                    fontSize: "12px",
-                    gap: "25px",
+                    fontSize: "11px",
+                    gap: "6px",
                     border: "1px solid black",
                     borderTop: "0",
+                    width: "100%",
                   }}
                 >
                   <div>
-                    <p>Goods once sold will not be taken back</p>
+                    <p style={{ marginBottom: "0" }}>
+                      Goods once sold will not be taken back
+                    </p>
                     <p style={{ marginBottom: "0" }}>
                       Cheque bounce charges Rs. 500/-
                     </p>
@@ -507,12 +594,20 @@ const GenerateInvoice = () => {
 
                   <div
                     style={{
-                      textAlign: "center",
+                      textAlign: "",
                       borderLeft: "1px solid black",
-                      paddingLeft: "35px",
+                      paddingLeft: "6px",
+                      fontSize: "2px",
                     }}
                   >
-                    <h5>Bill Amount (R): {invoice.finalAmount?.toFixed(2)}</h5>
+                    <h5
+                      style={{
+                        fontSize: "14px",
+                        fontFamily: "bold",
+                      }}
+                    >
+                      Bill Amount (R): {invoice.finalAmount?.toFixed(2)}
+                    </h5>
                     {/* <p
                       style={{
                         borderTop: "1px dashed black",

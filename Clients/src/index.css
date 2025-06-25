@@ -6,6 +6,21 @@ body {
 }
 
 
+.invoice-page {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+
+
+
+.invoice-page td {
+
+  margin: 0 !important;
+  padding: 0 !important;
+}
 
 .auto-width-input {
   min-width: 40px !important;
@@ -435,12 +450,3 @@ table th {
     font-size: 12px;
   }
 }
-
-
-
-
-
-
-
-
-

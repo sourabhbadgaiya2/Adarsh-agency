@@ -70,9 +70,10 @@ function CustomerDetail() {
                   <tr>
                     <th>#</th>
                     <th>Firm Name</th>
-                    {/* <th>Contract Person</th> */}
-                    <th>Credit Limit</th>
-                    <th>Credit Day</th>
+                    <th>Area</th>
+                    <th>Mobile</th>
+                    {/* <th>Credit Limit</th>
+                    <th>Credit Day</th> */}
                     <th>Actions</th>
                   </tr>
                 </thead>
@@ -81,9 +82,10 @@ function CustomerDetail() {
                     <tr key={cust._id}>
                       <td>{index + 1}</td>
                       <td>{cust.ledger || "N/A"}</td>
-                      {/* <td>{cust.name}</td> */}
-                      <td>{cust.creditLimit}</td>
-                      <td>{new Date(cust.creditDay).toLocaleDateString()}</td>
+                      <td>{cust.area}</td>
+                      <td>{cust.mobile}</td>
+                      {/* <td>{cust.creditLimit}</td>
+                      <td>{new Date(cust.creditDay).toLocaleDateString()}</td> */}
                       <td>
                         <Button
                           variant='warning'
