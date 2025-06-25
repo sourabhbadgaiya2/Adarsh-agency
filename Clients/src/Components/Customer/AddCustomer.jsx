@@ -15,6 +15,7 @@ function AddCustomer({ refresh, editingCustomer, setEditingCustomer }) {
     gstNumber: "",
     creditDay: "",
     area: "",
+    balance: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -28,6 +29,8 @@ function AddCustomer({ refresh, editingCustomer, setEditingCustomer }) {
         mobile: editingCustomer.mobile || "",
         address1: editingCustomer.address1 || "",
         gstNumber: editingCustomer.gstNumber || "",
+        balance: editingCustomer.balance || "",
+
         creditLimit: editingCustomer.creditLimit || "",
         creditDay: editingCustomer.creditDay
           ? editingCustomer.creditDay.slice(0, 10)
@@ -153,6 +156,16 @@ function AddCustomer({ refresh, editingCustomer, setEditingCustomer }) {
                   type='number'
                   name='creditLimit'
                   placeholder='Credit Limit'
+                  value={customer.creditLimit}
+                  onChange={handleChange}
+                />
+              </Col>
+              <Col md={6} className='mb-3'>
+                <Form.Label>Balance</Form.Label>
+                <Form.Control
+                  type='number'
+                  name='balance'
+                  placeholder='Balance'
                   value={customer.creditLimit}
                   onChange={handleChange}
                 />
