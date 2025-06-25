@@ -887,13 +887,9 @@ const GenerateInvoice = () => {
                   <span>
                     <strong>Date:</strong>{" "}
                     {new Date(customer?.Billdate).toLocaleDateString("en-GB")}
+                    &nbsp; {invoice?.billingType}
                   </span>
-                  <span>
-                    {/* <strong>Billing Type:</strong>{" "} */}
-                    <span style={{ fontWeight: "bold", fontSize: "13px" }}>
-                      {invoice.billingType}
-                    </span>
-                  </span>
+
                   <span>
                     <strong>Salesman:</strong> {salesmanId?.name || "N/A"}
                   </span>
