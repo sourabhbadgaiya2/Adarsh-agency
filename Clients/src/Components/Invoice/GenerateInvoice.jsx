@@ -769,8 +769,8 @@ const GenerateInvoice = () => {
             }
 
             @page {
-              size: A5 Landscape;
-              margin:0;
+              size: A5;
+              margin:5mm;
             }
 
             .invoice-page:not(:last-child) .invoice-footer {
@@ -1158,6 +1158,9 @@ const GenerateInvoice = () => {
                     >
                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To be
                       continued...
+                      <span style={{ display: "block", textAlign: "right" }}>
+                        Page {pageIndex + 1} of {billingChunks.length}
+                      </span>
                     </p>
                   </div>
                 </div>
@@ -1222,21 +1225,46 @@ const GenerateInvoice = () => {
                       textAlign: "",
                       borderLeft: "1px solid black",
                       paddingLeft: "6px",
-                      fontSize: "2px",
+                      fontSize: "13px",
+                      position: "relative",
                     }}
                   >
                     <h5
                       style={{
                         fontSize: "14px",
                         fontFamily: "bold",
+                        display: "flex",
+                        gap: "15px",
                       }}
                     >
                       Bill Amount (R): {invoice.finalAmount?.toFixed(2)}
                     </h5>
+                    <span
+                      style={{
+                        textAlign: "right",
+                        position: "absolute",
+                        bottom: "5px",
+                        right: "0",
+                      }}
+                    >
+                      Page {pageIndex + 1} of {billingChunks.length}
+                    </span>
                   </div>
                 </div>
               )}
             </div>
+
+            {/* <div
+              style={{
+                textAlign: "center",
+                fontSize: "11px",
+                marginTop: "6px",
+                paddingTop: "4px",
+              }}
+              className='invoice-page-footer'
+            >
+              Page {pageIndex + 1} of {billingChunks.length}
+            </div> */}
           </div>
         ))}
       </div>
