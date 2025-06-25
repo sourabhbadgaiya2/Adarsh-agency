@@ -638,6 +638,8 @@
 
 //! ------------------------------------
 
+// !---------------
+
 import React, { useEffect, useState } from "react";
 import { Table } from "react-bootstrap";
 import { useParams } from "react-router-dom";
@@ -770,7 +772,7 @@ const GenerateInvoice = () => {
 
             @page {
               size: A5 Landscape;
-              margin:10mm;
+              margin:3mm;
             }
 
             .invoice-page:not(:last-child) .invoice-footer {
@@ -853,20 +855,24 @@ const GenerateInvoice = () => {
                   justifyContent: "space-between",
                   margin: 0,
                   padding: 0,
-                  fontSize: "12px", // slightly smaller
+                  fontSize: "12px",
                   fontFamily: "monospace",
-                  lineHeight: "1.2", // tighter spacing
+                  lineHeight: "1.2",
                 }}
               >
                 <div
                   style={{
-                    width: "35%",
+                    width: "75%",
                     display: "flex",
                     flexDirection: "column",
                     gap: "2px",
+                    textTransform: "uppercase",
                   }}
                 >
-                  <span>{fullCustomer?.ledger || "N/A"}</span>
+                  <strong>
+                    {" "}
+                    <span>{fullCustomer?.ledger || "N/A"}</span>
+                  </strong>
                   <span>{fullCustomer?.address1 || "N/A"}</span>
                   <span>{fullCustomer?.mobile || "N/A"}</span>
                   <strong>GSTIN: {fullCustomer?.gstNumber || "N/A"}</strong>
@@ -874,18 +880,24 @@ const GenerateInvoice = () => {
 
                 <div
                   style={{
-                    textAlign: "right",
-                    width: "48%",
+                    textAlign: "left",
+                    width: "25%",
                     display: "flex",
                     flexDirection: "column",
                     gap: "2px",
+                    textTransform: "uppercase",
                   }}
                 >
                   <span>
-                    <strong>Bill No:</strong> {invoice._id?.slice(-6)}
+                    <strong>
+                      Bill No:
+                      <span style={{ fontSize: "17px" }}>
+                        {invoice._id?.slice(-6)}
+                      </span>
+                    </strong>
                   </span>
                   <span>
-                    <strong>Date:</strong>{" "}
+                    <strong>Date:</strong>
                     {new Date(customer?.Billdate).toLocaleDateString("en-GB")}
                     &nbsp; {invoice?.billingType}
                   </span>
@@ -928,6 +940,8 @@ const GenerateInvoice = () => {
                           border: "1px solid black",
                           padding: "2px",
                           textAlign: "center",
+                          paddingLeft: i === 1 ? "5px" : "2px",
+                          paddingRight: i === 1 ? "5px" : "2px",
                         }}
                       >
                         {header}
@@ -942,89 +956,130 @@ const GenerateInvoice = () => {
                     return (
                       <tr key={index}>
                         <td
-                          className=''
                           style={{
                             borderLeft: "1px solid black",
                             borderRight: "1px solid black",
+                            textAlign: "center",
+                            padding: "2px",
                           }}
                         >
                           {pageIndex * itemsPerPage + index + 1}
                         </td>
                         <td
-                          style={{ borderRight: "1px solid black" }}
-                          className=''
+                          style={{
+                            borderRight: "1px solid black",
+                            textAlign: "left",
+                            paddingLeft: "5px",
+                            paddingRight: "5px",
+                          }}
                         >
                           {item.itemName || "N/A"}
                         </td>
                         <td
-                          style={{ borderRight: "1px solid black" }}
-                          className=''
+                          style={{
+                            borderRight: "1px solid black",
+                            textAlign: "right",
+                            padding: "2px",
+                          }}
                         >
                           {product.hsnCode || "N/A"}
                         </td>
                         <td
-                          style={{ borderRight: "1px solid black" }}
-                          className=''
+                          style={{
+                            borderRight: "1px solid black",
+                            textAlign: "right",
+                            padding: "2px",
+                          }}
                         >
                           {product.mrp || 0}
                         </td>
                         <td
-                          style={{ borderRight: "1px solid black" }}
-                          className=''
+                          style={{
+                            borderRight: "1px solid black",
+                            textAlign: "right",
+                            padding: "2px",
+                          }}
                         >
                           {item.qty || 0}
                         </td>
                         <td
-                          style={{ borderRight: "1px solid black" }}
-                          className=''
+                          style={{
+                            borderRight: "1px solid black",
+                            textAlign: "right",
+                            padding: "2px",
+                          }}
                         >
                           {item.Free || 0}
                         </td>
                         <td
-                          style={{ borderRight: "1px solid black" }}
-                          className=''
+                          style={{
+                            borderRight: "1px solid black",
+                            textAlign: "right",
+                            padding: "2px",
+                          }}
                         >
                           {item.rate || 0}
                         </td>
                         <td
-                          style={{ borderRight: "1px solid black" }}
-                          className=''
+                          style={{
+                            borderRight: "1px solid black",
+                            textAlign: "right",
+                            padding: "2px",
+                          }}
                         >
                           {item.sch || 0}
                         </td>
                         <td
-                          style={{ borderRight: "1px solid black" }}
-                          className=''
+                          style={{
+                            borderRight: "1px solid black",
+                            textAlign: "right",
+                            padding: "2px",
+                          }}
                         >
                           {item.schAmt || 0}
                         </td>
                         <td
-                          style={{ borderRight: "1px solid black" }}
-                          className=''
+                          style={{
+                            borderRight: "1px solid black",
+                            textAlign: "right",
+                            padding: "2px",
+                          }}
                         >
                           {item.cd || 0}
                         </td>
                         <td
-                          style={{ borderRight: "1px solid black" }}
-                          className=''
+                          style={{
+                            borderRight: "1px solid black",
+                            textAlign: "right",
+                            padding: "2px",
+                          }}
                         >
                           {item.total || 0}
                         </td>
                         <td
-                          style={{ borderRight: "1px solid black" }}
-                          className=''
+                          style={{
+                            borderRight: "1px solid black",
+                            textAlign: "right",
+                            padding: "2px",
+                          }}
                         >
                           {gst / 2}
                         </td>
                         <td
-                          style={{ borderRight: "1px solid black" }}
-                          className=''
+                          style={{
+                            borderRight: "1px solid black",
+                            textAlign: "right",
+                            padding: "2px",
+                          }}
                         >
                           {gst / 2}
                         </td>
                         <td
-                          className=''
-                          style={{ borderRight: "1px solid black" }}
+                          style={{
+                            borderRight: "1px solid black",
+                            textAlign: "right",
+                            padding: "2px",
+                          }}
                         >
                           {item.amount || 0}
                         </td>
@@ -1032,7 +1087,6 @@ const GenerateInvoice = () => {
                     );
                   })}
 
-                  {/* Added border row after entries */}
                   {chunk.length > 0 && (
                     <tr style={{ borderBottom: "2px solid black" }}>
                       <td
@@ -1042,13 +1096,11 @@ const GenerateInvoice = () => {
                     </tr>
                   )}
 
-                  {/* Fill empty rows if needed */}
                   {chunk.length < itemsPerPage &&
                     Array.from({ length: itemsPerPage - chunk.length }).map(
                       (_, i) => <tr key={`empty-${i}`}></tr>
                     )}
 
-                  {/* Totals row only on the last page */}
                   {pageIndex === billingChunks.length - 1 && (
                     <tr style={{ fontWeight: "bold" }}>
                       <td className='border border-black p-1'></td>
@@ -1079,14 +1131,29 @@ const GenerateInvoice = () => {
                           borderBottom: "1px solid black",
                           borderRight: "1px solid black",
                           borderTop: "1px solid black",
+                          textAlign: "center",
                         }}
                       >
                         PCS : {totals.totalQty || 0}
                       </td>
-                      <td className='border border-black p-1'>0</td>
-                      <td className='border border-black p-1'></td>
-                      <td className='border border-black p-1'></td>
-                      <td className='border border-black p-1'>
+                      <td
+                        style={{ textAlign: "right" }}
+                        className='border border-black p-1'
+                      >
+                        0
+                      </td>
+                      <td
+                        style={{ textAlign: "right" }}
+                        className='border border-black p-1'
+                      ></td>
+                      <td
+                        style={{ textAlign: "right" }}
+                        className='border border-black p-1'
+                      ></td>
+                      <td
+                        style={{ textAlign: "right" }}
+                        className='border border-black p-1'
+                      >
                         {billing
                           .reduce(
                             (sum, item) => sum + (parseFloat(item.schAmt) || 0),
@@ -1094,17 +1161,32 @@ const GenerateInvoice = () => {
                           )
                           .toFixed(2)}
                       </td>
-                      <td className='border border-black p-1'></td>
-                      <td className='border border-black p-1'>
+                      <td
+                        style={{ textAlign: "right" }}
+                        className='border border-black p-1 '
+                      ></td>
+                      <td
+                        style={{ textAlign: "right" }}
+                        className='border border-black p-1'
+                      >
                         {totals.total?.toFixed(2) || "0.00"}
                       </td>
-                      <td className='border border-black p-1'>
+                      <td
+                        style={{ textAlign: "right" }}
+                        className='border border-black p-1'
+                      >
                         {((totals.total || 0) * 0.06).toFixed(2)}
                       </td>
-                      <td className='border border-black p-1'>
+                      <td
+                        style={{ textAlign: "right" }}
+                        className='border border-black p-1'
+                      >
                         {totals.cgst?.toFixed(2) || "0.00"}
                       </td>
-                      <td className='border border-black p-1'>
+                      <td
+                        style={{ textAlign: "right" }}
+                        className='border border-black p-1 '
+                      >
                         {invoice.finalAmount?.toFixed(2) || "0.00"}
                       </td>
                     </tr>
@@ -1138,7 +1220,7 @@ const GenerateInvoice = () => {
                     <p style={{ marginBottom: "0" }}>
                       Subject to Bhopal jurisdiction/-
                     </p>
-                    <p>E.&.O.E</p>
+                    <p style={{ marginBottom: "0" }}>E.&.O.E</p>
                   </div>
 
                   <div
@@ -1222,6 +1304,7 @@ const GenerateInvoice = () => {
 
                   <div
                     style={{
+                      width: "32%",
                       textAlign: "",
                       borderLeft: "1px solid black",
                       paddingLeft: "6px",
@@ -1231,13 +1314,22 @@ const GenerateInvoice = () => {
                   >
                     <h5
                       style={{
-                        fontSize: "14px",
-                        fontFamily: "bold",
+                        width: "100%",
+                        fontSize: "16px",
+                        fontWeight: "bold",
                         display: "flex",
+                        justifyContent: "space-between",
                         gap: "15px",
                       }}
                     >
-                      Bill Amount (R): {invoice.finalAmount?.toFixed(2)}
+                      <span>Bill Amount (R):</span>
+                      <span
+                        style={{
+                          textAlign: "right",
+                        }}
+                      >
+                        {invoice.finalAmount?.toFixed(2)}
+                      </span>
                     </h5>
                     <span
                       style={{
@@ -1253,18 +1345,6 @@ const GenerateInvoice = () => {
                 </div>
               )}
             </div>
-
-            {/* <div
-              style={{
-                textAlign: "center",
-                fontSize: "11px",
-                marginTop: "6px",
-                paddingTop: "4px",
-              }}
-              className='invoice-page-footer'
-            >
-              Page {pageIndex + 1} of {billingChunks.length}
-            </div> */}
           </div>
         ))}
       </div>
