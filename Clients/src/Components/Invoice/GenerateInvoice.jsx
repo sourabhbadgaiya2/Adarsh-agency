@@ -771,7 +771,7 @@ const GenerateInvoice = () => {
             }
 
             @page {
-              size: A5 Landscape;
+              size: A5;
               margin:3mm;
             }
 
