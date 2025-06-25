@@ -99,10 +99,60 @@ const getSingleSalesman = async (req, res) => {
   }
 };
 
+// const updateSalesman = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const updatedData = req.body;
+
+//     if (req.file) {
+//       updatedData.photo = req.file.filename;
+//     }
+
+//     const updatedSalesman = await Salesman.findByIdAndUpdate(id, updatedData, {
+//       new: true,
+//     });
+
+//     if (!updatedSalesman) {
+//       return res.status(404).json({ message: "Salesman not found" });
+//     }
+
+//     res.status(200).json({
+//       message: "Salesman updated successfully",
+//       salesman: updatedSalesman,
+//     });
+//   } catch (error) {
+//     res.status(400).json({ message: error.message });
+//   }
+// };
+
 const updateSalesman = async (req, res) => {
   try {
     const { id } = req.params;
-    const updatedData = req.body;
+    const updatedData = { ...req.body };
+
+    // console.log("Raw Beat From Request:", updatedData.beat);
+
+    // 🧠 Fix: Safely parse beat in different formats
+    if (typeof updatedData.beat === "string") {
+      try {
+        updatedData.beat = JSON.parse(updatedData.beat);
+      } catch (e) {
+        return res
+          .status(400)
+          .json({ message: "Invalid beat format (string)." });
+      }
+    } else if (
+      Array.isArray(updatedData.beat) &&
+      typeof updatedData.beat[0] === "string"
+    ) {
+      try {
+        updatedData.beat = JSON.parse(updatedData.beat[0]);
+      } catch (e) {
+        return res
+          .status(400)
+          .json({ message: "Invalid beat format (array of string)." });
+      }
+    }
 
     if (req.file) {
       updatedData.photo = req.file.filename;
@@ -113,7 +163,7 @@ const updateSalesman = async (req, res) => {
     });
 
     if (!updatedSalesman) {
-      return res.status(404).json({ message: "Salesman not found" });
+      return res.status(404).json({ message: "Salesman not found." });
     }
 
     res.status(200).json({
@@ -121,7 +171,11 @@ const updateSalesman = async (req, res) => {
       salesman: updatedSalesman,
     });
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    console.error("Update Error:", error);
+    res.status(500).json({
+      message: "Failed to update salesman",
+      error: error.message,
+    });
   }
 };
 
