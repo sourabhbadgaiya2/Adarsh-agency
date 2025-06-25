@@ -72,6 +72,10 @@ const customerSchema = new mongoose.Schema(
       type: Number,
       // required: true,
     },
+    balance: {
+      type: Number,
+      // required: true,
+    },
     gstNumber: {
       type: String,
       // required: true,

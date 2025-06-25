@@ -1,14 +1,22 @@
 // import React, { useEffect, useState } from "react";
-// import { Container, Card, Tabs, Tab, Table, Button } from "react-bootstrap";
+// import { Container, Card, Tabs, Tab, Button, InputGroup, Form, OverlayTrigger, Tooltip } from "react-bootstrap";
+// import DataTable from "react-data-table-component";
 // import axios from "../../Config/axios";
 // import AddCustomer from "./AddCustomer";
 // import { ToastContainer, toast } from "react-toastify";
 // import Loader from "../Loader";
 
+// import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap-icons/font/bootstrap-icons.css';
+
+
+
 // function CustomerDetail() {
 //   const [customers, setCustomers] = useState([]);
 //   const [activeTab, setActiveTab] = useState("details");
 //   const [loading, setLoading] = useState(false);
+//   const [editingCustomer, setEditingCustomer] = useState(null);
+//   const [filterText, setFilterText] = useState('');
 
 //   const fetchCustomers = async () => {
 //     setLoading(true);
@@ -16,7 +24,7 @@
 //       const res = await axios.get("/customer");
 //       setCustomers(res.data);
 //     } catch (err) {
-//       // toast.error("Failed to fetch customers");
+//       toast.error("Failed to fetch customers");
 //       console.error(err);
 //     } finally {
 //       setLoading(false);
@@ -40,12 +48,88 @@
 //       setLoading(false);
 //     }
 //   };
-//   // Add this to CustomerDetail.js
-//   const [editingCustomer, setEditingCustomer] = useState(null);
 
 //   const handleEdit = (customer) => {
 //     setEditingCustomer(customer);
-//     setActiveTab("add"); // Switch to "Add Customer" tab
+//     setActiveTab("add");
+//   };
+
+//   const filteredItems = customers.filter(
+//     item =>
+//       (item.ledger && item.ledger.toLowerCase().includes(filterText.toLowerCase())) ||
+//       (item.area && item.area.toLowerCase().includes(filterText.toLowerCase())) ||
+//       (item.mobile && item.mobile.includes(filterText))
+//   );
+
+//   const columns = [
+//     {
+//       name: '#',
+//       selector: (row, index) => index + 1,
+//       sortable: true,
+//       width: '70px'
+//     },
+//     {
+//       name: 'Firm Name',
+//       selector: row => row.ledger || "N/A",
+//       sortable: true,
+//       wrap: true
+//     },
+//     {
+//       name: 'Area',
+//       selector: row => row.area,
+//       sortable: true
+//     },
+//     {
+//       name: 'Mobile',
+//       selector: row => row.mobile,
+//       sortable: true
+//     },
+//     {
+//       name: 'Actions',
+//       cell: (row) => (
+//         <div className="d-flex gap-2">
+//           {/* Edit Button with Tooltip */}
+//           <OverlayTrigger
+//             placement="top"
+//             overlay={<Tooltip id={`tooltip-edit-${row._id}`}>Edit Customer</Tooltip>}
+//           >
+//             <Button
+//               variant="warning"
+//               className="d-flex align-items-center justify-content-center"
+//               onClick={() => handleEdit(row)}
+//               style={{ width: '40px', height: '40px', padding: 0 }}
+//             >
+//               <i className="bi bi-pencil-square"></i>
+//             </Button>
+//           </OverlayTrigger>
+
+//           {/* Delete Button with Tooltip */}
+//           <OverlayTrigger
+//             placement="top"
+//             overlay={<Tooltip id={`tooltip-delete-${row._id}`}>Delete Customer</Tooltip>}
+//           >
+//             <Button
+//               variant="danger"
+//               className="d-flex align-items-center justify-content-center"
+//               onClick={() => handleDelete(row._id)}
+//               style={{ width: '40px', height: '40px', padding: 0 }}
+//             >
+//               <i className="bi bi-trash"></i>
+//             </Button>
+//           </OverlayTrigger>
+//         </div>
+//       ),
+//       ignoreRowClick: true,
+//       allowOverflow: true,
+//       button: true,
+//     },
+//   ];
+
+//   const paginationOptions = {
+//     rowsPerPageText: 'Rows per page:',
+//     rangeSeparatorText: 'of',
+//     selectAllRowsItem: true,
+//     selectAllRowsItemText: 'All',
 //   };
 
 //   if (loading) {
@@ -60,60 +144,55 @@
 //             activeKey={activeTab}
 //             onSelect={(k) => {
 //               setActiveTab(k);
-//               if (k === "details") fetchCustomers();
+//               if (k === "details") {
+//                 fetchCustomers();
+//                 setEditingCustomer(null);
+//               }
 //             }}
 //             className='mb-3'
 //           >
 //             <Tab eventKey='details' title='Customer Detail'>
-//               <Table bordered hover responsive>
-//                 <thead>
-//                   <tr>
-//                     <th>#</th>
-//                     <th>Firm Name</th>
-//                     <th>Area</th>
-//                     <th>Mobile</th>
-//                     {/* <th>Credit Limit</th>
-//                     <th>Credit Day</th> */}
-//                     <th>Actions</th>
-//                   </tr>
-//                 </thead>
-//                 <tbody>
-//                   {customers.map((cust, index) => (
-//                     <tr key={cust._id}>
-//                       <td>{index + 1}</td>
-//                       <td>{cust.ledger || "N/A"}</td>
-//                       <td>{cust.area}</td>
-//                       <td>{cust.mobile}</td>
-//                       {/* <td>{cust.creditLimit}</td>
-//                       <td>{new Date(cust.creditDay).toLocaleDateString()}</td> */}
-//                       <td>
-//                         <Button
-//                           variant='warning'
-//                           size='sm'
-//                           className='me-2'
-//                           onClick={() => handleEdit(cust)}
-//                         >
-//                           Edit
-//                         </Button>
-//                         <Button
-//                           variant='danger'
-//                           size='sm'
-//                           onClick={() => handleDelete(cust._id)}
-//                         >
-//                           Delete
-//                         </Button>
-//                       </td>
-//                     </tr>
-//                   ))}
-//                 </tbody>
-//               </Table>
+//               <div className="mb-3">
+//                 <InputGroup>
+//                   <Form.Control
+//                     type="text"
+//                     placeholder="Search by name, area or mobile..."
+//                     value={filterText}
+//                     onChange={(e) => setFilterText(e.target.value)}
+//                   />
+//                   {filterText && (
+//                     <Button
+//                       variant="outline-secondary"
+//                       onClick={() => setFilterText('')}
+//                     >
+//                       Clear
+//                     </Button>
+//                   )}
+//                 </InputGroup>
+//               </div>
+//               <DataTable
+//                 title="Customers"
+//                 columns={columns}
+//                 data={filteredItems}
+//                 pagination
+//                 persistTableHead
+//                 responsive
+//                 striped
+//                 highlightOnHover
+//                 pointerOnHover
+//                 paginationComponentOptions={paginationOptions}
+//                 defaultSortFieldId={1}
+//                 defaultSortAsc={true}
+//                 noDataComponent={<div className="py-4">No customers found</div>}
+//               />
 //             </Tab>
 
-//             <Tab eventKey='add' title='Add Customer'>
+//             <Tab eventKey='add' title={editingCustomer ? 'Edit Customer' : 'Add Customer'}>
 //               <AddCustomer
 //                 refresh={fetchCustomers}
 //                 editingCustomer={editingCustomer}
 //                 setEditingCustomer={setEditingCustomer}
+//                 setActiveTab={setActiveTab}
 //               />
 //             </Tab>
 //           </Tabs>
@@ -124,11 +203,6 @@
 //     </Container>
 //   );
 // }
-
-// export default CustomerDetail;
-
-// !-------------------------------------------------------------
-
 import React, { useEffect, useState } from "react";
 import {
   Container,
@@ -153,12 +227,7 @@ import jsPDF from "jspdf";
 import "jspdf-autotable";
 
 // React Icons
-import {
-  BsPencilSquare,
-  BsTrash,
-  BsFileEarmarkExcel,
-  BsFileEarmarkPdf,
-} from "react-icons/bs";
+import { BsPencilSquare, BsTrash, BsFileEarmarkExcel, BsFileEarmarkPdf } from "react-icons/bs";
 
 // Bootstrap CSS & Toastify
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -192,11 +261,10 @@ function CustomerDetail() {
 
   useEffect(() => {
     const lowercasedFilter = filterText.toLowerCase();
-    const filtered = customers.filter(
-      (item) =>
-        (item.ledger && item.ledger.toLowerCase().includes(lowercasedFilter)) ||
-        (item.area && item.area.toLowerCase().includes(lowercasedFilter)) ||
-        (typeof item.mobile === "string" && item.mobile.includes(filterText))
+    const filtered = customers.filter((item) =>
+      (item.ledger && item.ledger.toLowerCase().includes(lowercasedFilter)) ||
+      (item.area && item.area.toLowerCase().includes(lowercasedFilter)) ||
+      (typeof item.mobile === "string" && item.mobile.includes(filterText))
     );
     setFilteredItems(filtered);
   }, [filterText, customers]);
@@ -254,7 +322,7 @@ function CustomerDetail() {
 
   const columns = [
     {
-      name: "SR",
+      name: "#",
       selector: (row, index) => index + 1,
       sortable: true,
       width: "70px",
@@ -276,38 +344,16 @@ function CustomerDetail() {
       sortable: true,
     },
     {
-      name: "City",
-      selector: (row) => row.city || "N/A",
-      sortable: true,
-    },
-    {
-      name: "Address",
-      selector: (row) => row.address1 || "N/A",
-      sortable: true,
-    },
-    {
-      name: "Balance",
-      selector: (row) => row?.balance || "N/A",
-      sortable: true,
-    },
-    {
-      name: "GST NO",
-      selector: (row) => row.gstNumber || "N/A",
-      sortable: true,
-    },
-    {
       name: "Actions",
       cell: (row) => (
-        <div className='d-flex gap-2'>
+        <div className="d-flex gap-2">
           <OverlayTrigger
-            placement='top'
-            overlay={
-              <Tooltip id={`tooltip-edit-${row._id}`}>Edit Customer</Tooltip>
-            }
+            placement="top"
+            overlay={<Tooltip id={`tooltip-edit-${row._id}`}>Edit Customer</Tooltip>}
           >
             <Button
-              variant='warning'
-              className='d-flex align-items-center justify-content-center'
+              variant="warning"
+              className="d-flex align-items-center justify-content-center"
               onClick={() => handleEdit(row)}
               style={{ width: "40px", height: "40px", padding: 0 }}
             >
@@ -316,16 +362,12 @@ function CustomerDetail() {
           </OverlayTrigger>
 
           <OverlayTrigger
-            placement='top'
-            overlay={
-              <Tooltip id={`tooltip-delete-${row._id}`}>
-                Delete Customer
-              </Tooltip>
-            }
+            placement="top"
+            overlay={<Tooltip id={`tooltip-delete-${row._id}`}>Delete Customer</Tooltip>}
           >
             <Button
-              variant='danger'
-              className='d-flex align-items-center justify-content-center'
+              variant="danger"
+              className="d-flex align-items-center justify-content-center"
               onClick={() => handleDelete(row._id)}
               style={{ width: "40px", height: "40px", padding: 0 }}
             >
@@ -351,7 +393,7 @@ function CustomerDetail() {
   }
 
   return (
-    <Container className='mt-4'>
+    <Container className="mt-4">
       <Card>
         <Card.Body>
           <Tabs
@@ -363,20 +405,20 @@ function CustomerDetail() {
                 setEditingCustomer(null);
               }
             }}
-            className='mb-3'
+            className="mb-3"
           >
-            <Tab eventKey='details' title='Customer Detail'>
-              <div className='mb-3'>
+            <Tab eventKey="details" title="Customer Detail">
+              <div className="mb-3">
                 <InputGroup>
                   <Form.Control
-                    type='text'
-                    placeholder='Search by name, area or mobile...'
+                    type="text"
+                    placeholder="Search by name, area or mobile..."
                     value={filterText}
                     onChange={(e) => setFilterText(e.target.value)}
                   />
                   {filterText && (
                     <Button
-                      variant='outline-secondary'
+                      variant="outline-secondary"
                       onClick={() => setFilterText("")}
                     >
                       Clear
@@ -386,23 +428,19 @@ function CustomerDetail() {
               </div>
 
               {/* ✅ Export Buttons */}
-              <Row className='mb-3'>
+              <Row className="mb-3">
                 <Col>
-                  <Button
-                    variant='success'
-                    onClick={exportToExcel}
-                    className='me-2'
-                  >
+                  <Button variant="success" onClick={exportToExcel} className="me-2">
                     <BsFileEarmarkExcel /> Download Excel
                   </Button>
-                  <Button variant='danger' onClick={exportToPDF}>
+                  <Button variant="danger" onClick={exportToPDF}>
                     <BsFileEarmarkPdf /> Download PDF
                   </Button>
                 </Col>
               </Row>
 
               <DataTable
-                title='Customers'
+                title="Customers"
                 columns={columns}
                 data={filteredItems}
                 pagination
@@ -414,14 +452,11 @@ function CustomerDetail() {
                 paginationComponentOptions={paginationOptions}
                 defaultSortFieldId={1}
                 defaultSortAsc={true}
-                noDataComponent={<div className='py-4'>No customers found</div>}
+                noDataComponent={<div className="py-4">No customers found</div>}
               />
             </Tab>
 
-            <Tab
-              eventKey='add'
-              title={editingCustomer ? "Edit Customer" : "Add Customer"}
-            >
+            <Tab eventKey="add" title={editingCustomer ? "Edit Customer" : "Add Customer"}>
               <AddCustomer
                 refresh={fetchCustomers}
                 editingCustomer={editingCustomer}
@@ -433,7 +468,7 @@ function CustomerDetail() {
         </Card.Body>
       </Card>
 
-      <ToastContainer position='top-right' autoClose={3000} />
+      <ToastContainer position="top-right" autoClose={3000} />
     </Container>
   );
 }
