@@ -6,7 +6,11 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const path = require("path");
 
-app.use(cors());
+app.use(cors({
+  origin: 'https://adarsh-agency.vercel.app',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // allowed methods
+  credentials: true, // if you're using cookies/auth headers
+}));
 // ---------Routes----------
 // const adminRoute = require("./Routes/adminRoute");
 // const FirmRoute = require("./Routes/FirmRoute");
