@@ -769,8 +769,8 @@ const GenerateInvoice = () => {
             }
 
             @page {
-              size: A5;
-              margin:5mm;
+              size: A5 Landscape;
+              margin:10mm;
             }
 
             .invoice-page:not(:last-child) .invoice-footer {
