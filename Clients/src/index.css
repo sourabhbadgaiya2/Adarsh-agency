@@ -11,21 +11,17 @@ body {
   padding-bottom: 0 !important;
   margin-top: 0 !important;
   margin-bottom: 0 !important;
+}
 
+.invoice-page table {
+  text-transform: uppercase;
 }
 
 
-
-
 .invoice-page td {
-  margin: 0 !important;
-  padding: 0 !important;
-}
 
-.invoice-page td {
-  margin-bottom: 0 !important;
   margin: 0 !important;
-  padding: 0 !important;
+  padding: 0 5px !important;
 }
 
 .auto-width-input {
