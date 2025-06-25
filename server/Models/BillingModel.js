@@ -23,6 +23,11 @@ const InvoiceSchema = new mongoose.Schema({
   salesmanId: { type: mongoose.Schema.Types.ObjectId, ref: "Salesman" },
   customerId: { type: mongoose.Schema.Types.ObjectId, ref: "Customer" }, // ✅ customer ID
 
+  billingType: {
+    type: String,
+    enum: ["Cash", "Credit"],
+  },
+
   customer: {
     CustomerName: String,
     Billdate: Date,

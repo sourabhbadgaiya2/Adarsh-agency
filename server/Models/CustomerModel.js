@@ -61,6 +61,12 @@ const customerSchema = new mongoose.Schema(
       type: String,
       // required: true,
     },
+    bill: {
+      type: String,
+      // required: true,
+    },
+
+    billingType: { type: String, enum: ["Credit", "Cash"] },
 
     creditLimit: {
       type: Number,

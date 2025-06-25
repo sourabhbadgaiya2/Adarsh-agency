@@ -66,6 +66,7 @@ const createBilling = async (req, res) => {
     const {
       customer, // This is the customerDetails object from frontend
       billing,
+
       finalAmount,
       // These are top-level IDs, which is good for direct referencing
       companyId, // Assuming companyId is also sent at top-level if required
@@ -73,33 +74,8 @@ const createBilling = async (req, res) => {
       customerId, // This should ideally be customer.selectedCustomerId
     } = req.body;
 
-    // --- IMPORTANT: Aligning Frontend Payload with Backend Model ---
-    // The frontend sends:
-    // {
-    //   "customer": {
-    //     "Billdate": "2025-06-19",
-    //     "advanceAmt": "",
-    //     "paymentMode": "Card",
-    //     "selectedSalesmanId": "...", // This is the salesmanId for the customer
-    //     "selectedBeatId": null,
-    //     "selectedCustomerId": "...", // This is the customerId for the customer
-    //     "customerName": "customerFirm",
-    //     "salesmanName": "sales badgaiya"
-    //   },
-    //   "billing": [...],
-    //   "finalAmount": 4.72,
-    //   // Potentially top-level companyId, salesmanId, customerId from the frontend BillingReport component
-    //   // companyId: "...",
-    //   // salesmanId: "...", // From frontend: customerData.selectedSalesmanId
-    //   // customerId: "..." // From frontend: customerData.selectedCustomerId
-    // }
+    const billingType = customer?.billingType || "";
 
-    // It's best to use the IDs directly from the nested 'customer' object if they're reliable,
-    // or ensure they are consistently sent at the top-level by the frontend.
-    // Given your frontend sends `customerData.selectedSalesmanId` and `customerData.selectedCustomerId`
-    // as part of the `customer` object, let's use those for consistency.
-
-    // Prepare the customer object for the schema, ensuring types and defaults
     const customerForInvoice = {
       CustomerName: customer.customerName || "", // Maps to `customerName` in frontend
       Billdate: new Date(customer.Billdate),
@@ -119,6 +95,7 @@ const createBilling = async (req, res) => {
       customer: customerForInvoice, // Assign the prepared object
       billing: billing,
       finalAmount: finalAmount,
+      billingType: billingType || "", // fallback default
     });
 
     await invoice.save();
@@ -165,6 +142,7 @@ const createBilling = async (req, res) => {
     res.status(500).json({ error: errorMessage, details: error.message });
   }
 };
+
 const getAllInvoices = async (req, res) => {
   try {
     const invoices = await Invoice.find()
