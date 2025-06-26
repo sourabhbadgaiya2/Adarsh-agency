@@ -210,6 +210,18 @@ function AddSalesMan() {
               />
             </Form.Group>
           </Col>
+
+          <Col md={6}>
+            <Form.Group className='mb-3'>
+              <Form.Label>Alternate Mobile</Form.Label>
+              <Form.Control
+                type='text'
+                name='alternateMobile'
+                value={formData.alternateMobile}
+                onChange={handleChange}
+              />
+            </Form.Group>
+          </Col>
           {/* <Col md={6}>
             <Form.Group className='mb-3'>
               <Form.Label>Email</Form.Label>
@@ -239,17 +251,6 @@ function AddSalesMan() {
                 type='text'
                 name='address'
                 value={formData.address}
-                onChange={handleChange}
-              />
-            </Form.Group>
-          </Col>
-          <Col md={6}>
-            <Form.Group className='mb-3'>
-              <Form.Label>Alternate Mobile</Form.Label>
-              <Form.Control
-                type='text'
-                name='alternateMobile'
-                value={formData.alternateMobile}
                 onChange={handleChange}
               />
             </Form.Group>

@@ -731,6 +731,28 @@ const GenerateInvoice = () => {
   const itemsPerPage = 14;
   const billingChunks = chunkArray(billing, itemsPerPage);
 
+  // Utility to group by GST %
+  const gstSummary = billing.reduce((acc, item) => {
+    const product = productDetails[item.productId?._id] || {};
+    const gst = product?.gstPercent || 0;
+    const amount = parseFloat(item.total) || 0;
+    const taxableAmt = (amount * 100) / (100 + gst); // to remove GST from total
+
+    if (!acc[gst]) {
+      acc[gst] = {
+        taxable: 0,
+        sgst: 0,
+        cgst: 0,
+      };
+    }
+
+    acc[gst].taxable += taxableAmt;
+    acc[gst].sgst += (taxableAmt * gst) / 2 / 100;
+    acc[gst].cgst += (taxableAmt * gst) / 2 / 100;
+
+    return acc;
+  }, {});
+
   if (loading) return <Loader />;
 
   return (
@@ -1276,32 +1298,41 @@ const GenerateInvoice = () => {
                     </p>
                     <p>E.&.O.E</p>
                   </div>
-
+                  {/* //!SGST */}
                   <div
                     className=''
                     style={{
                       borderLeft: "1px solid black",
                       paddingLeft: "10px",
+                      margin:"0"
                     }}
                   >
-                    <p>
-                      12%: SGST 191.04, CGST 191.04 ={" "}
-                      {((totals.total || 0) * 0.06).toFixed(2)} /{" "}
-                      {totals.total?.toFixed(2) || "0.00"}
-                    </p>
-
+                    {Object.entries(gstSummary).map(([rate, value]) => (
+                      <p style={{ margin: "0", padding: "2px" }} key={rate}>
+                        {rate}%: SGST {value.sgst.toFixed(2)}, CGST{" "}
+                        {value.cgst.toFixed(2)} ={" "}
+                        {(value.sgst + value.cgst).toFixed(2)} /{" "}
+                        {value.taxable.toFixed(2)}
+                      </p>
+                    ))}
                     <p
                       style={{
                         borderTop: "1px solid black",
                         paddingLeft: "5px",
-                        paddingTop: "15px",
+                        paddingTop: "8px",
                         borderTopStyle: "dashed",
                       }}
                     >
-                      SGST AMT 191.04, CGST AMT : 191.04{" "}
+                      SGST AMT{" "}
+                      {Object.values(gstSummary)
+                        .reduce((sum, val) => sum + val.sgst, 0)
+                        .toFixed(2)}
+                      , CGST AMT :{" "}
+                      {Object.values(gstSummary)
+                        .reduce((sum, val) => sum + val.cgst, 0)
+                        .toFixed(2)}
                     </p>
                   </div>
-
                   <div
                     style={{
                       width: "32%",
