@@ -61,9 +61,9 @@ function DisplaySalesMan() {
           <tr>
             <th>Photo</th>
             <th>Name</th>
-            {/* <th>Designation</th> */}
             <th>Mobile</th>
-            {/* <th>Email</th> */}
+            <th>Alternate Mobile</th>
+            <th>Beat</th>
             <th>City</th>
             <th>Username</th>
             <th>Action</th>
@@ -86,9 +86,18 @@ function DisplaySalesMan() {
                   )}
                 </td>
                 <td>{s.name}</td>
-                {/* <td>{s.designation}</td> */}
                 <td>{s.mobile}</td>
-                {/* <td>{s.email}</td> */}
+                <td>{s.alternateMobile}</td>
+                <td>
+                  <div className='d-flex flex-column gap-2'>
+                    {s.beat.map((b, i) => (
+                      <span key={i} className='bg-light px-2 py-1 rounded'>
+                        {b.area}
+                      </span>
+                    ))}
+                  </div>
+                </td>
+
                 <td>{s.city}</td>
                 <td>{s.username}</td>
                 <td>

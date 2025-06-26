@@ -104,32 +104,125 @@ const ProductBillingReport = ({ onBillingDataChange }, ref) => {
     };
   };
 
+  // const handleChange = (index, field, value) => {
+  //   const updatedRows = [...rows];
+  //   let row = { ...updatedRows[index], [field]: value };
+
+  //   if (field === "product") {
+  //     row.product = value;
+  //     row.GST = value.gstPercent || "";
+  //     row.Unit = value.primaryUnit || "";
+
+  //     const baseRate =
+  //       row.Unit === value.primaryUnit
+  //         ? value.primaryPrice
+  //         : value.secondaryPrice;
+  //     row.Rate = (baseRate * (1 + (value.gstPercent || 0) / 100)).toFixed(2);
+  //   }
+
+  //   if (field === "Unit" && row.product) {
+  //     const prod = row.product;
+  //     const baseRate =
+  //       value === prod.primaryUnit ? prod.primaryPrice : prod.secondaryPrice;
+  //     row.Rate = (baseRate * (1 + (prod.gstPercent || 0) / 100)).toFixed(2);
+  //   }
+
+  //   if (field === "Qty" && row.product) {
+  //     const qtyNum = parseFloat(value);
+  //     const prod = row.product;
+  //     if (!isNaN(qtyNum) && qtyNum > 0) {
+  //       if (qtyNum > prod.availableQty) {
+  //         toast.error(
+  //           `Product "${prod.productName}" has only ${prod.availableQty} in stock.`,
+  //           { position: "top-center", autoClose: 3000 }
+  //         );
+  //         return;
+  //       }
+
+  //       const baseRate =
+  //         row.Unit === prod.primaryUnit
+  //           ? prod.primaryPrice
+  //           : prod.secondaryPrice;
+  //       row.Rate = (baseRate * (1 + (prod.gstPercent || 0) / 100)).toFixed(2);
+  //     }
+  //   }
+
+  //   row = recalculateRow(row);
+  //   updatedRows[index] = row;
+  //   setRows(updatedRows);
+
+  //   const finalTotal = updatedRows
+  //     .reduce((sum, r) => {
+  //       const amt = parseFloat(r.Amount);
+  //       return sum + (isNaN(amt) ? 0 : amt);
+  //     }, 0)
+  //     .toFixed(2);
+
+  //   setFinalTotalAmount(finalTotal);
+
+  //   const filteredBillingData = updatedRows
+  //     .filter(
+  //       (r) =>
+  //         r.product !== null &&
+  //         r.Qty !== "" &&
+  //         !isNaN(parseFloat(r.Qty)) &&
+  //         parseFloat(r.Qty) > 0
+  //     )
+  //     .map((r) => ({
+  //       productId: r.product._id,
+  //       itemName: r.product.productName,
+  //       hsnCode: r.product.hsnCode,
+  //       unit: r.Unit,
+  //       qty: parseFloat(r.Qty),
+  //       Free: parseFloat(r.Free) || 0,
+  //       rate: parseFloat(r.Basic), // Store base rate
+  //       sch: parseFloat(r.Sch) || 0,
+  //       schAmt: parseFloat(r.SchAmt) || 0,
+  //       cd: parseFloat(r.CD) || 0,
+  //       cdAmt: parseFloat(r.CDAmt) || 0,
+  //       total: parseFloat(r.Total) || 0,
+  //       gst: parseFloat(r.GST) || 0,
+  //       amount: parseFloat(r.Amount) || 0,
+  //     }));
+
+  //   onBillingDataChange(filteredBillingData, finalTotal);
+  // };
+
   const handleChange = (index, field, value) => {
     const updatedRows = [...rows];
     let row = { ...updatedRows[index], [field]: value };
 
     if (field === "product") {
       row.product = value;
-      row.GST = value.gstPercent || "";
+      row.GST = parseFloat(value.gstPercent) || 0;
       row.Unit = value.primaryUnit || "";
 
-      const baseRate =
-        row.Unit === value.primaryUnit
-          ? value.primaryPrice
-          : value.secondaryPrice;
-      row.Rate = (baseRate * (1 + (value.gstPercent || 0) / 100)).toFixed(2);
+      const baseRate = parseFloat(value.salesRate) || 0;
+      const gstPercent = parseFloat(value.gstPercent) || 0;
+
+      if (!isNaN(baseRate)) {
+        row.Rate = (baseRate * (1 + gstPercent / 100)).toFixed(2);
+      } else {
+        row.Rate = "";
+      }
     }
 
     if (field === "Unit" && row.product) {
       const prod = row.product;
-      const baseRate =
-        value === prod.primaryUnit ? prod.primaryPrice : prod.secondaryPrice;
-      row.Rate = (baseRate * (1 + (prod.gstPercent || 0) / 100)).toFixed(2);
+      const baseRate = parseFloat(prod.salesRate) || 0;
+      const gstPercent = parseFloat(prod.gstPercent) || 0;
+
+      if (!isNaN(baseRate)) {
+        row.Rate = (baseRate * (1 + gstPercent / 100)).toFixed(2);
+      } else {
+        row.Rate = "";
+      }
     }
 
     if (field === "Qty" && row.product) {
       const qtyNum = parseFloat(value);
       const prod = row.product;
+
       if (!isNaN(qtyNum) && qtyNum > 0) {
         if (qtyNum > prod.availableQty) {
           toast.error(
@@ -139,14 +232,18 @@ const ProductBillingReport = ({ onBillingDataChange }, ref) => {
           return;
         }
 
-        const baseRate =
-          row.Unit === prod.primaryUnit
-            ? prod.primaryPrice
-            : prod.secondaryPrice;
-        row.Rate = (baseRate * (1 + (prod.gstPercent || 0) / 100)).toFixed(2);
+        const baseRate = parseFloat(prod.salesRate) || 0;
+        const gstPercent = parseFloat(prod.gstPercent) || 0;
+
+        if (!isNaN(baseRate)) {
+          row.Rate = (baseRate * (1 + gstPercent / 100)).toFixed(2);
+        } else {
+          row.Rate = "";
+        }
       }
     }
 
+    // 🔁 Recalculate all row values like Basic, SchAmt, CDAmt, etc.
     row = recalculateRow(row);
     updatedRows[index] = row;
     setRows(updatedRows);
@@ -175,7 +272,7 @@ const ProductBillingReport = ({ onBillingDataChange }, ref) => {
         unit: r.Unit,
         qty: parseFloat(r.Qty),
         Free: parseFloat(r.Free) || 0,
-        rate: parseFloat(r.Basic), // Store base rate
+        rate: parseFloat(r.Basic), // Basic rate without GST
         sch: parseFloat(r.Sch) || 0,
         schAmt: parseFloat(r.SchAmt) || 0,
         cd: parseFloat(r.CD) || 0,
@@ -187,85 +284,6 @@ const ProductBillingReport = ({ onBillingDataChange }, ref) => {
 
     onBillingDataChange(filteredBillingData, finalTotal);
   };
-
-  // const handleKeyDown = (e, rowIndex) => {
-  //   if (e.altKey && e.key === "n") {
-  //     e.preventDefault();
-  //     if (rowIndex === rows.length - 1) {
-  //       setRows([...rows, { ...defaultRow }]);
-  //     }
-  //   }
-
-  //   if (e.key === "Delete" && rows.length > 1) {
-  //     e.preventDefault();
-  //     const updatedRows = rows.filter((_, i) => i !== rowIndex);
-  //     setRows(updatedRows);
-
-  //     const filteredBillingData = updatedRows
-  //       .filter(
-  //         (r) =>
-  //           r.product !== null &&
-  //           r.Qty !== "" &&
-  //           !isNaN(parseFloat(r.Qty)) &&
-  //           parseFloat(r.Qty) > 0
-  //       )
-  //       .map((r) => ({
-  //         productId: r.product._id,
-  //         itemName: r.product.productName,
-  //         hsnCode: r.product.hsnCode,
-  //         unit: r.Unit,
-  //         qty: parseFloat(r.Qty),
-  //         Free: parseFloat(r.Free) || 0,
-  //         rate: parseFloat(r.Basic),
-  //         sch: parseFloat(r.Sch) || 0,
-  //         schAmt: parseFloat(r.SchAmt) || 0,
-  //         cd: parseFloat(r.CD) || 0,
-  //         cdAmt: parseFloat(r.CDAmt) || 0,
-  //         total: parseFloat(r.Total) || 0,
-  //         gst: parseFloat(r.GST) || 0,
-  //         amount: parseFloat(r.Amount) || 0,
-  //       }));
-
-  //     const recalculatedFinalTotal = updatedRows
-  //       .reduce((sum, r) => {
-  //         const amt = parseFloat(r.Amount);
-  //         return sum + (isNaN(amt) ? 0 : amt);
-  //       }, 0)
-  //       .toFixed(2);
-
-  //     setFinalTotalAmount(recalculatedFinalTotal);
-  //     onBillingDataChange(filteredBillingData, recalculatedFinalTotal);
-  //   }
-  // };
-
-  // const handleKeyDown = (e, rowIndex) => {
-  //   if (e.key !== "Enter") return;
-
-  //   e.preventDefault();
-
-  //   const focusableSelectors =
-  //     "input:not([readonly]), select, .react-select__input input";
-  //   const allFocusable = Array.from(
-  //     document.querySelectorAll(focusableSelectors)
-  //   );
-
-  //   const currentIndex = allFocusable.indexOf(e.target);
-
-  //   // Move to next
-  //   let next = allFocusable[currentIndex + 1];
-
-  //   // If next is react-select, open dropdown
-  //   if (next) {
-  //     next.focus();
-  //     if (next.className.includes("react-select__input")) {
-  //       next.focus(); // focus twice to ensure open
-  //     }
-  //   } else {
-  //     // Optional: If last input, add new row or loop back
-  //     // addRow(); // your function to add new row if needed
-  //     allFocusable[0]?.focus(); // Loop to first
-  //   }
-  // };
 
   const handleKeyDown = (e, rowIndex) => {
     const isEnter = e.key === "Enter";
