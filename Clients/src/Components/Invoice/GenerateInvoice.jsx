@@ -1304,27 +1304,11 @@ const GenerateInvoice = () => {
                     style={{
                       borderLeft: "1px solid black",
                       paddingLeft: "10px",
+                      margin:"0"
                     }}
                   >
-                    {/* <p>
-                      12%: SGST 191.04, CGST 191.04 ={" "}
-                      {((totals.total || 0) * 0.06).toFixed(2)} /{" "}
-                      {totals.total?.toFixed(2) || "0.00"}
-                    </p>
-
-                    <p
-                      style={{
-                        borderTop: "1px solid black",
-                        paddingLeft: "5px",
-                        paddingTop: "15px",
-                        borderTopStyle: "dashed",
-                      }}
-                    >
-                      SGST AMT 191.04, CGST AMT : 191.04{" "}
-                    </p> */}
-
                     {Object.entries(gstSummary).map(([rate, value]) => (
-                      <p key={rate}>
+                      <p style={{ margin: "0", padding: "2px" }} key={rate}>
                         {rate}%: SGST {value.sgst.toFixed(2)}, CGST{" "}
                         {value.cgst.toFixed(2)} ={" "}
                         {(value.sgst + value.cgst).toFixed(2)} /{" "}
@@ -1335,7 +1319,7 @@ const GenerateInvoice = () => {
                       style={{
                         borderTop: "1px solid black",
                         paddingLeft: "5px",
-                        paddingTop: "15px",
+                        paddingTop: "8px",
                         borderTopStyle: "dashed",
                       }}
                     >
