@@ -11,31 +11,6 @@ exports.createCustomer = async (req, res) => {
   }
 };
 
-// exports.createCustomer = async (req, res) => {
-//   try {
-//     console.log(req.body, "OP");
-
-//     // Transform beat to beats
-//     const beats = req.body.beat?.map((b) => b.areaName) || [];
-
-//     const customerData = {
-//       ...req.body,
-//       beats, // mapped area names
-//     };
-
-//     // delete customerData.beat; // remove original beat key if necessary
-
-//     const customer = await Customer.create(customerData);
-
-//     await customer.save();
-
-//     res.status(201).json(customer);
-//   } catch (err) {
-//     console.error("Error creating customer:", err);
-//     res.status(400).json({ error: err.message });
-//   }
-// };
-
 // READ all customers
 exports.getAllCustomers = async (req, res) => {
   try {

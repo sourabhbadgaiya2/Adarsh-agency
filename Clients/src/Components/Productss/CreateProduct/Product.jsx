@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { PencilFill, TrashFill } from "react-bootstrap-icons";
 import axios from "../../../Config/axios";
@@ -21,6 +21,10 @@ import {
 
 const Product = ({ onSuccess, onCancel, productToEdit }) => {
   const [loading, setLoading] = useState(false);
+
+  // 👇 Add refs
+  const companyIdRef = useRef();
+  const productNameRef = useRef();
 
   const [products, setProducts] = useState([]);
   const [editIndex, setEditIndex] = useState(null);
@@ -155,7 +159,22 @@ const Product = ({ onSuccess, onCancel, productToEdit }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+
     try {
+      if (!formData.companyId) {
+        toast.error("Please select a Brand.");
+        companyIdRef.current?.focus();
+        setLoading(false);
+        return;
+      }
+
+      if (!formData.productName.trim()) {
+        toast.error("Please enter the product name.");
+        productNameRef.current?.focus();
+        setLoading(false);
+        return;
+      }
+
       if (photo) {
         const data = new FormData();
         data.append("companyId", formData.companyId);
@@ -255,7 +274,7 @@ const Product = ({ onSuccess, onCancel, productToEdit }) => {
   }
 
   return (
-    <div className='container mt-2'>
+    <div className='container-fluid mt-2'>
       {/* <h3 className='mb-3'>Create Product</h3> */}
       <div className='row-2'>
         {/* Form Section */}
@@ -271,6 +290,7 @@ const Product = ({ onSuccess, onCancel, productToEdit }) => {
                   <div className='col-md-6 mb-3'>
                     <label>Brand</label>
                     <select
+                      ref={companyIdRef}
                       name='companyId'
                       value={formData.companyId}
                       onChange={handleChange}
@@ -288,6 +308,7 @@ const Product = ({ onSuccess, onCancel, productToEdit }) => {
                   <div className='col-md-6 mb-3'>
                     <label>Product Name</label>
                     <input
+                      ref={productNameRef}
                       type='text'
                       name='productName'
                       value={formData.productName}
@@ -518,13 +539,13 @@ const Product = ({ onSuccess, onCancel, productToEdit }) => {
                           <th>Product Image</th>
                           <th>Product Name</th>
                           <th>Brand</th>
+                          <th>HSN Code</th>
                           <th>MRP</th>
                           <th>Sales Rate</th>
                           <th>Purchase Rate</th>
-                          {/* <th>Primary Unit</th>
-                        <th>Primary Price</th>
-                        <th>Secondary Unit</th>
-                        <th>Secondary Price</th> */}
+                          {/*<th>Primary Price</th>*/}
+                          <th>Available QTY.</th>
+                          <th>GST%</th>
                           <th>Actions</th>
                         </tr>
                       </thead>
@@ -543,15 +564,18 @@ const Product = ({ onSuccess, onCancel, productToEdit }) => {
                                 "No Photo"
                               )}
                             </td>
-                            <td>{product.productName}</td>
+                            <td style={{ textAlign: "left" }}>
+                              {product.productName}
+                            </td>
                             <td>{product.companyId?.name || "-"}</td>
+                            <td>{product.hsnCode}</td>
                             <td>{product.mrp}</td>
                             <td>{product.salesRate}</td>
                             <td>{product.purchaseRate}</td>
                             {/*  <td>{product.primaryUnit}</td>
-                          <td>{product.primaryPrice}</td>
-                          <td>{product.secondaryUnit}</td>
-                          <td>{product.secondaryPrice}</td> */}
+                          <td>{product.primaryPrice}</td>*/}
+                            <td>{product.availableQty}</td>
+                            <td>{product.gstPercent}</td>
                             <td>
                               <button
                                 className='btn btn-sm btn-warning me-2'
