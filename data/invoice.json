@@ -1,0 +1,262 @@
+{
+  "_id": {
+    "$oid": "685d20f8ccda025950db30e7"
+  },
+  "salesmanId": {
+    "$oid": "685a5239fe8690e461131d0d"
+  },
+  "customerId": {
+    "$oid": "68592f9b43649c13aa7b6b9e"
+  },
+  "billingType": "Cash",
+  "customer": {
+    "CustomerName": "ASHIRWAD TRADRES",
+    "Billdate": {
+      "$date": "2025-06-26T00:00:00.000Z"
+    },
+    "advanceAmt": 0,
+    "paymentMode": "Cash",
+    "salesmanName": "sourabh badgaiya",
+    "selectedSalesmanId": {
+      "$oid": "685a5239fe8690e461131d0d"
+    },
+    "selectedCustomerId": {
+      "$oid": "68592f9b43649c13aa7b6b9e"
+    },
+    "selectedBeatId": {
+      "$oid": "685a5239fe8690e461131d0f"
+    }
+  },
+  "billing": [
+    {
+      "productId": {
+        "$oid": "685d0ee79e04e9bdb46968b9"
+      },
+      "itemName": "AMLA WHEAT GRASS 500ML 100MRP",
+      "unit": "PCS",
+      "qty": 1,
+      "Free": 0,
+      "rate": 83.33,
+      "sch": 0,
+      "schAmt": 0,
+      "cd": 0,
+      "cdAmt": 0,
+      "total": 83.33,
+      "gst": 12,
+      "amount": 93.33,
+      "_id": {
+        "$oid": "685d20f8ccda025950db30e8"
+      }
+    },
+    {
+      "productId": {
+        "$oid": "685d0ee79e04e9bdb46968b4"
+      },
+      "itemName": "ALOVERA JUICE 1.LTR 210/-MRP",
+      "unit": "PCS",
+      "qty": 1,
+      "Free": 0,
+      "rate": 175,
+      "sch": 0,
+      "schAmt": 0,
+      "cd": 0,
+      "cdAmt": 0,
+      "total": 175,
+      "gst": 12,
+      "amount": 196,
+      "_id": {
+        "$oid": "685d20f8ccda025950db30e9"
+      }
+    },
+    {
+      "productId": {
+        "$oid": "685d0ee79e04e9bdb46968b5"
+      },
+      "itemName": "AMLA CANDY 250.GM 90/- MRP",
+      "unit": "PCS",
+      "qty": 1,
+      "Free": 0,
+      "rate": 75,
+      "sch": 0,
+      "schAmt": 0,
+      "cd": 0,
+      "cdAmt": 0,
+      "total": 75,
+      "gst": 5,
+      "amount": 78.75,
+      "_id": {
+        "$oid": "685d20f8ccda025950db30ea"
+      }
+    },
+    {
+      "productId": {
+        "$oid": "685d0ee79e04e9bdb46968b4"
+      },
+      "itemName": "ALOVERA JUICE 1.LTR 210/-MRP",
+      "unit": "PCS",
+      "qty": 1,
+      "Free": 0,
+      "rate": 175,
+      "sch": 0,
+      "schAmt": 0,
+      "cd": 0,
+      "cdAmt": 0,
+      "total": 175,
+      "gst": 12,
+      "amount": 196,
+      "_id": {
+        "$oid": "685d20f8ccda025950db30eb"
+      }
+    },
+    {
+      "productId": {
+        "$oid": "685d0ee79e04e9bdb46968b6"
+      },
+      "itemName": "AMLA CHATPATA (C)250.G 95 MRP",
+      "unit": "PCS",
+      "qty": 1,
+      "Free": 0,
+      "rate": 79.16,
+      "sch": 0,
+      "schAmt": 0,
+      "cd": 0,
+      "cdAmt": 0,
+      "total": 79.16,
+      "gst": 5,
+      "amount": 83.12,
+      "_id": {
+        "$oid": "685d20f8ccda025950db30ec"
+      }
+    },
+    {
+      "productId": {
+        "$oid": "685d0ee79e04e9bdb46968b6"
+      },
+      "itemName": "AMLA CHATPATA (C)250.G 95 MRP",
+      "unit": "PCS",
+      "qty": 1,
+      "Free": 0,
+      "rate": 79.16,
+      "sch": 0,
+      "schAmt": 0,
+      "cd": 0,
+      "cdAmt": 0,
+      "total": 79.16,
+      "gst": 5,
+      "amount": 83.12,
+      "_id": {
+        "$oid": "685d20f8ccda025950db30ed"
+      }
+    },
+    {
+      "productId": {
+        "$oid": "685d0ee79e04e9bdb46968b4"
+      },
+      "itemName": "ALOVERA JUICE 1.LTR 210/-MRP",
+      "unit": "PCS",
+      "qty": 1,
+      "Free": 0,
+      "rate": 175,
+      "sch": 0,
+      "schAmt": 0,
+      "cd": 0,
+      "cdAmt": 0,
+      "total": 175,
+      "gst": 12,
+      "amount": 196,
+      "_id": {
+        "$oid": "685d20f8ccda025950db30ee"
+      }
+    },
+    {
+      "productId": {
+        "$oid": "685d0ee79e04e9bdb46968b6"
+      },
+      "itemName": "AMLA CHATPATA (C)250.G 95 MRP",
+      "unit": "PCS",
+      "qty": 1,
+      "Free": 0,
+      "rate": 79.16,
+      "sch": 0,
+      "schAmt": 0,
+      "cd": 0,
+      "cdAmt": 0,
+      "total": 79.16,
+      "gst": 5,
+      "amount": 83.12,
+      "_id": {
+        "$oid": "685d20f8ccda025950db30ef"
+      }
+    },
+    {
+      "productId": {
+        "$oid": "685d0ee79e04e9bdb46968b5"
+      },
+      "itemName": "AMLA CANDY 250.GM 90/- MRP",
+      "unit": "PCS",
+      "qty": 1,
+      "Free": 0,
+      "rate": 75,
+      "sch": 0,
+      "schAmt": 0,
+      "cd": 0,
+      "cdAmt": 0,
+      "total": 75,
+      "gst": 5,
+      "amount": 78.75,
+      "_id": {
+        "$oid": "685d20f8ccda025950db30f0"
+      }
+    },
+    {
+      "productId": {
+        "$oid": "685d0ee79e04e9bdb46968b5"
+      },
+      "itemName": "AMLA CANDY 250.GM 90/- MRP",
+      "unit": "PCS",
+      "qty": 2,
+      "Free": 0,
+      "rate": 75,
+      "sch": 0,
+      "schAmt": 0,
+      "cd": 0,
+      "cdAmt": 0,
+      "total": 150,
+      "gst": 5,
+      "amount": 157.5,
+      "_id": {
+        "$oid": "685d20f8ccda025950db30f1"
+      }
+    },
+    {
+      "productId": {
+        "$oid": "685d0ee79e04e9bdb46968b4"
+      },
+      "itemName": "ALOVERA JUICE 1.LTR 210/-MRP",
+      "unit": "PCS",
+      "qty": 1,
+      "Free": 0,
+      "rate": 175,
+      "sch": 0,
+      "schAmt": 0,
+      "cd": 0,
+      "cdAmt": 0,
+      "total": 175,
+      "gst": 18,
+      "amount": 196,
+      "_id": {
+        "$oid": "685d20f8ccda025950db30f2"
+      }
+    },
+    {},
+    {},
+    {},
+    {},
+    {}
+  ],
+  "finalAmount": 1441.69,
+  "createdAt": {
+    "$date": "2025-06-26T10:29:12.509Z"
+  },
+  "__v": 0
+}

@@ -2,7 +2,7 @@ const Product = require("../Models/ProductModel");
 
 // POST /api/products - Create a new product
 const createProduct = async (req, res) => {
-  console.log(req.body, "create Product");
+  // console.log(req.body, "create Product");
   try {
     const {
       companyId,
@@ -21,6 +21,14 @@ const createProduct = async (req, res) => {
       primaryPrice,
       secondaryPrice,
     } = req.body;
+
+    if (req.file === undefined && req.body.hasImage === "true") {
+      return res.status(400).json({
+        error:
+          "Image upload failed. Please try again or check the image format.",
+      });
+    }
+
     const productImg = req.file ? req.file.filename : null;
 
     // Basic validation (add more if needed)
@@ -91,7 +99,6 @@ const getProducts = async (req, res) => {
   }
 };
 
-
 const UpdateProductQuantity = async (req, res) => {
   const { productId, quantity } = req.body;
   try {
@@ -108,7 +115,8 @@ const UpdateProductQuantity = async (req, res) => {
     res.status(500).json({ message: "Server error.", error });
   }
 };
-// PUT /api/products/:id - Update a product
+
+//! PUT /api/products/:id - Update a product
 const updateProduct = async (req, res) => {
   const { id } = req.params;
   const {
@@ -126,6 +134,8 @@ const updateProduct = async (req, res) => {
     primaryPrice,
     secondaryPrice,
   } = req.body;
+
+  console.log(req.body, "PRODUCT CTRL");
 
   try {
     // Validation
@@ -159,7 +169,7 @@ const updateProduct = async (req, res) => {
         secondaryUnit,
         primaryPrice,
         secondaryPrice,
-
+        availableQty,
         mrp,
         salesRate,
         purchaseRate,
