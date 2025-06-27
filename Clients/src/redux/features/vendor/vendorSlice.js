@@ -6,7 +6,7 @@ import {
   fetchVendorById,
   updateVendor,
   deleteVendor,
-} from "./vendorThunks";
+} from "./VendorThunks";
 
 const initialState = {
   vendors: [],
