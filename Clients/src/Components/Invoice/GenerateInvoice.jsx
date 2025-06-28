@@ -655,6 +655,8 @@ const GenerateInvoice = () => {
   const [loading, setLoading] = useState(false);
   const [productDetails, setProductDetails] = useState({});
 
+  const [printOrientation, setPrintOrientation] = useState("landscape");
+
   useEffect(() => {
     const fetchInvoice = async () => {
       setLoading(true);
@@ -757,7 +759,16 @@ const GenerateInvoice = () => {
 
   return (
     <div>
-      <div className='container'>
+      <div className='container  d-print-none'>
+        <select
+          value={printOrientation}
+          onChange={(e) => setPrintOrientation(e.target.value)}
+          className='form-select mb-3'
+        >
+          <option value='portrait'>Portrait</option>
+          <option value='landscape'>Landscape</option>
+        </select>
+
         <button
           onClick={() => window.print()}
           className='btn btn-primary my-3 d-print-none'
@@ -793,7 +804,7 @@ const GenerateInvoice = () => {
             }
 
             @page {
-              size: A5;
+              size: A5 ${printOrientation};
               margin:3mm;
             }
 
@@ -1304,7 +1315,7 @@ const GenerateInvoice = () => {
                     style={{
                       borderLeft: "1px solid black",
                       paddingLeft: "10px",
-                      margin:"0"
+                      margin: "0",
                     }}
                   >
                     {Object.entries(gstSummary).map(([rate, value]) => (

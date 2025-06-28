@@ -99,7 +99,7 @@ const AddCompany = () => {
                 </div>
               </div>
 
-              <div className='col-md-4'>
+              {/* <div className='col-md-4'>
                 <div className='form-group'>
                   <label className='font-weight-bold'>
                     Contact Person Name
@@ -203,7 +203,7 @@ const AddCompany = () => {
                     onChange={handleChange}
                   />
                 </div>
-              </div>
+              </div> 
 
               <div className='col-md-4'>
                 <div className='form-group'>
@@ -216,7 +216,7 @@ const AddCompany = () => {
                     onChange={handleChange}
                   />
                 </div>
-              </div>
+              </div>*/}
             </div>
           </div>
 
