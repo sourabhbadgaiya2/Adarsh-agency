@@ -17,6 +17,7 @@ import VendorReport from "../Components/SalesMan/VendorReport";
 import PurchaseForm from "../Components/SalesMan/PurchaseForm";
 import CustomerDetail from "../Components/Customer/CustomerDetail";
 import FirmDetail from "../Components/Firm/FirmDetail";
+import Test from "../Components/Test";
 
 const AppRoutes = () => {
   return (
@@ -38,6 +39,7 @@ const AppRoutes = () => {
         <Route path="/Vendor-report" element={<VendorReport />} />
         <Route path="/purchase" element={<PurchaseForm />} />
         <Route path="/add-customer" element={<CustomerDetail />} />
+        <Route path="/test" element={<Test />} />
       </Route>
     </Routes>
   );

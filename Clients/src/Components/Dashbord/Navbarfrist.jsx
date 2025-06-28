@@ -7,6 +7,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 const Navbarfristn = () => {
   const [expanded, setExpanded] = useState(false);
 
+  const [activeDropdown, setActiveDropdown] = useState("");
+
   return (
     <div className='vpfinancial-navbar'>
       <div className='blue-header   py-2'>
@@ -68,13 +70,13 @@ const Navbarfristn = () => {
                         Add Company
                       </Dropdown.Item> */}
                       <Dropdown.Item as={Link} to='/brand'>
-                        Add Brand
+                        Brand
                       </Dropdown.Item>
                       <Dropdown.Item as={Link} to='/product'>
-                        Create Product
+                        Product
                       </Dropdown.Item>
                       <Dropdown.Item as={Link} to='/Vendor-report'>
-                        Add Vendor
+                        Vendor
                       </Dropdown.Item>
 
                       {/* <Dropdown.Item as={Link} to="/pro-categories">
@@ -88,14 +90,14 @@ const Navbarfristn = () => {
                     {/* Product Master */}
                     <div className='col-md-4'>
                       <Dropdown.Item as={Link} to='/add-customer'>
-                        Add Customer
+                        Customer
                       </Dropdown.Item>
                       <Dropdown.Item as={Link} to='/add-salesman'>
-                        Add Sales Man
+                        Sales Man
                       </Dropdown.Item>
 
                       <Dropdown.Item as={Link} to='/display-salesman'>
-                        Display Sales Man
+                        View Sales Man
                       </Dropdown.Item>
                       {/* <Dropdown.Item as={Link} to="/display-billing-report">
                         Product Billing Report

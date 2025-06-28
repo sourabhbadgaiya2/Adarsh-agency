@@ -25,7 +25,7 @@ const CompanyDetail = () => {
     setLoading(true);
     try {
       const res = await axios.get("/company");
-      console.log(res.data);
+      // console.log(res.data);
       setCompanies(res.data);
     } catch (err) {
       console.error(err);
@@ -129,7 +129,7 @@ const CompanyDetail = () => {
       <div className='row'>
         <div className='col-md-12'>
           <div className='card card-primary card-outline'>
-            <div style={{ backgroundColor: "black" }} className='card-header'>
+            <div style={{ backgroundColor: "" }} className='card-header'>
               <Tabs
                 id='task-tabs'
                 activeKey={activeTab}
@@ -160,15 +160,15 @@ const CompanyDetail = () => {
                     <thead>
                       <tr>
                         <th>Brand Name</th>
-                        <th>Contact Person</th>
+                        {/* <th>Contact Person</th>
                         <th>Designation</th>
                         <th>City</th>
-                        {/* <th>Address</th> */}
+                        <th>Address</th>
                         <th>Mobile</th>
-                        {/* <th>Alt Mobile</th> */}
+                        <th>Alt Mobile</th>
                         <th>Email</th>
                         <th>WhatsApp</th>
-                        <th>GST</th>
+                        <th>GST</th> */}
                         <th>Actions</th>
                       </tr>
                     </thead>
@@ -177,18 +177,18 @@ const CompanyDetail = () => {
                         <tr key={c._id}>
                           {/* company name */}
                           <td>{c.name}</td>
-                          <td>{c.contactPerson}</td>
+                          {/* <td>{c.contactPerson}</td>
                           <td>{c.designation}</td>
                           <td>{c.city}</td>
-                          {/* <td>{c.address}</td> */}
+                          <td>{c.address}</td>
                           <td>{c.mobile}</td>
-                          {/* <td>{c.alternateMobile}</td> */}
+                          <td>{c.alternateMobile}</td>
                           <td>{c.email}</td>
                           <td>{c.whatsapp}</td>
                           <td>
                             {c.gstNumber}
                             {"%"}
-                          </td>
+                          </td> */}
                           <td>
                             <button
                               className='btn btn-danger btn-sm'
