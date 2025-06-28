@@ -760,14 +760,14 @@ const GenerateInvoice = () => {
   return (
     <div>
       <div className='container  d-print-none'>
-        <select
+        {/* <select
           value={printOrientation}
           onChange={(e) => setPrintOrientation(e.target.value)}
           className='form-select mb-3'
         >
           <option value='portrait'>Portrait</option>
           <option value='landscape'>Landscape</option>
-        </select>
+        </select> */}
 
         <button
           onClick={() => window.print()}
@@ -786,6 +786,7 @@ const GenerateInvoice = () => {
 
             #print-area, #print-area * {
               visibility: visible;
+              font-family: "Courier New", monospace;
             }
 
             #print-area {
@@ -804,7 +805,7 @@ const GenerateInvoice = () => {
             }
 
             @page {
-              size: A5 ${printOrientation};
+              size: A4;
               margin:3mm;
             }
 
@@ -835,15 +836,16 @@ const GenerateInvoice = () => {
               width: "210mm",
               margin: "auto",
               padding: "1mm",
-              fontFamily: "monospace",
+              fontFamily: "Courier New monospace",
+
               fontSize: "12px",
             }}
           >
             <div>
               <div
                 style={{
-                  borderBottom: "2px dashed black",
-                  paddingBottom: "4px",
+                  borderBottom: "1px dashed black",
+                  paddingBottom: "1px",
                   marginBottom: "1px",
                   marginTop: "0px",
                 }}
@@ -854,7 +856,7 @@ const GenerateInvoice = () => {
 
                 <h2
                   style={{
-                    fontWeight: "bold",
+                    //fontWeight: "bold",
                     fontSize: "22px",
                     textAlign: "center",
                     margin: "-3px",
@@ -889,7 +891,7 @@ const GenerateInvoice = () => {
                   margin: 0,
                   padding: 0,
                   fontSize: "12px",
-                  fontFamily: "monospace",
+                  // fontFamily: "monospace",
                   lineHeight: "1.2",
                 }}
               >
@@ -908,7 +910,9 @@ const GenerateInvoice = () => {
                   </strong>
                   <span>{fullCustomer?.address1 || "N/A"}</span>
                   <span>{fullCustomer?.mobile || "N/A"}</span>
-                  <strong>GSTIN: {fullCustomer?.gstNumber || "N/A"}</strong>
+                  <strong style={{ textAlign: "center", marginTop: "-13px" }}>
+                    GSTIN: {fullCustomer?.gstNumber || "N/A"}
+                  </strong>
                 </div>
 
                 <div
@@ -924,7 +928,7 @@ const GenerateInvoice = () => {
                   <span>
                     <strong>
                       Bill No:
-                      <span style={{ fontSize: "17px" }}>
+                      <span style={{ fontSize: "17px", fontWeight: "300" }}>
                         {invoice._id?.slice(-6)}
                       </span>
                     </strong>
@@ -936,11 +940,12 @@ const GenerateInvoice = () => {
                   </span>
 
                   <span>
-                    <strong>Salesman:</strong> {salesmanId?.name || "N/A"}
+                    <strong>Salesman:</strong> {salesmanId?.mobile || "-"}{" "}
+                    &nbsp; {salesmanId?.name.slice(0, 4) || "N/A"}
                   </span>
-                  <span>
+                  {/* <span>
                     <strong>Number:</strong> {salesmanId?.mobile || "-"}
-                  </span>
+                  </span> */}
                 </div>
               </div>
 
@@ -975,6 +980,7 @@ const GenerateInvoice = () => {
                           textAlign: "center",
                           paddingLeft: i === 1 ? "5px" : "2px",
                           paddingRight: i === 1 ? "5px" : "2px",
+                          fontWeight: "400",
                         }}
                       >
                         {header}
@@ -1121,7 +1127,7 @@ const GenerateInvoice = () => {
                   })}
 
                   {chunk.length > 0 && (
-                    <tr style={{ borderBottom: "2px solid black" }}>
+                    <tr style={{ borderBottom: "1px solid black" }}>
                       <td
                         colSpan={14}
                         style={{ height: "1px", padding: 0 }}
@@ -1357,7 +1363,7 @@ const GenerateInvoice = () => {
                     <h5
                       style={{
                         width: "100%",
-                        fontSize: "16px",
+                        fontSize: "14px",
                         fontWeight: "bold",
                         display: "flex",
                         justifyContent: "space-between",
