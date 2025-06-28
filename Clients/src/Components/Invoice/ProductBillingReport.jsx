@@ -108,37 +108,29 @@ const ProductBillingReport = ({ onBillingDataChange }, ref) => {
     const qty = parseFloat(row.Qty) || 0;
     const schPercent = parseFloat(row.Sch) || 0;
     const cdPercent = parseFloat(row.CD) || 0;
-    const gstPercent = parseFloat(row.GST) || 0; // 🧠 GST per product (0, 5, 12, 18...)
+    const gstPercent = parseFloat(row.GST) || 0;
 
     const rateWithGst = parseFloat(row.Rate) || 0;
 
-    // 🔹 Step 1: Remove GST from rate
-    const basicRate = rateWithGst / (1 + gstPercent / 100);
-    console.log(rateWithGst, "HELLO");
+    const gstAmtPerUnit = (rateWithGst * gstPercent) / (100 + gstPercent);
+    const basicRate = rateWithGst - gstAmtPerUnit;
 
-    // 🔹 Step 2: Calculate basic total (excluding GST)
     const basicTotal = basicRate * qty;
-
-    // 🔹 Step 3: Scheme and CD discounts
     const schAmt = (basicTotal * schPercent) / 100;
     const cdAmt = (basicTotal * cdPercent) / 100;
-
-    // 🔹 Step 4: Net after discounts
     const discountedTotal = basicTotal - schAmt - cdAmt;
 
-    // 🔹 Step 5: Add GST on net total
     const gstAmount = (discountedTotal * gstPercent) / 100;
-
     const finalAmount = discountedTotal + gstAmount;
 
     return {
       ...row,
-      Basic: basicRate.toFixed(2), // Basic rate (without GST)
-      Total: discountedTotal.toFixed(2), // Total after discount but before GST
-      SchAmt: schAmt.toFixed(2), // Scheme discount amount
-      CDAmt: cdAmt.toFixed(2), // CD amount
-      GSTAmt: gstAmount.toFixed(2), // GST amount added
-      Amount: finalAmount.toFixed(2), // Final amount with GST
+      Basic: basicRate.toFixed(2), // ✅ Rate without GST
+      Total: discountedTotal.toFixed(2), // 💸 Discounted total (no GST)
+      SchAmt: schAmt.toFixed(2),
+      CDAmt: cdAmt.toFixed(2),
+      GSTAmt: gstAmount.toFixed(2), // 💰 GST on discounted total
+      Amount: finalAmount.toFixed(2), // ✅ Final with GST
     };
   };
 
@@ -146,16 +138,66 @@ const ProductBillingReport = ({ onBillingDataChange }, ref) => {
     const updatedRows = [...rows];
     let row = { ...updatedRows[index], [field]: value };
 
+    // if (field === "product") {
+    //   row.product = value;
+    //   row.GST = parseFloat(value.gstPercent) || 0;
+    //   row.Unit = value.primaryUnit || "";
+
+    //   const baseRate = parseFloat(value.salesRate) || 0;
+    //   const gstPercent = parseFloat(value.gstPercent) || 0;
+
+    //   if (!isNaN(baseRate)) {
+    //     row.Rate = (baseRate * (1 + gstPercent / 100)).toFixed(2);
+    //   } else {
+    //     row.Rate = "";
+    //   }
+    // }
+
+    // if (field === "Unit" && row.product) {
+    //   const prod = row.product;
+    //   const baseRate = parseFloat(prod.salesRate) || 0;
+    //   const gstPercent = parseFloat(prod.gstPercent) || 0;
+
+    //   if (!isNaN(baseRate)) {
+    //     row.Rate = (baseRate * (1 + gstPercent / 100)).toFixed(2);
+    //   } else {
+    //     row.Rate = "";
+    //   }
+    // }
+
+    // if (field === "Qty" && row.product) {
+    //   const qtyNum = parseFloat(value);
+    //   const prod = row.product;
+
+    //   if (!isNaN(qtyNum) && qtyNum > 0) {
+    //     if (qtyNum > prod.availableQty) {
+    //       toast.error(
+    //         `Product "${prod.productName}" has only ${prod.availableQty} in stock.`,
+    //         { position: "top-center", autoClose: 3000 }
+    //       );
+    //       return;
+    //     }
+
+    //     const baseRate = parseFloat(prod.salesRate) || 0;
+    //     const gstPercent = parseFloat(prod.gstPercent) || 0;
+
+    //     if (!isNaN(baseRate)) {
+    //       row.Rate = (baseRate * (1 + gstPercent / 100)).toFixed(2);
+    //     } else {
+    //       row.Rate = "";
+    //     }
+    //   }
+    // }
+
     if (field === "product") {
       row.product = value;
       row.GST = parseFloat(value.gstPercent) || 0;
       row.Unit = value.primaryUnit || "";
 
       const baseRate = parseFloat(value.salesRate) || 0;
-      const gstPercent = parseFloat(value.gstPercent) || 0;
 
       if (!isNaN(baseRate)) {
-        row.Rate = (baseRate * (1 + gstPercent / 100)).toFixed(2);
+        row.Rate = baseRate.toFixed(2); // ✅ GST mat jodo, direct salesRate dikhana hai
       } else {
         row.Rate = "";
       }
@@ -164,10 +206,9 @@ const ProductBillingReport = ({ onBillingDataChange }, ref) => {
     if (field === "Unit" && row.product) {
       const prod = row.product;
       const baseRate = parseFloat(prod.salesRate) || 0;
-      const gstPercent = parseFloat(prod.gstPercent) || 0;
 
       if (!isNaN(baseRate)) {
-        row.Rate = (baseRate * (1 + gstPercent / 100)).toFixed(2);
+        row.Rate = baseRate.toFixed(2); // ✅ Unit change pe bhi GST mat jodo
       } else {
         row.Rate = "";
       }
@@ -187,10 +228,9 @@ const ProductBillingReport = ({ onBillingDataChange }, ref) => {
         }
 
         const baseRate = parseFloat(prod.salesRate) || 0;
-        const gstPercent = parseFloat(prod.gstPercent) || 0;
 
         if (!isNaN(baseRate)) {
-          row.Rate = (baseRate * (1 + gstPercent / 100)).toFixed(2);
+          row.Rate = baseRate.toFixed(2); // ✅ Qty change pe bhi original salesRate hi dikhana hai
         } else {
           row.Rate = "";
         }
