@@ -77,33 +77,6 @@ const ProductBillingReport = ({ onBillingDataChange }, ref) => {
     }
   };
 
-  // const recalculateRow = (row) => {
-  //   const qty = parseFloat(row.Qty) || 0;
-  //   const schPercent = parseFloat(row.Sch) || 0;
-  //   const cdPercent = parseFloat(row.CD) || 0;
-  //   const gstPercent = parseFloat(row.GST) || 0;
-
-  //   const rateWithGst = parseFloat(row.Rate) || 0;
-  //   const rateWithoutGst = rateWithGst / (1 + gstPercent / 100);
-  //   const basicRate = rateWithoutGst.toFixed(2);
-
-  //   const basicTotal = rateWithoutGst * qty;
-  //   const schAmt = (basicTotal * schPercent) / 100;
-  //   const cdAmt = (basicTotal * cdPercent) / 100;
-  //   const discountedTotal = basicTotal - schAmt - cdAmt;
-
-  //   const finalAmount = discountedTotal + (discountedTotal * gstPercent) / 100;
-
-  //   return {
-  //     ...row,
-  //     Basic: basicRate,
-  //     Total: discountedTotal.toFixed(2),
-  //     SchAmt: schAmt.toFixed(2),
-  //     CDAmt: cdAmt.toFixed(2),
-  //     Amount: finalAmount.toFixed(2),
-  //   };
-  // };
-
   const recalculateRow = (row) => {
     const qty = parseFloat(row.Qty) || 0;
     const schPercent = parseFloat(row.Sch) || 0;
@@ -111,28 +84,57 @@ const ProductBillingReport = ({ onBillingDataChange }, ref) => {
     const gstPercent = parseFloat(row.GST) || 0;
 
     const rateWithGst = parseFloat(row.Rate) || 0;
+    const rateWithoutGst = rateWithGst / (1 + gstPercent / 100);
+    const basicRate = rateWithoutGst.toFixed(2);
 
-    const gstAmtPerUnit = (rateWithGst * gstPercent) / (100 + gstPercent);
-    const basicRate = rateWithGst - gstAmtPerUnit;
-
-    const basicTotal = basicRate * qty;
+    const basicTotal = rateWithoutGst * qty;
     const schAmt = (basicTotal * schPercent) / 100;
     const cdAmt = (basicTotal * cdPercent) / 100;
+
+    
     const discountedTotal = basicTotal - schAmt - cdAmt;
 
-    const gstAmount = (discountedTotal * gstPercent) / 100;
-    const finalAmount = discountedTotal + gstAmount;
+    const finalAmount = discountedTotal + (discountedTotal * gstPercent) / 100;
 
     return {
       ...row,
-      Basic: basicRate.toFixed(2), // ✅ Rate without GST
-      Total: discountedTotal.toFixed(2), // 💸 Discounted total (no GST)
+      Basic: basicRate,
+      Total: discountedTotal.toFixed(2),
       SchAmt: schAmt.toFixed(2),
       CDAmt: cdAmt.toFixed(2),
-      GSTAmt: gstAmount.toFixed(2), // 💰 GST on discounted total
-      Amount: finalAmount.toFixed(2), // ✅ Final with GST
+      Amount: finalAmount.toFixed(2),
     };
   };
+
+  // const recalculateRow = (row) => {
+  //   const qty = parseFloat(row.Qty) || 0;
+  //   const schPercent = parseFloat(row.Sch) || 0;
+  //   const cdPercent = parseFloat(row.CD) || 0;
+  //   const gstPercent = parseFloat(row.GST) || 0;
+
+  //   const rateWithGst = parseFloat(row.Rate) || 0;
+
+  //   const gstAmtPerUnit = (rateWithGst * gstPercent) / (100 + gstPercent);
+  //   const basicRate = rateWithGst - gstAmtPerUnit;
+
+  //   const basicTotal = basicRate * qty;
+  //   const schAmt = (basicTotal * schPercent) / 100;
+  //   const cdAmt = (basicTotal * cdPercent) / 100;
+  //   const discountedTotal = basicTotal - schAmt - cdAmt;
+
+  //   const gstAmount = (discountedTotal * gstPercent) / 100;
+  //   const finalAmount = discountedTotal + gstAmount;
+
+  //   return {
+  //     ...row,
+  //     Basic: basicRate.toFixed(2), // ✅ Rate without GST
+  //     Total: discountedTotal.toFixed(2), // 💸 Discounted total (no GST)
+  //     SchAmt: schAmt.toFixed(2),
+  //     CDAmt: cdAmt.toFixed(2),
+  //     GSTAmt: gstAmount.toFixed(2), // 💰 GST on discounted total
+  //     Amount: finalAmount.toFixed(2), // ✅ Final with GST
+  //   };
+  // };
 
   const handleChange = (index, field, value) => {
     const updatedRows = [...rows];
