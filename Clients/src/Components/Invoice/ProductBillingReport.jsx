@@ -34,13 +34,93 @@ const ProductBillingReport = ({ onBillingDataChange }, ref) => {
   const [products, setProducts] = useState([]);
   const [finalTotalAmount, setFinalTotalAmount] = useState("0.00");
 
-  const selectRef = useRef(); // 👈 ref for Select input
+  // !
+  const [showModal, setShowModal] = useState(false);
+  const [selectedRowIndex, setSelectedRowIndex] = useState(null);
+  const [focusedIndex, setFocusedIndex] = useState(0);
+  const modalRef = useRef(null);
+
+  const inputRef = useRef(null);
+
+  const [filterText, setFilterText] = useState("");
+
+  // Filtered product list based on search input
+  const filteredProducts = products.filter((product) =>
+    product.productName.toLowerCase().includes(filterText.toLowerCase())
+  );
+
+  const selectRef = useRef();
+  const rowRefs = useRef([]);
+  const qtyRefs = useRef([]);
+
+  useEffect(() => {
+    if (showModal && modalRef.current) {
+      modalRef.current.focus();
+    }
+  }, [showModal]);
+
+  useEffect(() => {
+    const el = rowRefs.current[focusedIndex];
+    if (el) {
+      el.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+      });
+    }
+  }, [focusedIndex]);
+
+  useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === "Escape") {
+        setShowModal(false);
+      }
+    };
+
+    if (showModal) {
+      window.addEventListener("keydown", handleEsc);
+    }
+
+    return () => {
+      window.removeEventListener("keydown", handleEsc);
+    };
+  }, [showModal]);
+
+  useEffect(() => {
+    if (showModal && inputRef.current) {
+      inputRef.current.focus();
+    }
+    if (!showModal) {
+      setFilterText("");
+    }
+  }, [showModal]);
+
+  useEffect(() => {
+    const handleKeyPress = (e) => {
+      if (
+        showModal &&
+        inputRef.current &&
+        document.activeElement !== inputRef.current
+      ) {
+        inputRef.current.focus();
+      }
+    };
+
+    if (showModal) {
+      window.addEventListener("keydown", handleKeyPress);
+    }
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyPress);
+    };
+  }, [showModal]);
+
+  // !
 
   useImperativeHandle(ref, () => ({
     focusItemName: () => {
       console.log("Focusing ItemName input...");
       try {
-        selectRef.current?.focus(); // ✅ Best way to focus react-select
+        selectRef.current?.focus();
       } catch (err) {
         console.log("Focus failed:", err);
       }
@@ -91,7 +171,6 @@ const ProductBillingReport = ({ onBillingDataChange }, ref) => {
     const schAmt = (basicTotal * schPercent) / 100;
     const cdAmt = (basicTotal * cdPercent) / 100;
 
-    
     const discountedTotal = basicTotal - schAmt - cdAmt;
 
     const finalAmount = discountedTotal + (discountedTotal * gstPercent) / 100;
@@ -106,90 +185,9 @@ const ProductBillingReport = ({ onBillingDataChange }, ref) => {
     };
   };
 
-  // const recalculateRow = (row) => {
-  //   const qty = parseFloat(row.Qty) || 0;
-  //   const schPercent = parseFloat(row.Sch) || 0;
-  //   const cdPercent = parseFloat(row.CD) || 0;
-  //   const gstPercent = parseFloat(row.GST) || 0;
-
-  //   const rateWithGst = parseFloat(row.Rate) || 0;
-
-  //   const gstAmtPerUnit = (rateWithGst * gstPercent) / (100 + gstPercent);
-  //   const basicRate = rateWithGst - gstAmtPerUnit;
-
-  //   const basicTotal = basicRate * qty;
-  //   const schAmt = (basicTotal * schPercent) / 100;
-  //   const cdAmt = (basicTotal * cdPercent) / 100;
-  //   const discountedTotal = basicTotal - schAmt - cdAmt;
-
-  //   const gstAmount = (discountedTotal * gstPercent) / 100;
-  //   const finalAmount = discountedTotal + gstAmount;
-
-  //   return {
-  //     ...row,
-  //     Basic: basicRate.toFixed(2), // ✅ Rate without GST
-  //     Total: discountedTotal.toFixed(2), // 💸 Discounted total (no GST)
-  //     SchAmt: schAmt.toFixed(2),
-  //     CDAmt: cdAmt.toFixed(2),
-  //     GSTAmt: gstAmount.toFixed(2), // 💰 GST on discounted total
-  //     Amount: finalAmount.toFixed(2), // ✅ Final with GST
-  //   };
-  // };
-
   const handleChange = (index, field, value) => {
     const updatedRows = [...rows];
     let row = { ...updatedRows[index], [field]: value };
-
-    // if (field === "product") {
-    //   row.product = value;
-    //   row.GST = parseFloat(value.gstPercent) || 0;
-    //   row.Unit = value.primaryUnit || "";
-
-    //   const baseRate = parseFloat(value.salesRate) || 0;
-    //   const gstPercent = parseFloat(value.gstPercent) || 0;
-
-    //   if (!isNaN(baseRate)) {
-    //     row.Rate = (baseRate * (1 + gstPercent / 100)).toFixed(2);
-    //   } else {
-    //     row.Rate = "";
-    //   }
-    // }
-
-    // if (field === "Unit" && row.product) {
-    //   const prod = row.product;
-    //   const baseRate = parseFloat(prod.salesRate) || 0;
-    //   const gstPercent = parseFloat(prod.gstPercent) || 0;
-
-    //   if (!isNaN(baseRate)) {
-    //     row.Rate = (baseRate * (1 + gstPercent / 100)).toFixed(2);
-    //   } else {
-    //     row.Rate = "";
-    //   }
-    // }
-
-    // if (field === "Qty" && row.product) {
-    //   const qtyNum = parseFloat(value);
-    //   const prod = row.product;
-
-    //   if (!isNaN(qtyNum) && qtyNum > 0) {
-    //     if (qtyNum > prod.availableQty) {
-    //       toast.error(
-    //         `Product "${prod.productName}" has only ${prod.availableQty} in stock.`,
-    //         { position: "top-center", autoClose: 3000 }
-    //       );
-    //       return;
-    //     }
-
-    //     const baseRate = parseFloat(prod.salesRate) || 0;
-    //     const gstPercent = parseFloat(prod.gstPercent) || 0;
-
-    //     if (!isNaN(baseRate)) {
-    //       row.Rate = (baseRate * (1 + gstPercent / 100)).toFixed(2);
-    //     } else {
-    //       row.Rate = "";
-    //     }
-    //   }
-    // }
 
     if (field === "product") {
       row.product = value;
@@ -429,33 +427,34 @@ const ProductBillingReport = ({ onBillingDataChange }, ref) => {
                     {field === "SR" ? (
                       rowIndex + 1
                     ) : field === "ItemName" ? (
-                      <Select
-                        ref={rowIndex === 0 ? selectRef : null} // ✅ Attach ref only to first row
-                        className='w-100'
-                        options={products.map((p) => ({
-                          label: `${p.productName}`,
-                          value: p._id,
-                        }))}
-                        value={
-                          row.product
-                            ? {
-                                label: row.product.productName,
-                                value: row.product._id,
-                              }
-                            : null
-                        }
-                        onChange={(selectedOption) => {
-                          const selectedProduct = products.find(
-                            (p) => p._id === selectedOption?.value
-                          );
-                          handleChange(rowIndex, "product", selectedProduct);
+                      <div
+                        tabIndex={0}
+                        onFocus={() => {
+                          setSelectedRowIndex(rowIndex);
+                          setShowModal(true);
                         }}
-                        menuPortalTarget={document.body}
-                        styles={{
-                          menuPortal: (base) => ({ ...base, zIndex: 9999 }),
-                          container: (base) => ({ ...base, minWidth: "200px" }),
-                        }}
-                      />
+                      >
+                        <Select
+                          ref={rowIndex === 0 ? selectRef : null}
+                          className='w-100'
+                          // isDisabled
+                          value={
+                            row.product
+                              ? {
+                                  label: row.product.productName,
+                                  value: row.product._id,
+                                }
+                              : null
+                          }
+                          placeholder='Select Product'
+                          styles={{
+                            container: (base) => ({
+                              ...base,
+                              minWidth: "200px",
+                            }),
+                          }}
+                        />
+                      </div>
                     ) : field === "Unit" ? (
                       <Select
                         className='w-100'
@@ -527,6 +526,9 @@ const ProductBillingReport = ({ onBillingDataChange }, ref) => {
                       <input
                         type='text'
                         className='form-control'
+                        ref={(el) => {
+                          if (field === "Qty") qtyRefs.current[rowIndex] = el;
+                        }}
                         value={row[field] || ""}
                         onChange={(e) =>
                           handleChange(rowIndex, field, e.target.value)
@@ -546,11 +548,106 @@ const ProductBillingReport = ({ onBillingDataChange }, ref) => {
           </tbody>
         </table>
       </div>
+      {/*//! select option model item name model */}
+
+      {showModal && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            backgroundColor: "rgba(0,0,0,0.5)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 9999,
+          }}
+          onClick={() => setShowModal(false)}
+        >
+          <div
+            style={{
+              background: "#fff",
+              padding: "1rem",
+              width: "90%",
+              maxHeight: "80vh",
+              overflowY: "auto",
+              outline: "none",
+            }}
+            onClick={(e) => e.stopPropagation()}
+            onKeyDown={(e) => {
+              if (e.key === "ArrowDown") {
+                e.preventDefault();
+                setFocusedIndex((prev) =>
+                  prev < filteredProducts.length - 1 ? prev + 1 : 0
+                );
+              }
+              if (e.key === "ArrowUp") {
+                e.preventDefault();
+                setFocusedIndex((prev) =>
+                  prev > 0 ? prev - 1 : filteredProducts.length - 1
+                );
+              }
+              if (e.key === "Enter" && focusedIndex !== -1) {
+                const selectedProduct = filteredProducts[focusedIndex];
+                handleChange(selectedRowIndex, "product", selectedProduct);
+                setShowModal(false);
+
+                setTimeout(() => {
+                  qtyRefs.current[selectedRowIndex]?.focus();
+                }, 100);
+              }
+            }}
+            tabIndex={-1}
+            ref={modalRef}
+          >
+            <h5>Select a Product</h5>
+
+            <input
+              type='text'
+              className='form-control mb-3'
+              placeholder='Search products...'
+              value={filterText}
+              onChange={(e) => {
+                setFilterText(e.target.value);
+                setFocusedIndex(0);
+              }}
+              ref={inputRef}
+              autoFocus
+            />
+
+            <table className='table table-bordered table-hover'>
+              <thead className='table-light'>
+                <tr>
+                  <th>Product Name</th>
+                  <th>HSN Code</th>
+                  <th>Stock</th>
+                  <th>Rate</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredProducts.map((product, index) => (
+                  <tr
+                    key={product._id}
+                    ref={(el) => (rowRefs.current[index] = el)}
+                    className={index === focusedIndex ? "table-active" : ""}
+                  >
+                    <td>{product.productName}</td>
+                    <td>{product.hsnCode}</td>
+                    <td>{product.availableQty}</td>
+                    <td>{product.salesRate}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
 
       <ToastContainer />
     </div>
   );
 };
 
-// export default ProductBillingReport;
 export default forwardRef(ProductBillingReport);
