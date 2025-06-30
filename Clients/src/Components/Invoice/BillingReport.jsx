@@ -93,7 +93,7 @@ function BillingReport() {
         onBillingDataChange={handleBillingDataChange}
         key={resetKey}
       />
-      <hr />
+      {/* <hr /> */}
       <div className='text-center mt-4'>
         <button
           // disabled={!customerData.customerId || billingData.length === 0}

@@ -1,508 +1,3 @@
-// import React, { useEffect, useState, useCallback, useRef } from "react";
-// import "bootstrap/dist/css/bootstrap.min.css";
-// import axios from "../../Config/axios"; // Assuming this path is correct
-// import Select from "react-select";
-
-// // Helper function to get the current date in YYYY-MM-DD format
-// const getCurrentDate = () => {
-//   const today = new Date();
-//   return today.toISOString().split("T")[0];
-// };
-
-// const CustomerBilling = ({
-//   onNextFocus,
-//   onDataChange,
-//   resetTrigger = { resetKey },
-// }) => {
-//   const isFirstRender = useRef(true);
-//   const [formData, setFormData] = useState({
-//     Billdate: getCurrentDate(),
-//     advanceAmt: "",
-//     paymentMode: "",
-//     selectedSalesmanId: null,
-//     selectedBeatId: null,
-//     selectedCustomerId: null,
-//   });
-
-//   const [salesmen, setSalesmen] = useState([]);
-//   const [selectedSalesman, setSelectedSalesman] = useState(null);
-//   const [beatsOptions, setBeatsOptions] = useState([]);
-//   const [selectedBeat, setSelectedBeat] = useState(null);
-//   const [customersOptions, setCustomersOptions] = useState([]);
-//   const [selectedCustomer, setSelectedCustomer] = useState(null);
-//   const [allCustomers, setAllCustomers] = useState([]);
-
-//   useEffect(() => {
-//     setFormData({
-//       Billdate: getCurrentDate(),
-//       advanceAmt: "",
-//       paymentMode: "",
-//       selectedSalesmanId: null,
-//       selectedBeatId: null,
-//       selectedCustomerId: null,
-//     });
-//     setSelectedSalesman(null);
-//     setSelectedBeat(null);
-//     setSelectedCustomer(null);
-//     setBeatsOptions([]);
-//     setCustomersOptions([]);
-//   }, [resetTrigger]);
-
-//   useEffect(() => {
-//     if (isFirstRender.current) {
-//       isFirstRender.current = false;
-//       return;
-//     }
-
-//     onDataChange({
-//       ...formData,
-//       selectedSalesmanId: selectedSalesman?._id || null,
-//       selectedBeatId: selectedBeat?._id || null,
-//       selectedCustomerId: selectedCustomer?._id || null,
-//       customerName: selectedCustomer?.firm || "",
-//       salesmanName: selectedSalesman?.name || "",
-//     });
-//   }, [formData, selectedSalesman, selectedBeat, selectedCustomer]);
-
-//   // const parseBeatData = (beatArray) => {
-//   //   let parsedBeats = [];
-//   //   if (Array.isArray(beatArray)) {
-//   //     if (typeof beatArray[0] === "string") {
-//   //       try {
-//   //         const parsed = JSON.parse(beatArray[0]);
-//   //         if (Array.isArray(parsed)) parsedBeats = parsed;
-//   //       } catch (e) {
-//   //         console.warn("Error parsing beat string:", e);
-//   //       }
-//   //     } else {
-//   //       parsedBeats = beatArray;
-//   //     }
-//   //   }
-//   //   return parsedBeats;
-//   // };
-
-//   const parseBeatData = (beatArray) => {
-//     if (!Array.isArray(beatArray) || beatArray.length === 0) return [];
-
-//     // Check if first element is a stringified array
-//     if (typeof beatArray[0] === "string") {
-//       try {
-//         const parsedArray = JSON.parse(beatArray[0]); // 👈 this handles your case
-//         if (Array.isArray(parsedArray)) return parsedArray;
-//       } catch (err) {
-//         console.warn("Error parsing beat stringified array:", err);
-//       }
-//     }
-
-//     // If already in correct format (array of objects)
-//     return beatArray;
-//   };
-
-//   useEffect(() => {
-//     const fetchSalesmen = async () => {
-//       try {
-//         const response = await axios.get("/salesman");
-//         const salesmenData = response.data.Data || response.data; // Handle potential 'Data' wrapper
-//         setSalesmen(salesmenData);
-
-//         // If you still need a consolidated list of all unique beats, you can keep this.
-//         // For current logic, it's not strictly necessary.
-//         // const uniqueBeats = new Map();
-//         // salesmenData.forEach((sMan) => {
-//         //   const sManBeats = parseBeatData(sMan.beat);
-//         //   sManBeats.forEach((beat) => {
-//         //     if (beat._id && !uniqueBeats.has(beat._id)) {
-//         //       uniqueBeats.set(beat._id, {
-//         //         ...beat,
-//         //         salesmanId: sMan._id,
-//         //         salesmanName: sMan.name,
-//         //       });
-//         //     }
-//         //   });
-//         // });
-//         // setAllBeatsRaw(Array.from(uniqueBeats.values()));
-//       } catch (error) {
-//         console.error("Error fetching salesmen:", error);
-//       }
-//     };
-//     fetchSalesmen();
-//   }, []);
-
-//   useEffect(() => {
-//     const fetchCustomers = async () => {
-//       try {
-//         const res = await axios.get("/customer");
-//         setAllCustomers(res.data);
-//       } catch (err) {
-//         console.error("Error fetching customers:", err);
-//       }
-//     };
-//     fetchCustomers();
-//   }, []);
-
-//   // useEffect(() => {
-//   //   if (selectedSalesman) {
-//   //     const salesmanBeats = parseBeatData(selectedSalesman.beat);
-
-//   //     const options = salesmanBeats.map((beat) => ({
-//   //       label: `${beat.areaName} ${beat.pinCode ? `(${beat.pinCode})` : ""}`,
-//   //       value: beat._id,
-//   //       beatObject: { ...beat, salesmanId: selectedSalesman._id },
-//   //     }));
-
-//   //     setBeatsOptions(options);
-//   //     setSelectedBeat(null); // Reset selected beat
-//   //     setSelectedCustomer(null); // Reset selected customer
-//   //     setCustomersOptions([]); // Clear customer options
-//   //   } else {
-//   //     // If no salesman is selected, clear all dependent selections
-//   //     setBeatsOptions([]);
-//   //     setSelectedBeat(null);
-//   //     setSelectedCustomer(null);
-//   //     setCustomersOptions([]);
-//   //   }
-
-//   //   setFormData((prev) => ({
-//   //     ...prev,
-//   //     selectedSalesmanId: selectedSalesman?._id || null,
-//   //     selectedBeatId: null, // Reset beat and customer IDs in form data
-//   //     selectedCustomerId: null,
-//   //   }));
-//   // }, [selectedSalesman]);
-
-//   useEffect(() => {
-//     if (selectedSalesman) {
-//       console.log("Raw beats from selectedSalesman:", selectedSalesman.beat); // ✅ Log raw beat data
-
-//       const salesmanBeats = parseBeatData(selectedSalesman.beat);
-//       console.log("Parsed Beats:", salesmanBeats); // ✅ Log parsed data to verify
-
-//       const options = salesmanBeats
-//         .filter((beat) => beat && beat._id && beat.areaName) // ✅ Avoid undefined
-//         .map((beat) => ({
-//           label: `${beat.areaName} ${beat.pinCode ? `(${beat.pinCode})` : ""}`,
-//           value: beat._id,
-//           beatObject: { ...beat, salesmanId: selectedSalesman._id },
-//         }));
-
-//       setBeatsOptions(options);
-//       setSelectedBeat(null); // Reset selected beat
-//       setSelectedCustomer(null); // Reset selected customer
-//       setCustomersOptions([]); // Clear customer options
-//     } else {
-//       // If no salesman is selected, clear all dependent selections
-//       setBeatsOptions([]);
-//       setSelectedBeat(null);
-//       setSelectedCustomer(null);
-//       setCustomersOptions([]);
-//     }
-
-//     setFormData((prev) => ({
-//       ...prev,
-//       selectedSalesmanId: selectedSalesman?._id || null,
-//       selectedBeatId: null, // Reset beat and customer IDs in form data
-//       selectedCustomerId: null,
-//     }));
-//   }, [selectedSalesman]);
-
-//   useEffect(() => {
-//     if (selectedBeat) {
-//       // Assuming customer.beats is an array of areaName strings
-//       const filtered = allCustomers.filter((customer) =>
-//         customer.beats?.includes(selectedBeat.areaName)
-//       );
-
-//       const options = filtered.map((customer) => ({
-//         label: customer.firm,
-//         value: customer._id,
-//         customerObject: customer,
-//       }));
-
-//       setCustomersOptions(options);
-//       setSelectedCustomer(null); // Reset selected customer
-//     } else {
-//       setCustomersOptions([]);
-//       setSelectedCustomer(null);
-//     }
-
-//     setFormData((prev) => ({
-//       ...prev,
-//       selectedBeatId: selectedBeat?._id || null,
-//       selectedCustomerId: null, // Reset customer ID in form data
-//     }));
-//   }, [selectedBeat, allCustomers]);
-
-//   const handleSalesmanSelectChange = (selectedOption) => {
-//     setSelectedSalesman(selectedOption?.salesmanObject || null);
-//   };
-
-//   const handleBeatSelectChange = (selectedOption) => {
-//     setSelectedBeat(selectedOption?.beatObject || null);
-//   };
-
-//   const handleCustomerSelectChange = (selectedOption) => {
-//     const customerObj = selectedOption?.customerObject || null;
-//     setSelectedCustomer(customerObj);
-//     setFormData((prev) => ({
-//       ...prev,
-//       selectedCustomerId: customerObj?._id || null,
-//     }));
-//   };
-
-//   const handleInputChange = (e) => {
-//     const { name, value } = e.target;
-//     setFormData((prev) => ({ ...prev, [name]: value }));
-//     // compileAndSendData will be called by the useEffect watching formData
-//   };
-
-//   const [isSalesmanSelectOpen, setSalesmanSelectOpen] = useState(false);
-//   const handleKeyDown = (e) => {
-//     if (e.key !== "Enter") return;
-
-//     const isReactSelectInput =
-//       e.target.classList.contains("react-select__input") ||
-//       e.target.closest(".react-select__input");
-
-//     // Let react-select handle Enter for selection
-//     if (isReactSelectInput) return;
-
-//     e.preventDefault();
-
-//     const form = e.target.form;
-//     const focusable = Array.from(
-//       form.querySelectorAll(
-//         "input:not([readonly]):not([disabled]), select:not([disabled]), .react-select__input input"
-//       )
-//     );
-
-//     const index = focusable.indexOf(e.target);
-//     const next = focusable[index + 1];
-//     if (next) next.focus();
-//   };
-
-//   // ----------- HANDLE SELECT + MOVE TO NEXT ----------
-//   const handleSelectChangeWithJump =
-//     (onChangeFunc) => (selectedOption, actionMeta) => {
-//       onChangeFunc(selectedOption);
-
-//       // Move to next field after selection
-//       setTimeout(() => {
-//         const form = document.querySelector("form");
-//         const focusable = Array.from(
-//           form.querySelectorAll(
-//             "input:not([readonly]):not([disabled]), select:not([disabled]), .react-select__input input"
-//           )
-//         );
-
-//         const active = document.activeElement;
-//         const index = focusable.findIndex((el) => el === active);
-//         focusable[index + 1]?.focus();
-//       }, 100);
-//     };
-
-//   return (
-//     <div className='container mt-4'>
-//       <h4 className='mb-4'>Customer Information</h4>
-//       <form>
-//         <div className='row'>
-//           {/* Salesman */}
-//           <div className='form-group col-md-6'>
-//             <label>
-//               <strong>Select Salesman</strong>
-//             </label>
-//             <Select
-//               id='salesman-select'
-//               onFocus={() => setSalesmanSelectOpen(true)}
-//               onBlur={() => setSalesmanSelectOpen(false)}
-//               menuIsOpen={isSalesmanSelectOpen}
-//               options={salesmen.map((s) => ({
-//                 label: s.name,
-//                 value: s._id,
-//                 salesmanObject: s,
-//               }))}
-//               value={
-//                 selectedSalesman
-//                   ? {
-//                       label: selectedSalesman.name,
-//                       value: selectedSalesman._id,
-//                     }
-//                   : null
-//               }
-//               onChange={(option) => {
-//                 handleSalesmanSelectChange(option);
-//                 setTimeout(() => {
-//                   const next = document.querySelector("#beat-select input");
-//                   if (next) next.focus();
-//                 }, 50);
-//               }}
-//               onKeyDown={handleKeyDown}
-//               placeholder='Select a Salesman...'
-//               menuPortalTarget={document.body}
-//               classNamePrefix='react-select'
-//               styles={{
-//                 menuPortal: (base) => ({ ...base, zIndex: 9999 }),
-//               }}
-//             />
-//           </div>
-
-//           {/* Beat */}
-//           <div className='form-group col-md-6'>
-//             <label>
-//               <strong>Select Beat</strong>
-//             </label>
-//             <Select
-//               id='beat-select'
-//               options={beatsOptions}
-//               classNamePrefix='react-select'
-//               onKeyDown={handleKeyDown}
-//               value={
-//                 selectedBeat
-//                   ? {
-//                       value: selectedBeat._id,
-//                       label: `${selectedBeat.areaName} ${
-//                         selectedBeat.pinCode ? `(${selectedBeat.pinCode})` : ""
-//                       }`,
-//                     }
-//                   : null
-//               }
-//               onChange={(option) => {
-//                 handleBeatSelectChange(option);
-//                 setTimeout(() => {
-//                   const next = document.querySelector("#customer-select input");
-//                   if (next) next.focus();
-//                 }, 50);
-//               }}
-//               placeholder='Select a Beat...'
-//               isDisabled={!selectedSalesman}
-//               menuPortalTarget={document.body}
-//               // styles={{
-//               //   menuPortal: (base) => ({ ...base, zIndex: 9999 }),
-//               //   menu: (base) => ({ ...base, zIndex: 9999 }),
-//               //   option: (base, state) => ({
-//               //     ...base,
-//               //     backgroundColor:
-//               //       state.isSelected || state.isFocused
-//               //         ? "transparent"
-//               //         : base.backgroundColor,
-//               //     color: "#000",
-//               //     cursor: "pointer",
-//               //   }),
-//               //   control: (base) => ({
-//               //     ...base,
-//               //     boxShadow: "none",
-//               //     borderColor: "#ccc",
-//               //     "&:hover": {
-//               //       borderColor: "#aaa",
-//               //     },
-//               //   }),
-//               //   singleValue: (base) => ({
-//               //     ...base,
-//               //     backgroundColor: "transparent",
-//               //     color: "#000",
-//               //   }),
-//               // }}
-
-//               styles={{
-//                 menuPortal: (base) => ({ ...base, zIndex: 9999 }),
-//                 menu: (base) => ({ ...base, zIndex: 9999 }),
-//                 option: (base, state) => ({
-//                   ...base,
-//                   backgroundColor: state.isFocused
-//                     ? "#e6f0ff" // light blue for focused (arrow keys or mouse hover)
-//                     : state.isSelected
-//                     ? "#00000" // slightly darker for selected
-//                     : base.backgroundColor,
-//                   color: "#000",
-//                   cursor: "pointer",
-//                 }),
-//                 control: (base, state) => ({
-//                   ...base,
-//                   boxShadow: state.isFocused ? "0 0 0 2px #2684FF" : "none",
-//                   borderColor: state.isFocused ? "#2684FF" : "#ccc",
-//                   "&:hover": {
-//                     borderColor: state.isFocused ? "#2684FF" : "#aaa",
-//                   },
-//                 }),
-//                 singleValue: (base) => ({
-//                   ...base,
-//                   backgroundColor: "transparent",
-//                   color: "#000",
-//                 }),
-//               }}
-//             />
-//           </div>
-
-//           {/* Customer */}
-//           <div className='form-group col-md-6'>
-//             <label>
-//               <strong>Select Customer</strong>
-//             </label>
-//             <Select
-//               id='customer-select'
-//               options={customersOptions}
-//               onKeyDown={handleKeyDown}
-//               value={
-//                 selectedCustomer
-//                   ? customersOptions.find(
-//                       (c) => c.value === selectedCustomer._id
-//                     )
-//                   : null
-//               }
-//               onChange={(option) => {
-//                 handleCustomerSelectChange(option);
-//                 setTimeout(() => {
-//                   const next = document.querySelector("input[name='Billdate']");
-//                   if (next) next.focus();
-//                 }, 50);
-//               }}
-//               placeholder='Select a Customer...'
-//               isDisabled={!selectedBeat}
-//               menuPortalTarget={document.body}
-//               classNamePrefix='react-select'
-//               styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
-//             />
-//           </div>
-
-//           {/* Bill Date */}
-//           <div className='form-group col-md-6'>
-//             <label>Bill Date</label>
-//             <input
-//               onKeyDown={handleKeyDown}
-//               type='date'
-//               className='form-control'
-//               name='Billdate'
-//               value={formData.Billdate}
-//               onChange={handleInputChange}
-//               required
-//             />
-//           </div>
-
-//           {/* Payment Mode */}
-//           <div className='form-group col-md-6'>
-//             <label>Payment Mode</label>
-//             <select
-//               onKeyDown={handleKeyDown}
-//               name='paymentMode'
-//               className='form-control'
-//               value={formData.paymentMode}
-//               onChange={handleInputChange}
-//             >
-//               <option value=''>-- Select Payment Mode --</option>
-//               <option value='Cash'>Cash</option>
-//               <option value='Card'>Card</option>
-//               <option value='UPI'>UPI</option>
-//               <option value='Net Banking'>Net Banking</option>
-//               <option value='Cheque'>Cheque</option>
-//             </select>
-//           </div>
-//         </div>
-//       </form>
-//     </div>
-//   );
-// };
-
-// export default CustomerBilling;
-
 // !----------------------------
 
 import React, { useEffect, useState, useRef } from "react";
@@ -510,7 +5,8 @@ import Select from "react-select";
 import axios from "../../Config/axios";
 import Loader from "../../Components/Loader";
 
-// Helper to get current date
+import useSearchableModal from "../../Components/SearchableModal";
+
 const getCurrentDate = () => new Date().toISOString().split("T")[0];
 
 const CustomerBilling = ({ onDataChange, resetTrigger, onNextFocus }) => {
@@ -538,6 +34,9 @@ const CustomerBilling = ({ onDataChange, resetTrigger, onNextFocus }) => {
 
   const [loading, setLoading] = useState(false);
   const inputRefs = useRef([]);
+
+  const billDateRef = useRef(null);
+  const beatSelectRef = useRef(null);
 
   // Reset form when resetTrigger changes
   useEffect(() => {
@@ -570,25 +69,6 @@ const CustomerBilling = ({ onDataChange, resetTrigger, onNextFocus }) => {
   }, [formData, selectedSalesman, selectedCustomer]);
 
   // !-------------------------------
-  // Fetch salesmen
-  // useEffect(() => {
-  //   setLoading(true);
-  //   axios
-  //     .get("/salesman")
-  //     .then((res) => setSalesmen(res.data.Data || res.data))
-  //     .catch((err) => console.error("Error fetching salesmen:", err))
-  //     .finally(() => setLoading(false));
-  // }, []);
-
-  // // Fetch customers
-  // useEffect(() => {
-  //   setLoading(true);
-  //   axios
-  //     .get("/customer")
-  //     .then((res) => setAllCustomers(res.data))
-  //     .catch((err) => console.error("Error fetching customers:", err))
-  //     .finally(() => setLoading(false));
-  // }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -706,6 +186,37 @@ const CustomerBilling = ({ onDataChange, resetTrigger, onNextFocus }) => {
     }
   };
 
+  // ! model
+
+  const {
+    showModal,
+    setShowModal,
+    filterText,
+    setFilterText,
+    focusedIndex,
+    setFocusedIndex,
+    modalRef,
+    inputRef,
+    rowRefs,
+    filteredItems: filteredCustomers,
+  } = useSearchableModal(
+    customersOptions.map((opt) => opt.customerObject),
+    "ledger"
+  );
+
+  const {
+    showModal: showSalesmanModal,
+    setShowModal: setShowSalesmanModal,
+    filterText: salesmanFilterText,
+    setFilterText: setSalesmanFilterText,
+    focusedIndex: salesmanFocusedIndex,
+    setFocusedIndex: setSalesmanFocusedIndex,
+    modalRef: salesmanModalRef,
+    inputRef: salesmanInputRef,
+    rowRefs: salesmanRowRefs,
+    filteredItems: filteredSalesmen,
+  } = useSearchableModal(salesmen, "name");
+
   if (loading) {
     return <Loader />;
   }
@@ -720,7 +231,7 @@ const CustomerBilling = ({ onDataChange, resetTrigger, onNextFocus }) => {
             <label>
               <strong>Salesman</strong>
             </label>
-            <Select
+            {/* <Select
               options={salesmen.map((s) => ({
                 label: s.name,
                 value: s._id,
@@ -757,7 +268,22 @@ const CustomerBilling = ({ onDataChange, resetTrigger, onNextFocus }) => {
               classNamePrefix='react-select'
               menuPortalTarget={document.body}
               styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
-            />
+            /> */}
+            <div tabIndex={0} onFocus={() => setShowSalesmanModal(true)}>
+              <Select
+                value={
+                  selectedSalesman && {
+                    label: selectedSalesman.name,
+                    value: selectedSalesman._id,
+                  }
+                }
+                placeholder='Select Salesman...'
+                isDisabled={false}
+                classNamePrefix='react-select'
+                menuPortalTarget={document.body}
+                styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
+              />
+            </div>
           </div>
 
           {/* Beat */}
@@ -774,6 +300,7 @@ const CustomerBilling = ({ onDataChange, resetTrigger, onNextFocus }) => {
                 }
               }
               onChange={(opt) => setSelectedBeat(opt?.beatObject)}
+              ref={beatSelectRef}
               // onKeyDown={handleKeyDown}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
@@ -807,41 +334,26 @@ const CustomerBilling = ({ onDataChange, resetTrigger, onNextFocus }) => {
             <label>
               <strong>Customer</strong>
             </label>
-            <Select
-              options={customersOptions}
-              value={
-                selectedCustomer && {
-                  label: selectedCustomer.ledger,
-                  value: selectedCustomer._id,
-                }
-              }
-              onChange={handleCustomerSelectChange}
-              // onKeyDown={handleKeyDown}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  e.preventDefault();
-                  // Programmatically select the currently focused option
-                  const menuOptions = document.querySelectorAll(
-                    ".react-select__menu .react-select__option"
-                  );
-                  const focusedOption = Array.from(menuOptions).find((el) =>
-                    el.classList.contains("react-select__option--is-focused")
-                  );
-                  if (focusedOption) {
-                    focusedOption.click(); // 👈 simulate user click
-                  }
-
-                  setTimeout(() => {
-                    handleKeyDown(e); // 👈 now call your existing logic to move to next
-                  }, 0);
-                }
+            <div
+              tabIndex={0}
+              onFocus={() => {
+                setShowModal(true);
               }}
-              placeholder='Select Customer...'
-              isDisabled={!selectedBeat}
-              classNamePrefix='react-select'
-              menuPortalTarget={document.body}
-              styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
-            />
+            >
+              <Select
+                value={
+                  selectedCustomer && {
+                    label: selectedCustomer.ledger,
+                    value: selectedCustomer._id,
+                  }
+                }
+                placeholder='Select Customer...'
+                isDisabled={!selectedBeat}
+                classNamePrefix='react-select'
+                menuPortalTarget={document.body}
+                styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
+              />
+            </div>
           </div>
 
           {/* Bill Date */}
@@ -857,6 +369,7 @@ const CustomerBilling = ({ onDataChange, resetTrigger, onNextFocus }) => {
               onChange={handleInputChange}
               onKeyDown={handleKeyDown}
               required
+              ref={billDateRef}
             />
           </div>
 
@@ -903,6 +416,222 @@ const CustomerBilling = ({ onDataChange, resetTrigger, onNextFocus }) => {
           </div>
         </div>
       </form>
+      {/* //! customer */}
+      {showModal && (
+        <div
+          className='modal-backdrop'
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            backgroundColor: "rgba(0,0,0,0.5)",
+            zIndex: 9999,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          onClick={() => setShowModal(false)}
+        >
+          <div
+            style={{
+              backgroundColor: "white",
+              padding: "1rem",
+              width: "90%",
+              maxHeight: "80vh",
+              overflowY: "auto",
+              outline: "none",
+            }}
+            onClick={(e) => e.stopPropagation()}
+            onKeyDown={(e) => {
+              if (e.key === "ArrowDown") {
+                e.preventDefault();
+                setFocusedIndex((prev) =>
+                  prev < filteredCustomers.length - 1 ? prev + 1 : 0
+                );
+              }
+              if (e.key === "ArrowUp") {
+                e.preventDefault();
+                setFocusedIndex((prev) =>
+                  prev > 0 ? prev - 1 : filteredCustomers.length - 1
+                );
+              }
+              if (e.key === "Enter" && filteredCustomers[focusedIndex]) {
+                const selected = filteredCustomers[focusedIndex];
+                setSelectedCustomer(selected);
+                setFormData((prev) => ({
+                  ...prev,
+                  selectedCustomerId: selected._id,
+                }));
+                setShowModal(false);
+
+                // 👇 Focus next field after a slight delay
+                setTimeout(() => {
+                  billDateRef.current?.focus();
+                }, 100);
+              }
+            }}
+            tabIndex={-1}
+            ref={modalRef}
+          >
+            <h5>Select Customer</h5>
+            <input
+              ref={inputRef}
+              type='text'
+              className='form-control mb-3'
+              placeholder='Search by customer name...'
+              value={filterText}
+              onChange={(e) => {
+                setFilterText(e.target.value);
+                setFocusedIndex(0);
+              }}
+              autoFocus
+            />
+
+            <table className='table table-hover table-bordered'>
+              <thead className='table-light'>
+                <tr>
+                  <th>Name</th>
+                  <th>Area</th>
+                  <th>Phone</th>
+                  <th>Balance</th>
+                  <th>GST No.</th>
+                  <th>Address</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredCustomers.map((c, index) => (
+                  <tr
+                    key={c._id}
+                    ref={(el) => (rowRefs.current[index] = el)}
+                    className={index === focusedIndex ? "table-active" : ""}
+                  >
+                    <td style={{ textAlign: "left" }}>{c.ledger}</td>
+                    <td>{c.area}</td>
+                    <td>{c.mobile}</td>
+                    <td>{c.balance}</td>
+                    <td>{c.gstNumber}</td>
+                    <td style={{ textAlign: "left" }}>{c.address1}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+      {/* //! salesman */}
+      {showSalesmanModal && (
+        <div
+          className='modal-backdrop'
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            backgroundColor: "rgba(0,0,0,0.5)",
+            zIndex: 9999,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          onClick={() => setShowSalesmanModal(false)}
+        >
+          <div
+            style={{
+              backgroundColor: "white",
+              padding: "1rem",
+              width: "90%",
+              maxHeight: "80vh",
+              overflowY: "auto",
+              outline: "none",
+            }}
+            onClick={(e) => e.stopPropagation()}
+            onKeyDown={(e) => {
+              if (e.key === "ArrowDown") {
+                e.preventDefault();
+                setSalesmanFocusedIndex((prev) =>
+                  prev < filteredSalesmen.length - 1 ? prev + 1 : 0
+                );
+              }
+              if (e.key === "ArrowUp") {
+                e.preventDefault();
+                setSalesmanFocusedIndex((prev) =>
+                  prev > 0 ? prev - 1 : filteredSalesmen.length - 1
+                );
+              }
+              if (e.key === "Enter" && filteredSalesmen[salesmanFocusedIndex]) {
+                const selected = filteredSalesmen[salesmanFocusedIndex];
+                setSelectedSalesman(selected);
+                setFormData((prev) => ({
+                  ...prev,
+                  selectedSalesmanId: selected._id,
+                }));
+                setShowSalesmanModal(false);
+
+                setTimeout(() => {
+                  beatSelectRef.current?.focus(); // 👈 next focus
+                }, 100);
+              }
+            }}
+            tabIndex={-1}
+            ref={salesmanModalRef}
+          >
+            <h5>Select Salesman</h5>
+            <input
+              ref={salesmanInputRef}
+              type='text'
+              className='form-control mb-3'
+              placeholder='Search by salesman name...'
+              value={salesmanFilterText}
+              onChange={(e) => {
+                setSalesmanFilterText(e.target.value);
+                setSalesmanFocusedIndex(0);
+              }}
+              autoFocus
+            />
+
+            <table className='table table-hover table-bordered'>
+              <thead className='table-light'>
+                <tr>
+                  <th>Name</th>
+                  <th>Mobile</th>
+                  <th>Alternate Mobile</th>
+                  <th>Beat</th>
+                  <th>Address</th>
+                  <th>City</th>
+                  <th>Username</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredSalesmen.map(
+                  (s, index) => (
+                    console.log(filteredSalesmen, "FILTERED"),
+                    (
+                      <tr
+                        key={s._id}
+                        ref={(el) => (salesmanRowRefs.current[index] = el)}
+                        className={
+                          index === salesmanFocusedIndex ? "table-active" : ""
+                        }
+                      >
+                        <td>{s.name}</td>
+                        <td>{s.mobile}</td>
+                        <td>{s.alternateMobile}</td>
+                        <td>{s.beat.map((b) => b.area).join(", ")}</td>
+                        <td>{s.address}</td>
+                        <td>{s.city}</td>
+                        <td>{s.username}</td>
+                      </tr>
+                    )
+                  )
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
