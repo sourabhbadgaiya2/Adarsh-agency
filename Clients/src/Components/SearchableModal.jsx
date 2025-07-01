@@ -28,7 +28,7 @@ const SearchableModal = (items = [], searchKey = "name") => {
         inputRef.current.focus();
       }
 
-      if (e.key === "Escape") setShowModal(false);
+      // if (e.key === "Escape") setShowModal(false);
     };
 
     window.addEventListener("keydown", handleGlobalKey);

@@ -833,7 +833,7 @@ const GenerateInvoice = () => {
             key={pageIndex}
             className='invoice-page'
             style={{
-              width: "210mm",
+              // width: "210mm",
               margin: "auto",
               padding: "1mm",
               fontFamily: "Courier New monospace",

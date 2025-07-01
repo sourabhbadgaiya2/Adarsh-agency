@@ -167,22 +167,52 @@ const CustomerBilling = ({ onDataChange, resetTrigger, onNextFocus }) => {
   };
 
   // Enter key focus jump
-  const handleKeyDown = (e) => {
-    if (e.key !== "Enter") return;
+  // const handleKeyDown = (e) => {
+  //   if (e.key !== "Enter") return;
 
-    e.preventDefault();
+  //   e.preventDefault();
+  //   const form = e.target.form;
+  //   const focusable = Array.from(
+  //     form.querySelectorAll("input, select, .react-select__input input")
+  //   ).filter((el) => !el.disabled);
+
+  //   const index = focusable.indexOf(e.target);
+  //   if (index >= 0 && focusable[index + 1]) {
+  //     focusable[index + 1].focus();
+  //   } else {
+  //     console.log("Reached last CustomerBilling input. Calling onNextFocus()");
+  //     onNextFocus?.();
+  //   }
+
+  // };
+
+  const handleKeyDown = (e) => {
     const form = e.target.form;
     const focusable = Array.from(
       form.querySelectorAll("input, select, .react-select__input input")
     ).filter((el) => !el.disabled);
 
     const index = focusable.indexOf(e.target);
-    if (index >= 0 && focusable[index + 1]) {
-      focusable[index + 1].focus();
-    } else {
-      // 👇 This is the fix: focus ProductBillingReport
-      console.log("Reached last CustomerBilling input. Calling onNextFocus()");
-      onNextFocus?.();
+
+    // 🔁 Go forward on Enter
+    if (e.key === "Enter") {
+      e.preventDefault();
+      if (index >= 0 && focusable[index + 1]) {
+        focusable[index + 1].focus();
+      } else {
+        console.log(
+          "Reached last CustomerBilling input. Calling onNextFocus()"
+        );
+        onNextFocus?.();
+      }
+    }
+
+    // 🔁 Go backward on Escape
+    if (e.key === "Escape") {
+      e.preventDefault();
+      if (index > 0 && focusable[index - 1]) {
+        focusable[index - 1].focus();
+      }
     }
   };
 
@@ -216,6 +246,26 @@ const CustomerBilling = ({ onDataChange, resetTrigger, onNextFocus }) => {
     rowRefs: salesmanRowRefs,
     filteredItems: filteredSalesmen,
   } = useSearchableModal(salesmen, "name");
+
+  const handleReactSelectKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const menuOptions = document.querySelectorAll(
+        ".react-select__menu .react-select__option"
+      );
+      const focusedOption = Array.from(menuOptions).find((el) =>
+        el.classList.contains("react-select__option--is-focused")
+      );
+      if (focusedOption) focusedOption.click();
+
+      setTimeout(() => handleKeyDown(e), 0);
+    }
+
+    if (e.key === "Escape") {
+      e.preventDefault();
+      handleKeyDown(e);
+    }
+  };
 
   if (loading) {
     return <Loader />;
@@ -282,6 +332,7 @@ const CustomerBilling = ({ onDataChange, resetTrigger, onNextFocus }) => {
                 classNamePrefix='react-select'
                 menuPortalTarget={document.body}
                 styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
+                onKeyDown={handleReactSelectKeyDown}
               />
             </div>
           </div>
@@ -301,26 +352,30 @@ const CustomerBilling = ({ onDataChange, resetTrigger, onNextFocus }) => {
               }
               onChange={(opt) => setSelectedBeat(opt?.beatObject)}
               ref={beatSelectRef}
-              // onKeyDown={handleKeyDown}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  e.preventDefault();
-                  // Programmatically select the currently focused option
-                  const menuOptions = document.querySelectorAll(
-                    ".react-select__menu .react-select__option"
-                  );
-                  const focusedOption = Array.from(menuOptions).find((el) =>
-                    el.classList.contains("react-select__option--is-focused")
-                  );
-                  if (focusedOption) {
-                    focusedOption.click(); // 👈 simulate user click
-                  }
+              onKeyDown={handleReactSelectKeyDown}
+              // onKeyDown={(e) => {
+              //   if (e.key === "Enter") {
+              //     e.preventDefault();
+              //     // Programmatically select the currently focused option
+              //     const menuOptions = document.querySelectorAll(
+              //       ".react-select__menu .react-select__option"
+              //     );
+              //     const focusedOption = Array.from(menuOptions).find((el) =>
+              //       el.classList.contains("react-select__option--is-focused")
+              //     );
+              //     if (focusedOption) {
+              //       focusedOption.click(); // 👈 simulate user click
+              //     }
 
-                  setTimeout(() => {
-                    handleKeyDown(e); // 👈 now call your existing logic to move to next
-                  }, 0);
-                }
-              }}
+              //     setTimeout(() => {
+              //       handleKeyDown(e); // 👈 now call your existing logic to move to next
+              //     }, 0);
+              //   }
+              //   if (e.key === "Escape") {
+              //     e.preventDefault();
+              //     handleKeyDown(e); // 👈 This was missing
+              //   }
+              // }}
               placeholder='Select Beat...'
               isDisabled={!selectedSalesman}
               classNamePrefix='react-select'
@@ -352,6 +407,7 @@ const CustomerBilling = ({ onDataChange, resetTrigger, onNextFocus }) => {
                 classNamePrefix='react-select'
                 menuPortalTarget={document.body}
                 styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
+                onKeyDown={handleReactSelectKeyDown} // ✅ Added
               />
             </div>
           </div>
@@ -383,7 +439,7 @@ const CustomerBilling = ({ onDataChange, resetTrigger, onNextFocus }) => {
               className='form-control'
               value={formData.paymentMode}
               onChange={handleInputChange}
-              onKeyDown={handleKeyDown}
+              onKeyDown={handleKeyDown} // ✅ Already OK
               required
             >
               <option value=''>-- Select --</option>

@@ -279,11 +279,98 @@ const ProductBillingReport = ({ onBillingDataChange }, ref) => {
     onBillingDataChange(filteredBillingData, finalTotal);
   };
 
+  // const handleKeyDown = (e, rowIndex) => {
+  //   const isEnter = e.key === "Enter";
+  //   const isAltN = e.altKey && e.key === "n";
+
+  //   if (!isEnter && !isAltN && e.key !== "Delete") return;
+
+  //   const focusableSelectors =
+  //     "input:not([readonly]), select, .react-select__input input";
+  //   const allFocusable = Array.from(
+  //     document.querySelectorAll(focusableSelectors)
+  //   );
+
+  //   const currentIndex = allFocusable.indexOf(e.target);
+
+  //   // ===== Alt + N or Enter on last input: Add new row =====
+  //   if ((isAltN || isEnter) && rowIndex === rows.length - 1) {
+  //     const isLastInput = currentIndex === allFocusable.length - 1;
+
+  //     if (isAltN || isLastInput) {
+  //       e.preventDefault();
+  //       const newRows = [...rows, { ...defaultRow }];
+  //       setRows(newRows);
+
+  //       // Focus first input of new row after DOM update
+  //       setTimeout(() => {
+  //         const updatedFocusable = Array.from(
+  //           document.querySelectorAll(focusableSelectors)
+  //         );
+  //         updatedFocusable[allFocusable.length]?.focus(); // first input of new row
+  //       }, 50);
+  //       return;
+  //     }
+  //   }
+
+  //   // ===== Enter: Normal move to next input =====
+  //   if (isEnter) {
+  //     e.preventDefault();
+  //     const next = allFocusable[currentIndex + 1];
+  //     if (next) {
+  //       next.focus();
+  //     } else {
+  //       allFocusable[0]?.focus(); // fallback
+  //     }
+  //   }
+
+  //   // ===== Delete row shortcut =====
+  //   if (e.key === "Delete" && rows.length > 1) {
+  //     e.preventDefault();
+  //     const updatedRows = rows.filter((_, i) => i !== rowIndex);
+  //     setRows(updatedRows);
+
+  //     const filteredBillingData = updatedRows
+  //       .filter(
+  //         (r) =>
+  //           r.product !== null &&
+  //           r.Qty !== "" &&
+  //           !isNaN(parseFloat(r.Qty)) &&
+  //           parseFloat(r.Qty) > 0
+  //       )
+  //       .map((r) => ({
+  //         productId: r.product._id,
+  //         itemName: r.product.productName,
+  //         hsnCode: r.product.hsnCode,
+  //         unit: r.Unit,
+  //         qty: parseFloat(r.Qty),
+  //         Free: parseFloat(r.Free) || 0,
+  //         rate: parseFloat(r.Basic),
+  //         sch: parseFloat(r.Sch) || 0,
+  //         schAmt: parseFloat(r.SchAmt) || 0,
+  //         cd: parseFloat(r.CD) || 0,
+  //         cdAmt: parseFloat(r.CDAmt) || 0,
+  //         total: parseFloat(r.Total) || 0,
+  //         gst: parseFloat(r.GST) || 0,
+  //         amount: parseFloat(r.Amount) || 0,
+  //       }));
+
+  //     const recalculatedFinalTotal = updatedRows
+  //       .reduce((sum, r) => {
+  //         const amt = parseFloat(r.Amount);
+  //         return sum + (isNaN(amt) ? 0 : amt);
+  //       }, 0)
+  //       .toFixed(2);
+
+  //     setFinalTotalAmount(recalculatedFinalTotal);
+  //     onBillingDataChange(filteredBillingData, recalculatedFinalTotal);
+  //   }
+  // };
+
   const handleKeyDown = (e, rowIndex) => {
     const isEnter = e.key === "Enter";
     const isAltN = e.altKey && e.key === "n";
-
-    if (!isEnter && !isAltN && e.key !== "Delete") return;
+    const isEscape = e.key === "Escape";
 
     const focusableSelectors =
       "input:not([readonly]), select, .react-select__input input";
@@ -292,6 +379,33 @@ const ProductBillingReport = ({ onBillingDataChange }, ref) => {
     );
 
     const currentIndex = allFocusable.indexOf(e.target);
+
+    // ===== Escape: Move to previous input =====
+    // if (isEscape) {
+    //   e.preventDefault();
+    //   const prev = allFocusable[currentIndex - 1];
+    //   if (prev) {
+    //     prev.focus();
+    //   } else {
+    //     allFocusable[allFocusable.length - 1]?.focus(); // fallback
+    //   }
+    //   return;
+    // }
+    if (isEscape) {
+      e.preventDefault();
+
+      const prev = allFocusable[currentIndex - 1];
+      if (prev) {
+        prev.focus();
+      } else {
+        if (selectRef.current) {
+          selectRef.current.focus();
+        } else {
+          console.log("Select ref not ready");
+        }
+      }
+      return;
+    }
 
     // ===== Alt + N or Enter on last input: Add new row =====
     if ((isAltN || isEnter) && rowIndex === rows.length - 1) {
@@ -322,6 +436,7 @@ const ProductBillingReport = ({ onBillingDataChange }, ref) => {
       } else {
         allFocusable[0]?.focus(); // fallback
       }
+      return;
     }
 
     // ===== Delete row shortcut =====
@@ -435,9 +550,11 @@ const ProductBillingReport = ({ onBillingDataChange }, ref) => {
                         }}
                       >
                         <Select
-                          ref={rowIndex === 0 ? selectRef : null}
+                          // ref={rowIndex === 0 ? selectRef : null}
+                          ref={selectRef}
                           className='w-100'
                           // isDisabled
+
                           value={
                             row.product
                               ? {
