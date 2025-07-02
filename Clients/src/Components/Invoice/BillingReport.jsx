@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 function BillingReport() {
   const [billingData, setBillingData] = useState([]);
   const [customerData, setCustomerData] = useState({});
-  const navigate = useNavigate(); // ✅ Correct hook
+  const navigate = useNavigate();
   const [finalAmount, setFinalAmount] = useState(0);
   const [resetKey, setResetKey] = useState(0);
 
@@ -18,7 +18,7 @@ function BillingReport() {
 
   const handleBillingDataChange = (data, totalAmount) => {
     setBillingData(data);
-    setFinalAmount(parseFloat(totalAmount)); // ✅ Now correct
+    setFinalAmount(parseFloat(totalAmount));
   };
 
   const handleCustomerDataChange = (data) => {
@@ -32,7 +32,7 @@ function BillingReport() {
   };
 
   const handleSubmit = async () => {
-    console.log("LLL");
+    // console.log("LLL");
 
     setLoading(true);
 
@@ -40,25 +40,24 @@ function BillingReport() {
       const finalData = {
         companyId: customerData.companyId,
         salesmanId: customerData.salesmanId,
-        customerId: customerData.customerId, // ✅ Use _id for customerId
+        customerId: customerData.customerId,
         customer: customerData,
         customerName: customerData.name,
         billing: billingData,
-        finalAmount, // ✅ Include this
+        finalAmount,
       };
 
       const response = await axios.post("/pro-billing", finalData);
       toast.success("Invoice saved successfully!");
 
-      // console.log(response.data, "Response from server"); // ✅ Log the response
+      // console.log(response.data, "Response from server");
       const invoiceId = response.data.invoice._id;
 
       // 🔁 Reset form after toast (e.g., after 3 seconds)
       setTimeout(() => {
         resetForm();
       }, 3000);
-      navigate(`/generate-invoice/${invoiceId}`); // ✅ Works correctly now
-      // console.log("Response from server:", response.data);
+      navigate(`/generate-invoice/${invoiceId}`);
     } catch (error) {
       toast.error(error?.response?.data?.details || "Failed to save invoice");
       console.error("Error saving invoice:", error);
@@ -67,14 +66,28 @@ function BillingReport() {
     }
   };
 
-  const productRef = useRef(); // 👈 Step 1: Create a ref
+  const productRef = useRef();
 
   // ... your state and handlers
 
   const focusNextComponent = () => {
     console.log("Calling productRef.focusItemName()");
-    productRef.current?.focusItemName(); // 👈 Step 2: Call this when needed
+    productRef.current?.focusItemName();
   };
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.ctrlKey && e.key === "Enter") {
+        e.preventDefault();
+        handleSubmit();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [handleSubmit]);
 
   if (loading) {
     return <Loader />;
@@ -86,20 +99,30 @@ function BillingReport() {
         // key={resetKey + 100} // avoid collision
         onDataChange={handleCustomerDataChange}
         resetTrigger={resetKey}
-        onNextFocus={focusNextComponent} // 👈 Step 3: pass function to child
+        onNextFocus={focusNextComponent}
       />
       <ProductBillingReport
-        ref={productRef} // 👈 Step 4: attach ref
+        ref={productRef}
         onBillingDataChange={handleBillingDataChange}
         key={resetKey}
       />
-      {/* <hr /> */}
+
+      <div
+        style={{
+          fontSize: "12px",
+          margin: "4px",
+          color: "#555",
+          textAlign: "center",
+        }}
+      >
+        Press <strong>Ctrl + Enter</strong> to submit
+      </div>
       <div className='text-center mt-4'>
         <button
-          // disabled={!customerData.customerId || billingData.length === 0}
           className='btn btn-primary px-4 py-2'
           onClick={handleSubmit}
           style={{ fontWeight: "bold", fontSize: "16px", borderRadius: "8px" }}
+          title='Shortcut: Ctrl + Enter'
         >
           Submit
         </button>
