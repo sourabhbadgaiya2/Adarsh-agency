@@ -51,6 +51,9 @@ const ProductBillingReport = ({ onBillingDataChange }, ref) => {
 
   const selectRef = useRef();
   const rowRefs = useRef([]);
+  const selectRefs = useRef({});
+  const itemNameRefs = useRef({});
+
   const qtyRefs = useRef([]);
 
   useEffect(() => {
@@ -279,93 +282,23 @@ const ProductBillingReport = ({ onBillingDataChange }, ref) => {
     onBillingDataChange(filteredBillingData, finalTotal);
   };
 
-  // const handleKeyDown = (e, rowIndex) => {
-  //   const isEnter = e.key === "Enter";
-  //   const isAltN = e.altKey && e.key === "n";
+  const getInputMatrix = () => {
+    const focusableSelector =
+      "input:not([readonly]), select, .react-select__input input";
+    const focusables = Array.from(document.querySelectorAll(focusableSelector));
 
-  //   if (!isEnter && !isAltN && e.key !== "Delete") return;
+    const rows = document.querySelectorAll("tbody tr");
+    const matrix = [];
 
-  //   const focusableSelectors =
-  //     "input:not([readonly]), select, .react-select__input input";
-  //   const allFocusable = Array.from(
-  //     document.querySelectorAll(focusableSelectors)
-  //   );
+    rows.forEach((tr) => {
+      const rowInputs = Array.from(tr.querySelectorAll(focusableSelector));
+      if (rowInputs.length) {
+        matrix.push(rowInputs);
+      }
+    });
 
-  //   const currentIndex = allFocusable.indexOf(e.target);
-
-  //   // ===== Alt + N or Enter on last input: Add new row =====
-  //   if ((isAltN || isEnter) && rowIndex === rows.length - 1) {
-  //     const isLastInput = currentIndex === allFocusable.length - 1;
-
-  //     if (isAltN || isLastInput) {
-  //       e.preventDefault();
-  //       const newRows = [...rows, { ...defaultRow }];
-  //       setRows(newRows);
-
-  //       // Focus first input of new row after DOM update
-  //       setTimeout(() => {
-  //         const updatedFocusable = Array.from(
-  //           document.querySelectorAll(focusableSelectors)
-  //         );
-  //         updatedFocusable[allFocusable.length]?.focus(); // first input of new row
-  //       }, 50);
-  //       return;
-  //     }
-  //   }
-
-  //   // ===== Enter: Normal move to next input =====
-  //   if (isEnter) {
-  //     e.preventDefault();
-  //     const next = allFocusable[currentIndex + 1];
-  //     if (next) {
-  //       next.focus();
-  //     } else {
-  //       allFocusable[0]?.focus(); // fallback
-  //     }
-  //   }
-
-  //   // ===== Delete row shortcut =====
-  //   if (e.key === "Delete" && rows.length > 1) {
-  //     e.preventDefault();
-  //     const updatedRows = rows.filter((_, i) => i !== rowIndex);
-  //     setRows(updatedRows);
-
-  //     const filteredBillingData = updatedRows
-  //       .filter(
-  //         (r) =>
-  //           r.product !== null &&
-  //           r.Qty !== "" &&
-  //           !isNaN(parseFloat(r.Qty)) &&
-  //           parseFloat(r.Qty) > 0
-  //       )
-  //       .map((r) => ({
-  //         productId: r.product._id,
-  //         itemName: r.product.productName,
-  //         hsnCode: r.product.hsnCode,
-  //         unit: r.Unit,
-  //         qty: parseFloat(r.Qty),
-  //         Free: parseFloat(r.Free) || 0,
-  //         rate: parseFloat(r.Basic),
-  //         sch: parseFloat(r.Sch) || 0,
-  //         schAmt: parseFloat(r.SchAmt) || 0,
-  //         cd: parseFloat(r.CD) || 0,
-  //         cdAmt: parseFloat(r.CDAmt) || 0,
-  //         total: parseFloat(r.Total) || 0,
-  //         gst: parseFloat(r.GST) || 0,
-  //         amount: parseFloat(r.Amount) || 0,
-  //       }));
-
-  //     const recalculatedFinalTotal = updatedRows
-  //       .reduce((sum, r) => {
-  //         const amt = parseFloat(r.Amount);
-  //         return sum + (isNaN(amt) ? 0 : amt);
-  //       }, 0)
-  //       .toFixed(2);
-
-  //     setFinalTotalAmount(recalculatedFinalTotal);
-  //     onBillingDataChange(filteredBillingData, recalculatedFinalTotal);
-  //   }
-  // };
+    return matrix;
+  };
 
   const handleKeyDown = (e, rowIndex) => {
     const isEnter = e.key === "Enter";
@@ -380,17 +313,59 @@ const ProductBillingReport = ({ onBillingDataChange }, ref) => {
 
     const currentIndex = allFocusable.indexOf(e.target);
 
-    // ===== Escape: Move to previous input =====
-    // if (isEscape) {
-    //   e.preventDefault();
-    //   const prev = allFocusable[currentIndex - 1];
-    //   if (prev) {
-    //     prev.focus();
-    //   } else {
-    //     allFocusable[allFocusable.length - 1]?.focus(); // fallback
-    //   }
-    //   return;
-    // }
+    // LEFT ←
+    if (e.key === "ArrowLeft") {
+      const cursorAtStart =
+        e.target.selectionStart === 0 && e.target.selectionEnd === 0;
+      if (cursorAtStart) {
+        e.preventDefault();
+        const prev = allFocusable[currentIndex - 1];
+        if (prev) prev.focus();
+      }
+      return;
+    }
+
+    // RIGHT →
+    if (e.key === "ArrowRight") {
+      const cursorAtEnd = e.target.selectionStart === e.target.value?.length;
+      if (cursorAtEnd) {
+        e.preventDefault();
+        const next = allFocusable[currentIndex + 1];
+        if (next) next.focus();
+      }
+      return;
+    }
+
+    // ===== UP / DOWN Arrow movement between rows =====
+    if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+      const inputMatrix = getInputMatrix();
+
+      let targetRow = -1;
+      let targetCol = -1;
+
+      for (let row = 0; row < inputMatrix.length; row++) {
+        for (let col = 0; col < inputMatrix[row].length; col++) {
+          if (inputMatrix[row][col] === e.target) {
+            targetRow = row;
+            targetCol = col;
+            break;
+          }
+        }
+        if (targetRow !== -1) break;
+      }
+
+      if (targetRow !== -1) {
+        e.preventDefault();
+        const nextRow = e.key === "ArrowUp" ? targetRow - 1 : targetRow + 1;
+
+        if (inputMatrix[nextRow] && inputMatrix[nextRow][targetCol]) {
+          inputMatrix[nextRow][targetCol].focus();
+        }
+      }
+
+      return;
+    }
+
     if (isEscape) {
       e.preventDefault();
 
@@ -551,7 +526,10 @@ const ProductBillingReport = ({ onBillingDataChange }, ref) => {
                       >
                         <Select
                           // ref={rowIndex === 0 ? selectRef : null}
-                          ref={selectRef}
+                          // ref={selectRef}
+                          ref={(el) => {
+                            selectRefs.current[rowIndex] = el;
+                          }}
                           className='w-100'
                           // isDisabled
 

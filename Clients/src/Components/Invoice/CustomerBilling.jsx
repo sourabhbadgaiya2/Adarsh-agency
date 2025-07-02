@@ -166,26 +166,6 @@ const CustomerBilling = ({ onDataChange, resetTrigger, onNextFocus }) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Enter key focus jump
-  // const handleKeyDown = (e) => {
-  //   if (e.key !== "Enter") return;
-
-  //   e.preventDefault();
-  //   const form = e.target.form;
-  //   const focusable = Array.from(
-  //     form.querySelectorAll("input, select, .react-select__input input")
-  //   ).filter((el) => !el.disabled);
-
-  //   const index = focusable.indexOf(e.target);
-  //   if (index >= 0 && focusable[index + 1]) {
-  //     focusable[index + 1].focus();
-  //   } else {
-  //     console.log("Reached last CustomerBilling input. Calling onNextFocus()");
-  //     onNextFocus?.();
-  //   }
-
-  // };
-
   const handleKeyDown = (e) => {
     const form = e.target.form;
     const focusable = Array.from(
@@ -281,44 +261,7 @@ const CustomerBilling = ({ onDataChange, resetTrigger, onNextFocus }) => {
             <label>
               <strong>Salesman</strong>
             </label>
-            {/* <Select
-              options={salesmen.map((s) => ({
-                label: s.name,
-                value: s._id,
-                salesmanObject: s,
-              }))}
-              value={
-                selectedSalesman && {
-                  label: selectedSalesman.name,
-                  value: selectedSalesman._id,
-                }
-              }
-              onChange={(opt) => setSelectedSalesman(opt?.salesmanObject)}
-              // onKeyDown={handleKeyDown}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  e.preventDefault();
-                  // Programmatically select the currently focused option
-                  const menuOptions = document.querySelectorAll(
-                    ".react-select__menu .react-select__option"
-                  );
-                  const focusedOption = Array.from(menuOptions).find((el) =>
-                    el.classList.contains("react-select__option--is-focused")
-                  );
-                  if (focusedOption) {
-                    focusedOption.click(); // 👈 simulate user click
-                  }
 
-                  setTimeout(() => {
-                    handleKeyDown(e); // 👈 now call your existing logic to move to next
-                  }, 0);
-                }
-              }}
-              placeholder='Select Salesman...'
-              classNamePrefix='react-select'
-              menuPortalTarget={document.body}
-              styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
-            /> */}
             <div tabIndex={0} onFocus={() => setShowSalesmanModal(true)}>
               <Select
                 value={
@@ -353,29 +296,6 @@ const CustomerBilling = ({ onDataChange, resetTrigger, onNextFocus }) => {
               onChange={(opt) => setSelectedBeat(opt?.beatObject)}
               ref={beatSelectRef}
               onKeyDown={handleReactSelectKeyDown}
-              // onKeyDown={(e) => {
-              //   if (e.key === "Enter") {
-              //     e.preventDefault();
-              //     // Programmatically select the currently focused option
-              //     const menuOptions = document.querySelectorAll(
-              //       ".react-select__menu .react-select__option"
-              //     );
-              //     const focusedOption = Array.from(menuOptions).find((el) =>
-              //       el.classList.contains("react-select__option--is-focused")
-              //     );
-              //     if (focusedOption) {
-              //       focusedOption.click(); // 👈 simulate user click
-              //     }
-
-              //     setTimeout(() => {
-              //       handleKeyDown(e); // 👈 now call your existing logic to move to next
-              //     }, 0);
-              //   }
-              //   if (e.key === "Escape") {
-              //     e.preventDefault();
-              //     handleKeyDown(e); // 👈 This was missing
-              //   }
-              // }}
               placeholder='Select Beat...'
               isDisabled={!selectedSalesman}
               classNamePrefix='react-select'
@@ -429,31 +349,8 @@ const CustomerBilling = ({ onDataChange, resetTrigger, onNextFocus }) => {
             />
           </div>
 
-          {/* Payment Mode */}
-          <div className='form-group col-md-6'>
-            <label>
-              <strong>Payment Mode</strong>
-            </label>
-            <select
-              name='paymentMode'
-              className='form-control'
-              value={formData.paymentMode}
-              onChange={handleInputChange}
-              onKeyDown={handleKeyDown} // ✅ Already OK
-              required
-            >
-              <option value=''>-- Select --</option>
-              <option value='Cash'>Cash</option>
-              <option value='Card'>Card</option>
-              <option value='UPI'>UPI</option>
-              <option value='Net Banking'>Net Banking</option>
-              <option value='Cheque'>Cheque</option>
-            </select>
-          </div>
-
-          {/* Credit */}
           {/* Credit / Cash Selection */}
-          <div className='form-group col-md-6'>
+          {/* <div className='form-group col-md-6'>
             <label>
               <strong>Billing Type</strong>
             </label>
@@ -469,7 +366,86 @@ const CustomerBilling = ({ onDataChange, resetTrigger, onNextFocus }) => {
               <option value='Credit'>Credit</option>
               <option value='Cash'>Cash</option>
             </select>
+          </div> */}
+
+          {/* Payment Mode */}
+          {/* <div className='form-group col-md-6'>
+            <label>
+              <strong>Payment Mode</strong>
+            </label>
+            <select
+              name='paymentMode'
+              className='form-control'
+              value={formData.paymentMode}
+              onChange={handleInputChange}
+              onKeyDown={handleKeyDown}
+              required
+            >
+              <option value=''>-- Select --</option>
+              <option value='Cash'>Cash</option>
+              <option value='Card'>Card</option>
+              <option value='UPI'>UPI</option>
+              <option value='Net Banking'>Net Banking</option>
+              <option value='Cheque'>Cheque</option>
+            </select>
+          </div> */}
+
+          <div className='form-group col-md-6'>
+            <label>
+              <strong>Billing Type</strong>
+            </label>
+            <select
+              name='billingType'
+              className='form-control'
+              value={formData.billingType || ""}
+              onChange={(e) => {
+                const value = e.target.value;
+                handleInputChange(e);
+
+                // Set default payment mode to 'Cash' if billingType is 'Cash'
+                if (value === "Cash") {
+                  handleInputChange({
+                    target: { name: "paymentMode", value: "Cash" },
+                  });
+                } else {
+                  handleInputChange({
+                    target: { name: "paymentMode", value: "" },
+                  }); // Clear if not cash
+                }
+              }}
+              onKeyDown={handleKeyDown}
+              required
+            >
+              <option value=''>-- Select --</option>
+              <option value='Credit'>Credit</option>
+              <option value='Cash'>Cash</option>
+            </select>
           </div>
+
+          {/* Payment Mode - Only show when Billing Type is 'Cash' */}
+          {formData.billingType === "Cash" && (
+            <div className='form-group col-md-6'>
+              <label>
+                <strong>Payment Mode</strong>
+              </label>
+              <select
+                name='paymentMode'
+                className='form-control'
+                value={formData.paymentMode || "Cash"} // Default to Cash
+                onChange={handleInputChange}
+                onKeyDown={handleKeyDown}
+                required
+              >
+                <option value='Cash'>Cash</option>
+                <option value='Card'>Card</option>
+                <option value='UPI'>UPI</option>
+                <option value='Net Banking'>Net Banking</option>
+                <option value='Cheque'>Cheque</option>
+              </select>
+            </div>
+          )}
+
+          {/* Credit */}
         </div>
       </form>
       {/* //! customer */}
