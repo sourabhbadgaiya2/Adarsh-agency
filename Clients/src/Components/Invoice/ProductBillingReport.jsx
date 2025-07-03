@@ -366,19 +366,43 @@ const ProductBillingReport = ({ onBillingDataChange }, ref) => {
       return;
     }
 
+    // if (isEscape) {
+    //   e.preventDefault();
+
+    //   const prev = allFocusable[currentIndex - 1];
+    //   if (prev) {
+    //     prev.focus();
+    //   } else {
+    //     if (selectRef.current) {
+    //       selectRef.current.focus();
+    //     } else {
+    //       console.log("Select ref not ready");
+    //     }
+    //   }
+    //   return;
+    // }
+
     if (isEscape) {
       e.preventDefault();
 
+      // Try going to previous input
       const prev = allFocusable[currentIndex - 1];
+
       if (prev) {
         prev.focus();
       } else {
-        if (selectRef.current) {
-          selectRef.current.focus();
+        // Now manually focus React Select input
+
+        const selectInstance = selectRefs.current[rowIndex];
+        const reactSelectInput = selectInstance?.select?.inputRef;
+
+        if (reactSelectInput) {
+          reactSelectInput.focus();
         } else {
-          console.log("Select ref not ready");
+          console.warn("❌ React-Select inputRef not found");
         }
       }
+
       return;
     }
 
@@ -526,9 +550,11 @@ const ProductBillingReport = ({ onBillingDataChange }, ref) => {
                       >
                         <Select
                           // ref={rowIndex === 0 ? selectRef : null}
-                          // ref={selectRef}
-                          ref={(el) => {
-                            selectRefs.current[rowIndex] = el;
+                          ref={(ref) => {
+                            if (ref) {
+                              selectRefs.current[rowIndex] = ref; // ✅ save Select instance
+                              if (rowIndex === 0) selectRef.current = ref; // optional
+                            }
                           }}
                           className='w-100'
                           // isDisabled

@@ -35,6 +35,8 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
 
+import CustomDataTable from "../../Components/CustomDataTable";
+
 function CustomerDetail() {
   const [customers, setCustomers] = useState([]);
   const [activeTab, setActiveTab] = useState("details");
@@ -237,7 +239,7 @@ function CustomerDetail() {
             className='mb-3'
           >
             <Tab eventKey='details' title='Customer Detail'>
-              <div className='mb-3'>
+              {/* <div className='mb-3'>
                 <InputGroup>
                   <Form.Control
                     type='text'
@@ -254,10 +256,10 @@ function CustomerDetail() {
                     </Button>
                   )}
                 </InputGroup>
-              </div>
+              </div> */}
 
               {/* ✅ Export Buttons */}
-              <Row className='mb-3'>
+              {/* <Row className='mb-3'>
                 <Col>
                   <Button
                     variant='success'
@@ -270,9 +272,9 @@ function CustomerDetail() {
                     <BsFileEarmarkPdf /> Download PDF
                   </Button>
                 </Col>
-              </Row>
+              </Row> */}
 
-              <DataTable
+              {/* <DataTable
                 title='Customers'
                 columns={columns}
                 data={filteredItems}
@@ -286,6 +288,49 @@ function CustomerDetail() {
                 defaultSortFieldId={1}
                 defaultSortAsc={true}
                 noDataComponent={<div className='py-4'>No customers found</div>}
+              /> */}
+
+              <CustomDataTable
+                title='Customers'
+                columns={columns}
+                data={filteredItems}
+                loading={loading}
+                filterComponent={
+                  <div className='mb-3'>
+                    <InputGroup>
+                      <Form.Control
+                        type='text'
+                        placeholder='Search by name, area or mobile...'
+                        value={filterText}
+                        onChange={(e) => setFilterText(e.target.value)}
+                      />
+                      {filterText && (
+                        <Button
+                          variant='outline-secondary'
+                          onClick={() => setFilterText("")}
+                        >
+                          Clear
+                        </Button>
+                      )}
+                    </InputGroup>
+                  </div>
+                }
+                exportButtons={
+                  <Row className='mb-3'>
+                    <Col>
+                      <Button
+                        variant='success'
+                        onClick={exportToExcel}
+                        className='me-2'
+                      >
+                        <BsFileEarmarkExcel /> Download Excel
+                      </Button>
+                      <Button variant='danger' onClick={exportToPDF}>
+                        <BsFileEarmarkPdf /> Download PDF
+                      </Button>
+                    </Col>
+                  </Row>
+                }
               />
             </Tab>
 

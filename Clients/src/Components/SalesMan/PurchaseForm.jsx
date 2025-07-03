@@ -23,7 +23,7 @@ import Product from "../Productss/CreateProduct/Product";
 import axiosInstance from "../../Config/axios";
 import dayjs from "dayjs";
 
-import useSearchableModal from "../../Components/SearchableModal"; // नाम थोड़ा semantic किया
+import useSearchableModal from "../../Components/SearchableModal";
 
 const PurchaseForm = () => {
   const [vendors, setVendors] = useState([]);
@@ -36,6 +36,8 @@ const PurchaseForm = () => {
   const [showProductModal, setShowProductModal] = useState(false);
 
   const brandRef = useRef(null);
+  const productRef = useRef(null);
+  const quantityRef = useRef(null); // for next field
 
   const [isEditingProductName, setIsEditingProductName] = useState(false);
   const [editedProductName, setEditedProductName] = useState("");
@@ -67,6 +69,57 @@ const PurchaseForm = () => {
       schemePercent: "0",
     },
   });
+
+  // const handleProductSelect = (product) => {
+  //   // Yeh 'productId' ke update ke sath saare calculation bhi trigger karega
+  //   handleItemChange({
+  //     target: {
+  //       name: "productId",
+  //       value: product._id,
+  //     },
+  //   });
+
+  //   // Brand bhi auto-update hoga
+  //   setPurchaseData((prev) => ({
+  //     ...prev,
+  //     item: {
+  //       ...prev.item,
+  //       companyId: product.companyId || "", // fallback just in case
+  //     },
+  //   }));
+
+  //   // Modal band karo
+  //   productModal.setShowModal(false);
+
+  //   // Quantity field pe focus laana
+  //   setTimeout(() => {
+  //     document.querySelector('input[name="quantity"]')?.focus();
+  //   }, 100);
+  // };
+
+  const handleProductSelect = (product) => {
+    setPurchaseData((prev) => {
+      const alreadySelectedBrand = prev.item.companyId;
+
+      return {
+        ...prev,
+        item: {
+          ...prev.item,
+          productId: product._id,
+          // ✅ brand/companyId only set if not already selected
+          companyId: alreadySelectedBrand || product.companyId || "",
+          purchaseRate: product.purchaseRate || "",
+          availableQty: product.availableQty || "",
+        },
+      };
+    });
+
+    productModal.setShowModal(false);
+
+    setTimeout(() => {
+      document.querySelector('input[name="quantity"]')?.focus();
+    }, 100);
+  };
 
   const getCurrentDate = () => {
     const today = new Date();
@@ -229,6 +282,7 @@ const PurchaseForm = () => {
         date: purchaseData.date,
         partyNo: purchaseData.partyNo,
         entryNumber: purchaseData.entryNumber,
+        availableQty: purchaseData.availableQty,
         items: itemsList,
       };
 
@@ -308,47 +362,51 @@ const PurchaseForm = () => {
   };
 
   const handleKeyDown = (e) => {
+    const form = e.target.form || document.querySelector("form");
+    const focusable = Array.from(
+      form.querySelectorAll(
+        'input:not([type="hidden"]), select, textarea, div[data-nav]'
+      )
+    ).filter((el) => !el.disabled && el.offsetParent !== null);
+
+    const currentIndex = focusable.indexOf(e.target);
+    const isInsideRow = e.target.closest(".flex-nowrap");
+    const rowFocusable = focusable.filter(
+      (el) => el.closest(".flex-nowrap") === isInsideRow
+    );
+
     if (e.key === "Enter") {
       e.preventDefault();
-
-      const form = e.target.form;
-      const inputs = Array.from(form.elements).filter(
-        (el) =>
-          el.tagName === "INPUT" ||
-          el.tagName === "SELECT" ||
-          el.tagName === "TEXTAREA"
-      );
-
-      const index = inputs.indexOf(e.target);
-
-      const isInsideRow = e.target.closest(".flex-nowrap");
-
-      if (!form || !isInsideRow) return;
-
-      const isLastInput =
-        index === inputs.length - 1 ||
-        inputs[index + 1]?.closest(".flex-nowrap") !== isInsideRow;
-
-      if (isLastInput) {
-        // Action on last input
+      if (rowFocusable.indexOf(e.target) === rowFocusable.length - 1) {
         addItemToList();
-
-        // Focus back to first input in the same row
-        const firstInput = inputs.find(
-          (el) => el.closest(".flex-nowrap") === isInsideRow
-        );
-        if (firstInput) firstInput.focus();
+        setTimeout(() => {
+          brandRef.current?.focus(); // Focus back to brand input
+        }, 100);
       } else {
-        // Move to next input
-        let nextInput = inputs[index + 1];
-        while (
-          nextInput &&
-          (nextInput.disabled || nextInput.type === "hidden")
-        ) {
-          nextInput = inputs[++index + 1];
-        }
-        if (nextInput) nextInput.focus();
+        const nextIndex = focusable.indexOf(e.target) + 1;
+        focusable[nextIndex]?.focus();
       }
+    }
+
+    if (["ArrowRight", "ArrowDown"].includes(e.key)) {
+      e.preventDefault();
+      const nextIndex =
+        currentIndex < focusable.length - 1 ? currentIndex + 1 : 0;
+      focusable[nextIndex]?.focus();
+    }
+
+    if (["ArrowLeft", "ArrowUp"].includes(e.key)) {
+      e.preventDefault();
+      const prevIndex =
+        currentIndex > 0 ? currentIndex - 1 : focusable.length - 1;
+      focusable[prevIndex]?.focus();
+    }
+
+    if (e.key === "Escape") {
+      e.preventDefault();
+      const prevIndex =
+        currentIndex > 0 ? currentIndex - 1 : focusable.length - 1;
+      focusable[prevIndex]?.focus();
     }
   };
 
@@ -373,45 +431,6 @@ const PurchaseForm = () => {
     window.addEventListener("keydown", handleKeyDownGlobal);
     return () => window.removeEventListener("keydown", handleKeyDownGlobal);
   }, [purchaseData.item.productId, products]);
-
-  // !ESC
-  // useEffect(() => {
-  //   const handleEscapeKey = (e) => {
-  //     if (e.key === "Escape") {
-  //       setEditItemIndex(null); // ✅ exit edit mode for item
-  //       setPurchaseData((prev) => ({
-  //         ...prev,
-  //         item: {
-  //           productId: "",
-  //           companyId: "",
-  //           quantity: "",
-  //           availableQty: "",
-  //           purchaseRate: "",
-  //           discountPercent: "0",
-  //           schemePercent: "0",
-  //           totalAmount: "",
-  //         },
-  //       }));
-  //       setEditingId(null); // ✅ exit edit mode for main purchase form
-  //       // Also reset main form fields when escaping from a purchase edit
-  //       setPurchaseData((prev) => ({
-  //         ...prev,
-  //         vendorId: "",
-  //         date: getCurrentDate(),
-  //         entryNumber: "", // Will be refetched
-  //         partyNo: "",
-  //       }));
-  //       setItemsList([]); // Clear items list
-  //       fetchEntryNumber(); // Fetch a new entry number
-  //     }
-  //   };
-
-  //   window.addEventListener("keydown", handleEscapeKey);
-
-  //   return () => {
-  //     window.removeEventListener("keydown", handleEscapeKey);
-  //   };
-  // }, []);
 
   const handleSaveEditedName = async () => {
     const productId = purchaseData.item.productId;
@@ -491,70 +510,141 @@ const PurchaseForm = () => {
     rowRefs,
     filteredItems: filteredVendors,
   } = useSearchableModal(vendors, "name"); // vendors array & key 'name'
+
+  const brandModal = useSearchableModal(companies, "name");
+  const productModal = useSearchableModal(products, "productName");
+
   const handleFormNav = (e) => {
+    const form = e.target.form || document.querySelector("form");
+    const focusable = Array.from(
+      form.querySelectorAll(
+        'input:not([type="hidden"]), select, textarea, div[data-nav]'
+      )
+    ).filter((el) => !el.disabled && el.offsetParent !== null);
+
+    const currentIndex = focusable.indexOf(e.target);
+
+    if (["ArrowRight", "ArrowDown"].includes(e.key)) {
+      e.preventDefault();
+      const nextIndex =
+        currentIndex < focusable.length - 1 ? currentIndex + 1 : 0;
+      focusable[nextIndex]?.focus();
+    }
+
+    if (["ArrowLeft", "ArrowUp"].includes(e.key)) {
+      e.preventDefault();
+      const prevIndex =
+        currentIndex > 0 ? currentIndex - 1 : focusable.length - 1;
+      focusable[prevIndex]?.focus();
+    }
+
     if (e.key === "Enter") {
       e.preventDefault();
-
-      // Special case: jump from Party No. to Brand
       if (e.target.name === "partyNo") {
         brandRef.current?.focus();
         return;
       }
-
-      // Normal focus navigation
-      const form = e.target.form;
-      const focusable = Array.from(
-        form.querySelectorAll("input, select, textarea, div[data-nav]")
-      );
-      const index = focusable.indexOf(e.target);
-      const next = focusable[index + 1];
-      if (next) next.focus();
+      const nextIndex =
+        currentIndex < focusable.length - 1 ? currentIndex + 1 : 0;
+      focusable[nextIndex]?.focus();
     }
 
     if (e.key === "Escape") {
       e.preventDefault();
-      const form = e.target.form;
-      const focusable = Array.from(
-        form.querySelectorAll("input, select, textarea, div[data-nav]")
-      );
-      const index = focusable.indexOf(e.target);
-      const prev = focusable[index - 1];
-      if (prev) prev.focus();
+      const prevIndex =
+        currentIndex > 0 ? currentIndex - 1 : focusable.length - 1;
+      focusable[prevIndex]?.focus();
     }
   };
 
-  // const handleFormNav = (e) => {
-  //   const form = e.target.form;
+  useEffect(() => {
+    const handleEscapeKey = (e) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        // Close any open modals first
+        if (showVendorModal) {
+          setShowVendorModal(false);
+          setTimeout(() => {
+            document
+              .querySelector('div[data-nav][class*="form-select"]')
+              ?.focus();
+          }, 100);
+          return;
+        }
+        if (brandModal.showModal) {
+          brandModal.setShowModal(false);
+          setTimeout(() => {
+            brandRef.current?.focus();
+          }, 100);
+          return;
+        }
+        if (productModal.showModal) {
+          productModal.setShowModal(false);
+          setTimeout(() => {
+            productRef.current?.focus();
+          }, 100);
+          return;
+        }
+        // Handle item edit mode
+        if (editItemIndex !== null) {
+          setEditItemIndex(null);
+          setPurchaseData((prev) => ({
+            ...prev,
+            item: {
+              productId: "",
+              companyId: "",
+              quantity: "",
+              availableQty: "",
+              purchaseRate: "",
+              discountPercent: "0",
+              schemePercent: "0",
+              totalAmount: "",
+            },
+          }));
+          setTimeout(() => {
+            brandRef.current?.focus();
+          }, 100);
+          return;
+        }
+        // Handle purchase edit mode
+        if (editingId) {
+          setEditingId(null);
+          setPurchaseData({
+            vendorId: "",
+            date: getCurrentDate(),
+            entryNumber: "",
+            partyNo: "",
+            item: {
+              productId: "",
+              companyId: "",
+              quantity: "",
+              availableQty: "",
+              purchaseRate: "",
+              discountPercent: "0",
+              schemePercent: "0",
+              totalAmount: "",
+            },
+          });
+          setItemsList([]);
+          fetchEntryNumber();
+          setTimeout(() => {
+            document
+              .querySelector('div[data-nav][class*="form-select"]')
+              ?.focus();
+          }, 100);
+        }
+      }
+    };
 
-  //   // ✅ Grab all elements that are tabbable/focusable
-  //   const focusableElements = Array.from(
-  //     form.querySelectorAll(
-  //       'input, select, textarea, button, [tabindex]:not([tabindex="-1"])'
-  //     )
-  //   ).filter((el) => !el.disabled && el.offsetParent !== null);
-
-  //   const index = focusableElements.indexOf(e.target);
-
-  //   if (e.key === "Enter") {
-  //     e.preventDefault();
-
-  //     // Special case: jump from Party No. to Brand
-  //     if (e.target.name === "partyNo") {
-  //       brandRef.current?.focus();
-  //       return;
-  //     }
-  //     const next = focusableElements[index + 1];
-  //     if (next) next.focus();
-  //   }
-
-  //   if (e.key === "Escape") {
-  //     e.preventDefault();
-  //     const prev = focusableElements[index - 1];
-  //     if (prev) prev.focus();
-  //   }
-  // };
-
-  // ESC key handler - Yeh useEffect ko update karein
+    window.addEventListener("keydown", handleEscapeKey);
+    return () => window.removeEventListener("keydown", handleEscapeKey);
+  }, [
+    showVendorModal,
+    brandModal.showModal,
+    productModal.showModal,
+    editItemIndex,
+    editingId,
+  ]);
 
   useEffect(() => {
     const handleEscapeKey = (e) => {
@@ -612,6 +702,20 @@ const PurchaseForm = () => {
     window.addEventListener("keydown", handleEscapeKey);
     return () => window.removeEventListener("keydown", handleEscapeKey);
   }, [showVendorModal, editItemIndex, editingId]);
+  useEffect(() => {
+    const handleCtrlQ = (e) => {
+      if (e.ctrlKey && e.key.toLowerCase() === "q") {
+        e.preventDefault();
+        handleSubmit({ preventDefault: () => {} }); // ✅ Fix
+      }
+    };
+
+    window.addEventListener("keydown", handleCtrlQ);
+
+    return () => {
+      window.removeEventListener("keydown", handleCtrlQ);
+    };
+  }, [handleSubmit]);
 
   if (loading) {
     return <Loader />;
@@ -645,14 +749,8 @@ const PurchaseForm = () => {
                   }}
                   onClick={() => setShowVendorModal(true)} // ✅ Mouse click se open
                   onFocus={() => setShowVendorModal(true)} // ✅ keyboard focus
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault();
-                      setShowVendorModal(true); // ✅ Keyboard se open
-                    } else {
-                      handleFormNav(e); // ✅ Escape se pehle wale field pe jaye
-                    }
-                  }}
+                  onKeyDown={handleFormNav} // Changed to use handleFormNav
+                  data-nav
                 >
                   {vendors.find((v) => v._id === purchaseData.vendorId)?.name ||
                     "Select Vendor"}
@@ -754,12 +852,20 @@ const PurchaseForm = () => {
               <Col md='auto'>
                 <Form.Group>
                   <Form.Label>Brand</Form.Label>
-                  <Form.Select
+                  {/* <Form.Select
                     ref={brandRef} // 👈 new ref
                     name='companyId'
                     onKeyDown={handleFormNav}
+                    data-nav // 👈 Important
                     value={purchaseData.item.companyId}
                     onChange={handleItemChange}
+                    onFocus={(e) => {
+                      // Auto-open dropdown on focus
+                      const event = new KeyboardEvent("keydown", {
+                        key: "ArrowDown",
+                      });
+                      e.target.dispatchEvent(event);
+                    }}
                   >
                     <option value=''>Select Company</option>
                     {companies.map((c) => (
@@ -767,7 +873,23 @@ const PurchaseForm = () => {
                         {c.name}
                       </option>
                     ))}
-                  </Form.Select>
+                  </Form.Select> */}
+                  <Form.Control
+                    type='text'
+                    name='brand'
+                    value={
+                      companies.find(
+                        (c) => c._id === purchaseData.item.companyId
+                      )?.name || ""
+                    }
+                    onFocus={() => brandModal.setShowModal(true)}
+                    onKeyDown={handleFormNav} // ✅ Yeh line add karo
+                    ref={brandRef} // 👈 add this
+                    readOnly
+                    data-nav
+                    placeholder='Select Brand'
+                    className='form-select'
+                  />
                 </Form.Group>
               </Col>
 
@@ -784,20 +906,22 @@ const PurchaseForm = () => {
                       className='form-select'
                     />
                   ) : (
-                    <Form.Select
+                    <Form.Control
+                      type='text'
                       name='productId'
-                      value={purchaseData.item.productId}
-                      onChange={handleItemChange}
+                      value={
+                        products.find(
+                          (p) => p._id === purchaseData.item.productId
+                        )?.productName || ""
+                      }
+                      onFocus={() => productModal.setShowModal(true)}
+                      readOnly
+                      ref={productRef} // 👈 add this
                       onKeyDown={handleFormNav}
                       data-nav // ✅ added
-                    >
-                      <option value=''>Select Product</option>
-                      {products.map((p) => (
-                        <option key={p._id} value={p._id}>
-                          {p.productName}
-                        </option>
-                      ))}
-                    </Form.Select>
+                      placeholder='Select Product'
+                      className='form-select'
+                    />
                   )}
                 </Form.Group>
               </Col>
@@ -816,6 +940,7 @@ const PurchaseForm = () => {
                 <Col key={name} md='auto'>
                   <Form.Group>
                     <Form.Label>{label}</Form.Label>
+
                     <Form.Control
                       type='number'
                       name={name}
@@ -824,6 +949,7 @@ const PurchaseForm = () => {
                       onKeyDown={handleKeyDown}
                       placeholder={`Enter ${label}`}
                       readOnly={readOnly}
+                      ref={quantityRef} // 👈 add this
                       className='auto-width-input'
                     />
                   </Form.Group>
@@ -900,7 +1026,6 @@ const PurchaseForm = () => {
           <Button
             variant='primary'
             type='submit' // Changed to type='submit'
-            // onClick handler removed as the button is type submit and form has onSubmit
             className='mt-3'
             disabled={!purchaseData.vendorId || itemsList.length === 0}
           >
@@ -912,7 +1037,6 @@ const PurchaseForm = () => {
 
       {/* Purchase List */}
       <Card className='p-3 mt-4'>
-        {" "}
         {/* Added mt-4 for spacing */}
         <h5>Purchase List</h5>
         {purchases.length === 0 ? (
@@ -965,7 +1089,7 @@ const PurchaseForm = () => {
                       size='sm'
                       onClick={() => handleEditPurchase(p)}
                     >
-                      Edit
+                      <MdModeEdit />
                     </Button>
                     <Button
                       variant='danger'
@@ -1028,6 +1152,45 @@ const PurchaseForm = () => {
           onClick={() => setShowVendorModal(false)}
         >
           <div
+            // className='modal-body'
+            // ref={modalRef}
+            // style={{
+            //   width: "80%",
+            //   margin: "5% auto",
+            //   backgroundColor: "white",
+            //   padding: "1rem",
+            //   maxHeight: "80vh",
+            //   overflowY: "auto",
+            // }}
+            // onClick={(e) => e.stopPropagation()}
+            // onKeyDown={(e) => {
+            //   if (e.key === "ArrowDown") {
+            //     e.preventDefault();
+            //     setFocusedIndex((prev) =>
+            //       prev < filteredVendors.length - 1 ? prev + 1 : 0
+            //     );
+            //   }
+            //   if (e.key === "ArrowUp") {
+            //     e.preventDefault();
+            //     setFocusedIndex((prev) =>
+            //       prev > 0 ? prev - 1 : filteredVendors.length - 1
+            //     );
+            //   }
+            //   if (e.key === "Enter" && focusedIndex >= 0) {
+            //     const selected = filteredVendors[focusedIndex];
+            //     setPurchaseData((prev) => ({
+            //       ...prev,
+            //       vendorId: selected._id,
+            //     }));
+            //     setShowVendorModal(false);
+
+            //     // Move focus to next input (e.g., date input)
+            //     setTimeout(() => {
+            //       document.querySelector('input[name="date"]')?.focus();
+            //     }, 100);
+            //   }
+            // }}
+
             className='modal-body'
             ref={modalRef}
             style={{
@@ -1053,16 +1216,26 @@ const PurchaseForm = () => {
                 );
               }
               if (e.key === "Enter" && focusedIndex >= 0) {
+                e.preventDefault();
                 const selected = filteredVendors[focusedIndex];
                 setPurchaseData((prev) => ({
                   ...prev,
                   vendorId: selected._id,
                 }));
                 setShowVendorModal(false);
-
-                // Move focus to next input (e.g., date input)
+                // Focus the date input
                 setTimeout(() => {
                   document.querySelector('input[name="date"]')?.focus();
+                }, 100);
+              }
+              if (e.key === "Escape") {
+                e.preventDefault();
+                setShowVendorModal(false);
+                // Refocus the vendor input
+                setTimeout(() => {
+                  document
+                    .querySelector('div[data-nav][class*="form-select"]')
+                    ?.focus();
                 }, 100);
               }
             }}
@@ -1103,6 +1276,337 @@ const PurchaseForm = () => {
                     <td>{vendor.name}</td>
                     <td>{vendor.mobile}</td>
                     <td>{vendor.city}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {brandModal.showModal && (
+        <div
+          className='modal-overlay'
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            backgroundColor: "rgba(0,0,0,0.5)",
+            zIndex: 9999,
+          }}
+          onClick={() => brandModal.setShowModal(false)}
+        >
+          <div
+            // className='modal-body'
+            // ref={brandModal.modalRef}
+            // style={{
+            //   width: "80%",
+            //   margin: "5% auto",
+            //   backgroundColor: "white",
+            //   padding: "1rem",
+            //   maxHeight: "80vh",
+            //   overflowY: "auto",
+            // }}
+            // onClick={(e) => e.stopPropagation()}
+            // onKeyDown={(e) => {
+            //   if (e.key === "ArrowDown") {
+            //     e.preventDefault();
+            //     brandModal.setFocusedIndex((prev) =>
+            //       prev < brandModal.filteredItems.length - 1 ? prev + 1 : 0
+            //     );
+            //   }
+            //   if (e.key === "ArrowUp") {
+            //     e.preventDefault();
+            //     brandModal.setFocusedIndex((prev) =>
+            //       prev > 0 ? prev - 1 : brandModal.filteredItems.length - 1
+            //     );
+            //   }
+            //   // if (e.key === "Enter" && brandModal.focusedIndex >= 0) {
+            //   //   const selected =
+            //   //     brandModal.filteredItems[brandModal.focusedIndex];
+            //   //   setPurchaseData((prev) => ({
+            //   //     ...prev,
+            //   //     item: {
+            //   //       ...prev.item,
+            //   //       companyId: selected._id,
+            //   //     },
+            //   //   }));
+            //   //   brandModal.setShowModal(false);
+            //   // }
+            //   if (e.key === "Enter" && brandModal.focusedIndex >= 0) {
+            //     const selected =
+            //       brandModal.filteredItems[brandModal.focusedIndex];
+            //     setPurchaseData((prev) => ({
+            //       ...prev,
+            //       item: {
+            //         ...prev.item,
+            //         companyId: selected._id,
+            //       },
+            //     }));
+            //     brandModal.setShowModal(false);
+
+            //     // ✅ Focus product field after brand select
+            //     setTimeout(() => {
+            //       document.querySelector('input[name="product"]')?.focus();
+            //     }, 100);
+            //   }
+            // }}
+
+            className='modal-body'
+            ref={brandModal.modalRef}
+            style={{
+              width: "80%",
+              margin: "5% auto",
+              backgroundColor: "white",
+              padding: "1rem",
+              maxHeight: "80vh",
+              overflowY: "auto",
+            }}
+            onClick={(e) => e.stopPropagation()}
+            onKeyDown={(e) => {
+              if (e.key === "ArrowDown") {
+                e.preventDefault();
+                brandModal.setFocusedIndex((prev) =>
+                  prev < brandModal.filteredItems.length - 1 ? prev + 1 : 0
+                );
+              }
+              if (e.key === "ArrowUp") {
+                e.preventDefault();
+                brandModal.setFocusedIndex((prev) =>
+                  prev > 0 ? prev - 1 : brandModal.filteredItems.length - 1
+                );
+              }
+              if (e.key === "Enter" && brandModal.focusedIndex >= 0) {
+                e.preventDefault();
+                const selected =
+                  brandModal.filteredItems[brandModal.focusedIndex];
+                setPurchaseData((prev) => ({
+                  ...prev,
+                  item: {
+                    ...prev.item,
+                    companyId: selected._id,
+                  },
+                }));
+                brandModal.setShowModal(false);
+                // Focus the product input
+                setTimeout(() => {
+                  productRef.current?.focus();
+                }, 100);
+              }
+              if (e.key === "Escape") {
+                e.preventDefault();
+                brandModal.setShowModal(false);
+                // Refocus the brand input
+                setTimeout(() => {
+                  brandRef.current?.focus();
+                }, 100);
+              }
+            }}
+          >
+            <input
+              ref={brandModal.inputRef}
+              className='form-control mb-3'
+              placeholder='Search brand...'
+              value={brandModal.filterText}
+              onChange={(e) => {
+                brandModal.setFilterText(e.target.value);
+                brandModal.setFocusedIndex(0);
+              }}
+            />
+
+            <table className='table table-hover table-bordered'>
+              <thead className='table-light'>
+                <tr>
+                  <th>Brand Name</th>
+                </tr>
+              </thead>
+              <tbody>
+                {brandModal.filteredItems.map((brand, idx) => (
+                  <tr
+                    key={brand._id}
+                    ref={(el) => (brandModal.rowRefs.current[idx] = el)}
+                    className={
+                      idx === brandModal.focusedIndex ? "table-active" : ""
+                    }
+                    onClick={() => {
+                      setPurchaseData((prev) => ({
+                        ...prev,
+                        item: {
+                          ...prev.item,
+                          companyId: brand._id,
+                        },
+                      }));
+                      brandModal.setShowModal(false);
+                    }}
+                  >
+                    <td>{brand.name}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* Repeat for product modal */}
+      {productModal.showModal && (
+        <div
+          className='modal-overlay'
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            backgroundColor: "rgba(0,0,0,0.5)",
+            zIndex: 9999,
+          }}
+          onClick={() => productModal.setShowModal(false)}
+        >
+          <div
+            // className='modal-body'
+            // ref={productModal.modalRef}
+            // style={{
+            //   width: "80%",
+            //   margin: "5% auto",
+            //   backgroundColor: "white",
+            //   padding: "1rem",
+            //   maxHeight: "80vh",
+            //   overflowY: "auto",
+            // }}
+            // onClick={(e) => e.stopPropagation()}
+            // onKeyDown={(e) => {
+            //   if (e.key === "ArrowDown") {
+            //     e.preventDefault();
+            //     productModal.setFocusedIndex((prev) =>
+            //       prev < productModal.filteredItems.length - 1 ? prev + 1 : 0
+            //     );
+            //   }
+            //   if (e.key === "ArrowUp") {
+            //     e.preventDefault();
+            //     productModal.setFocusedIndex((prev) =>
+            //       prev > 0 ? prev - 1 : productModal.filteredItems.length - 1
+            //     );
+            //   }
+            //   if (e.key === "Enter" && productModal.focusedIndex >= 0) {
+            //     const selected =
+            //       productModal.filteredItems[productModal.focusedIndex];
+            //     // setPurchaseData((prev) => ({
+            //     //   ...prev,
+            //     //   item: {
+            //     //     ...prev.item,
+            //     //     productId: selected._id,
+            //     //   },
+            //     // }));
+            //     handleProductSelect(selected);
+
+            //     productModal.setShowModal(false);
+
+            //     // ✅ Focus quantity field
+            //     setTimeout(() => {
+            //       document.querySelector('input[name="quantity"]')?.focus();
+            //     }, 100);
+            //   }
+            // }}
+
+            className='modal-body'
+            ref={productModal.modalRef}
+            style={{
+              width: "80%",
+              margin: "5% auto",
+              backgroundColor: "white",
+              padding: "1rem",
+              maxHeight: "80vh",
+              overflowY: "auto",
+            }}
+            onClick={(e) => e.stopPropagation()}
+            onKeyDown={(e) => {
+              if (e.key === "ArrowDown") {
+                e.preventDefault();
+                productModal.setFocusedIndex((prev) =>
+                  prev < productModal.filteredItems.length - 1 ? prev + 1 : 0
+                );
+              }
+              if (e.key === "ArrowUp") {
+                e.preventDefault();
+                productModal.setFocusedIndex((prev) =>
+                  prev > 0 ? prev - 1 : productModal.filteredItems.length - 1
+                );
+              }
+              if (e.key === "Enter" && productModal.focusedIndex >= 0) {
+                e.preventDefault();
+                const selected =
+                  productModal.filteredItems[productModal.focusedIndex];
+                handleProductSelect(selected);
+                // Focus is already handled in handleProductSelect
+              }
+
+              if (e.key === "Escape") {
+                e.preventDefault();
+                productModal.setShowModal(false);
+                // Refocus the product input
+                setTimeout(() => {
+                  productRef.current?.focus();
+                }, 100);
+              }
+            }}
+          >
+            <input
+              ref={productModal.inputRef}
+              className='form-control mb-3'
+              placeholder='Search product...'
+              value={productModal.filterText}
+              onChange={(e) => {
+                productModal.setFilterText(e.target.value);
+                productModal.setFocusedIndex(0);
+              }}
+            />
+
+            <table className='table table-hover table-bordered'>
+              <thead className='table-light'>
+                <tr>
+                  <th>Product Name</th>
+                  <th>Brand</th>
+                  <th>HSN Code</th>
+                  <th>MRP</th>
+                  <th>Sales Rate</th>
+                  <th>Purchase Rate</th>
+                  {/*<th>Primary Price</th>*/}
+                  <th>Available QTY.</th>
+                  <th>GST%</th>
+                </tr>
+              </thead>
+              <tbody>
+                {productModal.filteredItems.map((prod, idx) => (
+                  <tr
+                    key={prod._id}
+                    ref={(el) => (productModal.rowRefs.current[idx] = el)}
+                    className={
+                      idx === productModal.focusedIndex ? "table-active" : ""
+                    }
+                    onClick={() => {
+                      setPurchaseData((prev) => ({
+                        ...prev,
+                        item: {
+                          ...prev.item,
+                          productId: prod._id,
+                        },
+                      }));
+                      productModal.setShowModal(false);
+                    }}
+                  >
+                    <td>{prod.productName}</td>
+                    <td>{prod.companyId?.name || "-"}</td>
+                    <td>{prod.hsnCode}</td>
+                    <td>{prod.mrp}</td>
+                    <td>{prod.salesRate}</td>
+                    <td>{prod.purchaseRate}</td>
+                    {/*  <td>{prod.primaryUnit}</td>
+                          <td>{prod.primaryPrice}</td>*/}
+                    <td>{prod.availableQty}</td>
+                    <td>{prod.gstPercent}</td>
                   </tr>
                 ))}
               </tbody>

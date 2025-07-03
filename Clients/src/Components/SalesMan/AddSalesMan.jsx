@@ -1,6 +1,6 @@
 // ! -------------------------------------------------------------------------------------------------
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Form, Button, Container, Row, Col } from "react-bootstrap";
 import axios from "../../Config/axios";
 import { useNavigate, useParams } from "react-router-dom";
@@ -32,6 +32,8 @@ function AddSalesMan() {
   const [photo, setPhoto] = useState(null);
 
   const [loading, setLoading] = useState(false);
+
+  const inputRefs = useRef([]);
 
   useEffect(() => {
     if (id) {
@@ -177,6 +179,72 @@ function AddSalesMan() {
     }
   };
 
+  const handleKeyDown = (e, index) => {
+    const input = inputRefs.current[index];
+    const total = inputRefs.current.length;
+
+    const next = () => {
+      const nextIndex = index + 1;
+      if (nextIndex < total) inputRefs.current[nextIndex]?.focus();
+    };
+
+    const prev = () => {
+      const prevIndex = index - 1;
+      if (prevIndex >= 0) inputRefs.current[prevIndex]?.focus();
+    };
+
+    if (e.key === "Enter") {
+      e.preventDefault();
+      next();
+    }
+
+    if (e.key === "Escape") {
+      e.preventDefault();
+      prev();
+    }
+
+    if (e.ctrlKey && e.key === "Enter") {
+      e.preventDefault();
+      handleSubmit(e);
+    }
+
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      next();
+    }
+
+    if (e.key === "ArrowUp") {
+      e.preventDefault();
+      prev();
+    }
+
+    if (e.key === "ArrowLeft") {
+      try {
+        const pos = input.selectionStart;
+        if (pos === 0 || pos === null || pos === undefined) {
+          e.preventDefault();
+          prev();
+        }
+      } catch {
+        e.preventDefault();
+        prev();
+      }
+    }
+
+    if (e.key === "ArrowRight") {
+      try {
+        const pos = input.selectionStart;
+        if (pos === input.value.length || pos === null || pos === undefined) {
+          e.preventDefault();
+          next();
+        }
+      } catch {
+        e.preventDefault();
+        next();
+      }
+    }
+  };
+
   if (loading) {
     return <Loader />;
   }
@@ -190,6 +258,8 @@ function AddSalesMan() {
             <Form.Group className='mb-3'>
               <Form.Label>Name</Form.Label>
               <Form.Control
+                ref={(el) => (inputRefs.current[0] = el)}
+                onKeyDown={(e) => handleKeyDown(e, 0)}
                 type='text'
                 name='name'
                 value={formData.name}
@@ -202,6 +272,8 @@ function AddSalesMan() {
             <Form.Group className='mb-3'>
               <Form.Label>Mobile</Form.Label>
               <Form.Control
+                ref={(el) => (inputRefs.current[1] = el)}
+                onKeyDown={(e) => handleKeyDown(e, 1)}
                 type='text'
                 name='mobile'
                 value={formData.mobile}
@@ -215,6 +287,8 @@ function AddSalesMan() {
             <Form.Group className='mb-3'>
               <Form.Label>Alternate Mobile</Form.Label>
               <Form.Control
+                ref={(el) => (inputRefs.current[2] = el)}
+                onKeyDown={(e) => handleKeyDown(e, 2)}
                 type='text'
                 name='alternateMobile'
                 value={formData.alternateMobile}
@@ -222,21 +296,13 @@ function AddSalesMan() {
               />
             </Form.Group>
           </Col>
-          {/* <Col md={6}>
-            <Form.Group className='mb-3'>
-              <Form.Label>Email</Form.Label>
-              <Form.Control
-                type='email'
-                name='email'
-                value={formData.email}
-                onChange={handleChange}
-              />
-            </Form.Group>
-          </Col> */}
+
           <Col md={6}>
             <Form.Group className='mb-3'>
               <Form.Label>City</Form.Label>
               <Form.Control
+                ref={(el) => (inputRefs.current[3] = el)}
+                onKeyDown={(e) => handleKeyDown(e, 3)}
                 type='text'
                 name='city'
                 value={formData.city}
@@ -248,6 +314,8 @@ function AddSalesMan() {
             <Form.Group className='mb-3'>
               <Form.Label>Address</Form.Label>
               <Form.Control
+                ref={(el) => (inputRefs.current[4] = el)}
+                onKeyDown={(e) => handleKeyDown(e, 4)}
                 type='text'
                 name='address'
                 value={formData.address}
@@ -259,7 +327,12 @@ function AddSalesMan() {
           <Col md={6}>
             <Form.Group className='mb-3'>
               <Form.Label>Photo</Form.Label>
-              <Form.Control type='file' onChange={handlePhotoChange} />
+              <Form.Control
+                type='file'
+                onChange={handlePhotoChange}
+                ref={(el) => (inputRefs.current[5] = el)}
+                onKeyDown={(e) => handleKeyDown(e, 5)}
+              />
               {isEditing && existingPhoto && (
                 <div className='mt-2'>
                   <p>Current Photo:</p>
@@ -311,6 +384,8 @@ function AddSalesMan() {
             <Form.Group className='mb-3'>
               <Form.Label>Username</Form.Label>
               <Form.Control
+                ref={(el) => (inputRefs.current[6] = el)}
+                onKeyDown={(e) => handleKeyDown(e, 6)}
                 type='text'
                 name='username'
                 value={formData.username}
@@ -323,6 +398,8 @@ function AddSalesMan() {
             <Form.Group className='mb-3'>
               <Form.Label>Password</Form.Label>
               <Form.Control
+                ref={(el) => (inputRefs.current[7] = el)}
+                onKeyDown={(e) => handleKeyDown(e, 7)}
                 type='password'
                 name='password'
                 value={formData.password}

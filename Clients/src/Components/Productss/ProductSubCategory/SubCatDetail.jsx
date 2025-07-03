@@ -41,17 +41,17 @@ const SubCatDetail = () => {
   };
 
   return (
-    <div className="container mt-3">
+    <div className='container mt-3'>
       <h4>Product Sub Categories</h4>
       <Tabs
         activeKey={activeTab}
         onSelect={(k) => setActiveTab(k)}
-        className="mb-3"
+        className='mb-3'
       >
-        <Tab eventKey="view" title="View SubCategories">
-          <div className="table-responsive">
+        <Tab eventKey='view' title='View SubCategories'>
+          <div className='table-responsive'>
             <Table bordered hover>
-              <thead className="thead-dark">
+              <thead className='thead-dark'>
                 <tr>
                   <th>#</th>
                   <th>Company</th>
@@ -69,8 +69,8 @@ const SubCatDetail = () => {
                     <td>{sub.subCat}</td>
                     <td>
                       <Button
-                        size="sm"
-                        variant="danger"
+                        size='sm'
+                        variant='danger'
                         onClick={() => handleDelete(sub._id)}
                       >
                         Delete
@@ -102,7 +102,7 @@ const SubCatDetail = () => {
           </div>
         </Tab>
 
-        <Tab eventKey="add" title="Add SubCategory">
+        <Tab eventKey='add' title='Add SubCategory'>
           <AddTask onSubcategoryCreated={fetchSubcategories} />
         </Tab>
       </Tabs>

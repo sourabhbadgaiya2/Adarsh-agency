@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   Form,
   Button,
@@ -11,6 +11,17 @@ import {
 import axios from "../../Config/axios";
 import toast from "react-hot-toast";
 import Loader from "../Loader";
+
+import CustomDataTable from "../../Components/CustomDataTable";
+
+import {
+  BsPencilSquare,
+  BsTrash,
+  BsFileEarmarkExcel,
+  BsFileEarmarkPdf,
+  BsPencil,
+  BsTrash2,
+} from "react-icons/bs";
 
 const VendorReport = () => {
   const [vendor, setVendor] = useState({
@@ -105,6 +116,133 @@ const VendorReport = () => {
     }
   };
 
+  // !
+  const inputRefs = useRef([]);
+
+  const handleKeyDown = (e, index) => {
+    const input = inputRefs.current[index];
+    const total = inputRefs.current.length;
+
+    const next = () => {
+      const nextIndex = index + 1;
+      if (nextIndex < total) inputRefs.current[nextIndex]?.focus();
+    };
+
+    const prev = () => {
+      const prevIndex = index - 1;
+      if (prevIndex >= 0) inputRefs.current[prevIndex]?.focus();
+    };
+
+    if (e.key === "Enter") {
+      e.preventDefault();
+      next();
+    }
+
+    if (e.key === "Escape") {
+      e.preventDefault();
+      prev();
+    }
+
+    if (e.ctrlKey && e.key === "Enter") {
+      e.preventDefault();
+      handleSubmit(e);
+    }
+
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      next();
+    }
+
+    if (e.key === "ArrowUp") {
+      e.preventDefault();
+      prev();
+    }
+
+    if (e.key === "ArrowLeft") {
+      try {
+        const pos = input.selectionStart;
+        if (pos === 0) {
+          e.preventDefault();
+          prev();
+        }
+      } catch (err) {
+        // Fallback if selectionStart is not supported (e.g., type=email)
+        e.preventDefault();
+        prev();
+      }
+    }
+
+    if (e.key === "ArrowRight") {
+      try {
+        const pos = input.selectionStart;
+        if (pos === input.value.length) {
+          e.preventDefault();
+          next();
+        }
+      } catch (err) {
+        // Fallback if selectionStart is not supported (e.g., type=email)
+        e.preventDefault();
+        next();
+      }
+    }
+  };
+
+  const columns = [
+    {
+      name: "#",
+      selector: (row, index) => index + 1,
+      width: "60px",
+    },
+    {
+      name: "Firm Name",
+      selector: (row) => row.firm || "N/A",
+      sortable: true,
+    },
+    {
+      name: "Vendor Name",
+      selector: (row) => row.name || "N/A",
+      sortable: true,
+    },
+    {
+      name: "Mobile",
+      selector: (row) => row.mobile || "N/A",
+      sortable: true,
+    },
+    {
+      name: "Email",
+      selector: (row) => row.email || "N/A",
+    },
+    {
+      name: "Address",
+      selector: (row) => row.address || "N/A",
+    },
+    {
+      name: "Actions",
+      cell: (row) => (
+        <>
+          <Button
+            variant='warning'
+            size='sm'
+            onClick={() => handleEdit(row)}
+            className='me-2'
+          >
+            <BsPencil />
+          </Button>
+          <Button
+            variant='danger'
+            size='sm'
+            onClick={() => handleDelete(row._id)}
+          >
+            <BsTrash2 />
+          </Button>
+        </>
+      ),
+      ignoreRowClick: true,
+      allowOverflow: true,
+      button: true,
+    },
+  ];
+
   if (loading) {
     return <Loader />;
   }
@@ -117,8 +255,12 @@ const VendorReport = () => {
           <Row className='mt-3'>
             <Col md={4}>
               <Form.Group controlId='vendorFirm'>
-                <Form.Label>Firm Name</Form.Label>
+                <Form.Label>
+                  Firm Name <span style={{ color: "red" }}>*</span>
+                </Form.Label>
                 <Form.Control
+                  ref={(el) => (inputRefs.current[0] = el)}
+                  onKeyDown={(e) => handleKeyDown(e, 0)}
                   type='text'
                   name='firm'
                   value={vendor.firm}
@@ -127,39 +269,29 @@ const VendorReport = () => {
                 />
               </Form.Group>
             </Col>
-            {/* <Col md={4}>
-              <Form.Group controlId="firmName" className="mb-3">
-                <Form.Label>Select Firm</Form.Label>
-                <Form.Select
-                  name="firm"
-                  value={vendor.firm}
-                  onChange={handleChange}
-                  required
-                >
-                  <option value="">Select Firm</option>
-                  {firm.map((comp) => (
-                    <option key={comp._id} value={comp._id}>
-                      {comp.name}
-                    </option>
-                  ))}
-                </Form.Select>
-              </Form.Group>
-            </Col> */}
+
             <Col md={4}>
               <Form.Group controlId='vendorName'>
-                <Form.Label>Vendor Name</Form.Label>
+                <Form.Label>
+                  Vendor Name <span style={{ color: "red" }}>*</span>
+                </Form.Label>
                 <Form.Control
+                  ref={(el) => (inputRefs.current[1] = el)}
+                  onKeyDown={(e) => handleKeyDown(e, 1)}
                   type='text'
                   name='name'
                   value={vendor.name}
                   onChange={handleChange}
                   placeholder='Enter vendor name'
+                  required
                 />
               </Form.Group>
             </Col>
             <Col md={4} className='mb-3'>
               <Form.Label>Designation</Form.Label>
               <Form.Control
+                ref={(el) => (inputRefs.current[2] = el)}
+                onKeyDown={(e) => handleKeyDown(e, 2)}
                 name='designation'
                 placeholder='Designation'
                 value={vendor.designation}
@@ -170,19 +302,26 @@ const VendorReport = () => {
           <Row className='mt-3'>
             <Col md={4}>
               <Form.Group controlId='vendorMobile'>
-                <Form.Label>Mobile Number</Form.Label>
+                <Form.Label>
+                  Mobile Number <span style={{ color: "red" }}>*</span>
+                </Form.Label>
                 <Form.Control
+                  ref={(el) => (inputRefs.current[3] = el)}
+                  onKeyDown={(e) => handleKeyDown(e, 3)}
                   type='text'
                   name='mobile'
                   value={vendor.mobile}
                   onChange={handleChange}
                   placeholder='Enter mobile number'
+                  required
                 />
               </Form.Group>
             </Col>
             <Col md={4} className='mb-3'>
               <Form.Label>Alternate Mobile</Form.Label>
               <Form.Control
+                ref={(el) => (inputRefs.current[4] = el)}
+                onKeyDown={(e) => handleKeyDown(e, 4)}
                 name='alternateMobile'
                 placeholder='Alternate Mobile'
                 value={vendor.alternateMobile}
@@ -193,7 +332,9 @@ const VendorReport = () => {
               <Form.Group controlId='vendorEmail'>
                 <Form.Label>Email</Form.Label>
                 <Form.Control
-                  type='email'
+                  ref={(el) => (inputRefs.current[5] = el)}
+                  onKeyDown={(e) => handleKeyDown(e, 5)}
+                  type='text'
                   name='email'
                   value={vendor.email}
                   onChange={handleChange}
@@ -206,6 +347,8 @@ const VendorReport = () => {
             <Col md={4} className='mb-3'>
               <Form.Label>WhatsApp No.</Form.Label>
               <Form.Control
+                ref={(el) => (inputRefs.current[6] = el)}
+                onKeyDown={(e) => handleKeyDown(e, 6)}
                 name='whatsapp'
                 placeholder='WhatsApp'
                 value={vendor.whatsapp}
@@ -215,6 +358,8 @@ const VendorReport = () => {
             <Col md={4} className='mb-3'>
               <Form.Label>City</Form.Label>
               <Form.Control
+                ref={(el) => (inputRefs.current[7] = el)}
+                onKeyDown={(e) => handleKeyDown(e, 7)}
                 name='city'
                 placeholder='City'
                 value={vendor.city}
@@ -224,13 +369,18 @@ const VendorReport = () => {
 
             <Col md={4}>
               <Form.Group controlId='vendorAddress'>
-                <Form.Label>Address</Form.Label>
+                <Form.Label>
+                  Address <span style={{ color: "red" }}>*</span>
+                </Form.Label>
                 <Form.Control
+                  ref={(el) => (inputRefs.current[8] = el)}
+                  onKeyDown={(e) => handleKeyDown(e, 8)}
                   type='text'
                   name='address'
                   value={vendor.address}
                   onChange={handleChange}
                   placeholder='Enter address'
+                  required
                 />
               </Form.Group>
             </Col>
@@ -238,6 +388,8 @@ const VendorReport = () => {
               <Form.Group className='mb-3'>
                 <Form.Label>GST No.</Form.Label>
                 <Form.Control
+                  ref={(el) => (inputRefs.current[9] = el)}
+                  onKeyDown={(e) => handleKeyDown(e, 9)}
                   name='gstNumber'
                   className='form-control'
                   placeholder='GST No.'
@@ -254,8 +406,7 @@ const VendorReport = () => {
       </Card>
 
       <Card className='mt-4 p-3'>
-        <h5>Vendor List</h5>
-        <Table striped bordered hover responsive>
+        {/* <Table striped bordered hover responsive>
           <thead>
             <tr>
               <th>#</th>
@@ -303,7 +454,16 @@ const VendorReport = () => {
               ))
             )}
           </tbody>
-        </Table>
+        </Table> */}
+
+        <Card className='mt-4 p-3'>
+          <CustomDataTable
+            title='Vendor List'
+            columns={columns}
+            data={vendorList}
+            loading={loading}
+          />
+        </Card>
       </Card>
     </Container>
   );
