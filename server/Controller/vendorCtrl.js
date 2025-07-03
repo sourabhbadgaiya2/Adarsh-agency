@@ -1,38 +1,65 @@
 const Vendor = require("../Models/VendorModel");
+
 const createVendor = async (req, res) => {
-  const newVendor = new Vendor(req.body);
-  await newVendor.save();
-  res.status(201).json(newVendor);
+  try {
+    const newVendor = new Vendor(req.body);
+    await newVendor.save();
+    res.status(201).json(newVendor);
+  } catch (error) {
+    // console.error("Error creating salesman:", error);
+    res.status(400).json({ message: error.message });
+  }
 };
+
 const getallVendors = async (req, res) => {
-  const vendors = await Vendor.find().sort({ createdAt: -1 });
-  res.status(200).json(vendors);
+  try {
+    const vendors = await Vendor.find().sort({ createdAt: -1 });
+    res.status(200).json(vendors);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
 };
+
 const getVendorById = async (req, res) => {
-  const vendor = await Vendor.findById(req.params.id);
-  if (!vendor) {
-    return res.status(404).json({ message: "Vendor not found" });
+  try {
+    const vendor = await Vendor.findById(req.params.id);
+    if (!vendor) {
+      return res.status(404).json({ message: "Vendor not found" });
+    }
+    res.status(200).json(vendor);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
   }
-  res.status(200).json(vendor);
 };
+
 const updateVendor = async (req, res) => {
-  const updatedVendor = await Vendor.findByIdAndUpdate(
-    req.params.id,
-    req.body,
-    { new: true }
-  );
-  if (!updatedVendor) {
-    return res.status(404).json({ message: "Vendor not found" });
+  try {
+    const updatedVendor = await Vendor.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+    if (!updatedVendor) {
+      return res.status(404).json({ message: "Vendor not found" });
+    }
+    res.status(200).json(updatedVendor);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
   }
-  res.status(200).json(updatedVendor);
 };
+
 const deleteVendor = async (req, res) => {
-  const deletedVendor = await Vendor.findByIdAndDelete(req.params.id);
-  if (!deletedVendor) {
-    return res.status(404).json({ message: "Vendor not found" });
+  try {
+    const deletedVendor = await Vendor.findByIdAndDelete(req.params.id);
+    if (!deletedVendor) {
+      return res.status(404).json({ message: "Vendor not found" });
+    }
+    res.status(200).json({ message: "Vendor deleted successfully" });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
   }
-  res.status(200).json({ message: "Vendor deleted successfully" });
 };
+
 module.exports = {
   createVendor,
   getallVendors,

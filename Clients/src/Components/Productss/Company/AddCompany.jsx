@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaCheck } from "react-icons/fa";
 import axios from "../../../Config/axios";
 import Loader from "../../Loader";
+import toast from "react-hot-toast";
 
 const AddCompany = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -40,7 +41,7 @@ const AddCompany = () => {
       const res = await axios.post("/company", formData);
       console.log(res.data);
       setSubmitSuccess(true);
-      alert("Brand created successfully!");
+      toast.success("Brand created successfully!");
       // Optionally reset form
       setFormData({
         name: "",
@@ -56,12 +57,29 @@ const AddCompany = () => {
       });
     } catch (error) {
       console.error(error);
-      alert("Failed to create Brand");
+      toast.error("Failed to create Brand");
     } finally {
       setIsSubmitting(false);
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      // Check if Ctrl + Q is pressed
+      if (e.ctrlKey && e.key.toLowerCase() === "q") {
+        e.preventDefault();
+        // Manually trigger form submit
+        document.getElementById("add-company-form")?.requestSubmit();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   if (loading) {
     return <Loader />;
@@ -83,7 +101,7 @@ const AddCompany = () => {
           </div>
         </div>
 
-        <form onSubmit={handleSubmit}>
+        <form id='add-company-form' onSubmit={handleSubmit}>
           <div className='card-body'>
             <div className='row'>
               <div className='col-md-4'>

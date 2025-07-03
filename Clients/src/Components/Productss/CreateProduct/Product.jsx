@@ -269,6 +269,75 @@ const Product = ({ onSuccess, onCancel, productToEdit }) => {
     }
   };
 
+  // !
+  const inputRefs = useRef([]);
+
+  const handleKeyDown = (e, index) => {
+    const totalFields = inputRefs.current.length;
+    const input = inputRefs.current[index];
+
+    const next = () => {
+      const nextIndex = index + 1;
+      if (nextIndex < totalFields) inputRefs.current[nextIndex]?.focus();
+    };
+
+    const prev = () => {
+      const prevIndex = index - 1;
+      if (prevIndex >= 0) inputRefs.current[prevIndex]?.focus();
+    };
+
+    if (e.key === "Enter") {
+      e.preventDefault();
+      next();
+    }
+
+    if (e.key === "Escape") {
+      e.preventDefault();
+      prev();
+    }
+
+    if (e.ctrlKey && e.key === "Enter") {
+      e.preventDefault();
+      handleSubmit(e);
+    }
+
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      next();
+    }
+
+    if (e.key === "ArrowUp") {
+      e.preventDefault();
+      prev();
+    }
+
+    if (e.key === "ArrowLeft") {
+      try {
+        const pos = input.selectionStart;
+        if (pos === 0 || pos === null || pos === undefined) {
+          e.preventDefault();
+          prev();
+        }
+      } catch {
+        e.preventDefault(); // fallback for type="number"
+        prev();
+      }
+    }
+
+    if (e.key === "ArrowRight") {
+      try {
+        const pos = input.selectionStart;
+        if (pos === input.value.length || pos === null || pos === undefined) {
+          e.preventDefault();
+          next();
+        }
+      } catch {
+        e.preventDefault(); // fallback for type="number"
+        next();
+      }
+    }
+  };
+
   if (loading) {
     return <Loader />;
   }
@@ -282,7 +351,9 @@ const Product = ({ onSuccess, onCancel, productToEdit }) => {
           <div className='card shadow border-0'>
             <div className='card-body'>
               <h5 className='card-title text-primary mb-3'>
-                {editIndex !== null ? "Edit Product" : "Add New Product"}
+                {/* {editIndex || productToEdit?._id !== null
+                  ? "Add Product"
+                  : "Add New Product"} */}
               </h5>
               <form onSubmit={handleSubmit}>
                 <div className='row'>
@@ -290,7 +361,9 @@ const Product = ({ onSuccess, onCancel, productToEdit }) => {
                   <div className='col-md-6 mb-3'>
                     <label>Brand</label>
                     <select
-                      ref={companyIdRef}
+                      // ref={companyIdRef}
+                      ref={(el) => (inputRefs.current[0] = el)}
+                      onKeyDown={(e) => handleKeyDown(e, 0)}
                       name='companyId'
                       value={formData.companyId}
                       onChange={handleChange}
@@ -308,7 +381,9 @@ const Product = ({ onSuccess, onCancel, productToEdit }) => {
                   <div className='col-md-6 mb-3'>
                     <label>Product Name</label>
                     <input
-                      ref={productNameRef}
+                      // ref={productNameRef}
+                      ref={(el) => (inputRefs.current[1] = el)}
+                      onKeyDown={(e) => handleKeyDown(e, 1)}
                       type='text'
                       name='productName'
                       value={formData.productName}
@@ -320,50 +395,14 @@ const Product = ({ onSuccess, onCancel, productToEdit }) => {
                   <div className='col-md-6 mb-3'>
                     <label>Product Image</label>
                     <input
+                      ref={(el) => (inputRefs.current[2] = el)}
+                      onKeyDown={(e) => handleKeyDown(e, 2)}
                       type='file'
                       name='productImg'
                       onChange={handlePhotoChange}
                       className='form-control'
                     />
                   </div>
-
-                  {/* Category */}
-                  {/* <div className="col-md-4 mb-3">
-                    <label>Category</label>
-                    <select
-                      name="categoryId"
-                      value={formData.categoryId}
-                      onChange={handleChange}
-                      className="form-control"
-                      //   
-                    >
-                      <option value="">Select Category</option>
-                      {categories.map((c) => (
-                        <option key={c._id} value={c._id}>
-                          {c.cat}
-                        </option>
-                      ))}
-                    </select>
-                  </div> */}
-
-                  {/* SubCategory */}
-                  {/* <div className="col-md-4 mb-3">
-                    <label>Sub Category</label>
-                    <select
-                      name="subCategoryId"
-                      value={formData.subCategoryId}
-                      onChange={handleChange}
-                      className="form-control"
-                      //   
-                    >
-                      <option value="">Select SubCategory</option>
-                      {subCategories.map((s) => (
-                        <option key={s._id} value={s._id}>
-                          {s.subCat}
-                        </option>
-                      ))}
-                    </select>
-                  </div> */}
 
                   {/* ------------Primary and Secondary Unit / Price code------------------- */}
                   <div className='col-md-3 mb-3'>
@@ -375,12 +414,16 @@ const Product = ({ onSuccess, onCancel, productToEdit }) => {
                       value={formData.primaryUnit}
                       onChange={handleChange}
                       className='form-control'
+                      ref={(el) => (inputRefs.current[3] = el)}
+                      onKeyDown={(e) => handleKeyDown(e, 3)}
                     />
                   </div>
 
                   <div className='col-md-3 mb-3'>
                     <label>KG Price</label>
                     <input
+                      ref={(el) => (inputRefs.current[4] = el)}
+                      onKeyDown={(e) => handleKeyDown(e, 4)}
                       type='number'
                       name='primaryPrice'
                       value={formData.primaryPrice}
@@ -392,6 +435,8 @@ const Product = ({ onSuccess, onCancel, productToEdit }) => {
                   <div className='col-md-3 mb-3'>
                     <label>Unit (e.g. Pieces) </label>
                     <input
+                      ref={(el) => (inputRefs.current[5] = el)}
+                      onKeyDown={(e) => handleKeyDown(e, 5)}
                       type='text'
                       name='secondaryUnit'
                       placeholder='e.g. Pcs'
@@ -404,6 +449,8 @@ const Product = ({ onSuccess, onCancel, productToEdit }) => {
                   <div className='col-md-3 mb-3'>
                     <label>Pieces Price</label>
                     <input
+                      ref={(el) => (inputRefs.current[6] = el)}
+                      onKeyDown={(e) => handleKeyDown(e, 6)}
                       type='number'
                       name='secondaryPrice'
                       value={formData.secondaryPrice}
@@ -412,38 +459,13 @@ const Product = ({ onSuccess, onCancel, productToEdit }) => {
                     />
                   </div>
 
-                  {/* ----------------------------------------------------------- */}
-
-                  {/* ------------------------Unit dropdown / MRP / Purchase-Sales Rate--------------------- */}
-
-                  {/* <div className="col-md-3 mb-3">
-                    unit 
-                    <label>Unit</label>
-                    <select
-                      name="unit"
-                      value={formData.unit}
-                      onChange={(e) => {
-                        const selectedUnit = e.target.value;
-                        let mrpValue = "";
-                        setFormData((prev) => ({
-                          ...prev,
-                          unit: selectedUnit,
-                          mrp: mrpValue,
-                        }));
-                      }}
-                      className="form-control"
-                    >
-                      <option value="">Select Unit</option>
-                      <option value="KG">KG</option>
-                      <option value="Pcs">Pcs</option>
-                    </select>
-                  </div>*}
-
                   {/* MRP */}
 
                   <div className='col-md-3 mb-3'>
                     <label>MRP</label>
                     <input
+                      ref={(el) => (inputRefs.current[7] = el)}
+                      onKeyDown={(e) => handleKeyDown(e, 7)}
                       type='number'
                       name='mrp'
                       value={formData.mrp}
@@ -456,6 +478,8 @@ const Product = ({ onSuccess, onCancel, productToEdit }) => {
                   <div className='col-md-3 mb-3'>
                     <label>Purchase Rate</label>
                     <input
+                      ref={(el) => (inputRefs.current[8] = el)}
+                      onKeyDown={(e) => handleKeyDown(e, 8)}
                       type='number'
                       name='purchaseRate'
                       value={formData.purchaseRate}
@@ -468,6 +492,8 @@ const Product = ({ onSuccess, onCancel, productToEdit }) => {
                   <div className='col-md-3 mb-3'>
                     <label>Sales Rate</label>
                     <input
+                      ref={(el) => (inputRefs.current[9] = el)}
+                      onKeyDown={(e) => handleKeyDown(e, 9)}
                       type='number'
                       name='salesRate'
                       value={formData.salesRate}
@@ -480,6 +506,8 @@ const Product = ({ onSuccess, onCancel, productToEdit }) => {
                   <div className='col-md-2 mb-3'>
                     <label>Available Qty</label>
                     <input
+                      ref={(el) => (inputRefs.current[10] = el)}
+                      onKeyDown={(e) => handleKeyDown(e, 10)}
                       type='number'
                       name='availableQty'
                       value={formData.availableQty}
@@ -491,6 +519,8 @@ const Product = ({ onSuccess, onCancel, productToEdit }) => {
                   <div className='col-md-3 mb-3'>
                     <label>HSN Code</label>
                     <input
+                      ref={(el) => (inputRefs.current[11] = el)}
+                      onKeyDown={(e) => handleKeyDown(e, 11)}
                       type='text'
                       name='hsnCode'
                       value={formData.hsnCode}
@@ -503,6 +533,8 @@ const Product = ({ onSuccess, onCancel, productToEdit }) => {
                   <div className='col-md-3 mb-3'>
                     <label>GST %</label>
                     <input
+                      ref={(el) => (inputRefs.current[12] = el)}
+                      onKeyDown={(e) => handleKeyDown(e, 12)}
                       type='Number'
                       name='gstPercent'
                       value={formData.gstPercent}

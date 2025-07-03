@@ -422,7 +422,6 @@ const CustomerBilling = ({ onDataChange, resetTrigger, onNextFocus }) => {
             </select>
           </div>
 
-          {/* Payment Mode - Only show when Billing Type is 'Cash' */}
           {formData.billingType === "Cash" && (
             <div className='form-group col-md-6'>
               <label>
@@ -431,7 +430,7 @@ const CustomerBilling = ({ onDataChange, resetTrigger, onNextFocus }) => {
               <select
                 name='paymentMode'
                 className='form-control'
-                value={formData.paymentMode || "Cash"} // Default to Cash
+                value={formData.paymentMode || "Cash"}
                 onChange={handleInputChange}
                 onKeyDown={handleKeyDown}
                 required

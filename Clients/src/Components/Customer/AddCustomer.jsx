@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Form, Button, Container, Card, Row, Col } from "react-bootstrap";
 import axios from "../../Config/axios";
 import toast from "react-hot-toast";
@@ -43,6 +43,81 @@ function AddCustomer({ refresh, editingCustomer, setEditingCustomer }) {
   const handleChange = (e) => {
     setCustomer({ ...customer, [e.target.name]: e.target.value });
   };
+
+  // !
+  const inputRefs = useRef([]);
+
+  const handleKeyDown = (e, index) => {
+    const totalFields = inputRefs.current.length;
+    const input = inputRefs.current[index];
+
+    const next = () => {
+      const nextIndex = index + 1;
+      if (nextIndex < totalFields) inputRefs.current[nextIndex]?.focus();
+    };
+
+    const prev = () => {
+      const prevIndex = index - 1;
+      if (prevIndex >= 0) inputRefs.current[prevIndex]?.focus();
+    };
+
+    if (e.key === "Enter") {
+      e.preventDefault();
+      next();
+    }
+
+    if (e.key === "Escape") {
+      e.preventDefault();
+      prev();
+    }
+
+    if (e.ctrlKey && e.key === "Enter") {
+      e.preventDefault();
+      handleSubmit(e);
+    }
+
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      next();
+    }
+
+    if (e.key === "ArrowUp") {
+      e.preventDefault();
+      prev();
+    }
+
+    // LEFT key
+    if (e.key === "ArrowLeft") {
+      try {
+        const pos = input.selectionStart;
+        if (pos === 0 || pos === null || pos === undefined) {
+          e.preventDefault();
+          prev();
+        }
+      } catch {
+        // fallback for input types without selectionStart support
+        e.preventDefault();
+        prev();
+      }
+    }
+
+    // RIGHT key
+    if (e.key === "ArrowRight") {
+      try {
+        const pos = input.selectionStart;
+        if (pos === input.value.length || pos === null || pos === undefined) {
+          e.preventDefault();
+          next();
+        }
+      } catch {
+        // fallback for input types without selectionStart support
+        e.preventDefault();
+        next();
+      }
+    }
+  };
+
+  // !
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -95,6 +170,8 @@ function AddCustomer({ refresh, editingCustomer, setEditingCustomer }) {
                   Firm <span style={{ color: "red" }}>*</span>
                 </Form.Label>
                 <Form.Control
+                  ref={(el) => (inputRefs.current[0] = el)}
+                  onKeyDown={(e) => handleKeyDown(e, 0)}
                   name='ledger'
                   type='text'
                   placeholder='Enter Firm Name'
@@ -109,6 +186,8 @@ function AddCustomer({ refresh, editingCustomer, setEditingCustomer }) {
                   Mobile Number <span style={{ color: "red" }}>*</span>
                 </Form.Label>
                 <Form.Control
+                  ref={(el) => (inputRefs.current[1] = el)}
+                  onKeyDown={(e) => handleKeyDown(e, 1)}
                   type='number'
                   name='mobile'
                   placeholder='Mobile'
@@ -121,6 +200,8 @@ function AddCustomer({ refresh, editingCustomer, setEditingCustomer }) {
               <Col md={6} className='mb-3'>
                 <Form.Label>City</Form.Label>
                 <Form.Control
+                  ref={(el) => (inputRefs.current[2] = el)}
+                  onKeyDown={(e) => handleKeyDown(e, 2)}
                   type='text'
                   name='city'
                   placeholder='City'
@@ -134,6 +215,8 @@ function AddCustomer({ refresh, editingCustomer, setEditingCustomer }) {
                   Area <span style={{ color: "red" }}>*</span>
                 </Form.Label>
                 <Form.Control
+                  ref={(el) => (inputRefs.current[3] = el)}
+                  onKeyDown={(e) => handleKeyDown(e, 3)}
                   type='text'
                   placeholder='Area Name'
                   name='area'
@@ -145,6 +228,8 @@ function AddCustomer({ refresh, editingCustomer, setEditingCustomer }) {
               <Col md={12} className='mb-3'>
                 <Form.Label>Address</Form.Label>
                 <Form.Control
+                  ref={(el) => (inputRefs.current[4] = el)}
+                  onKeyDown={(e) => handleKeyDown(e, 4)}
                   name='address1'
                   placeholder='Address'
                   value={customer.address1}
@@ -155,6 +240,8 @@ function AddCustomer({ refresh, editingCustomer, setEditingCustomer }) {
               <Col md={6} className='mb-3'>
                 <Form.Label>Credit Limit</Form.Label>
                 <Form.Control
+                  ref={(el) => (inputRefs.current[5] = el)}
+                  onKeyDown={(e) => handleKeyDown(e, 5)}
                   type='number'
                   name='creditLimit'
                   placeholder='Credit Limit'
@@ -165,6 +252,8 @@ function AddCustomer({ refresh, editingCustomer, setEditingCustomer }) {
               <Col md={6} className='mb-3'>
                 <Form.Label>Balance</Form.Label>
                 <Form.Control
+                  ref={(el) => (inputRefs.current[6] = el)}
+                  onKeyDown={(e) => handleKeyDown(e, 6)}
                   type='number'
                   name='balance'
                   placeholder='Balance'
@@ -176,6 +265,8 @@ function AddCustomer({ refresh, editingCustomer, setEditingCustomer }) {
               <Col md={6} className='mb-3'>
                 <Form.Label>Credit Day</Form.Label>
                 <Form.Control
+                  ref={(el) => (inputRefs.current[7] = el)}
+                  onKeyDown={(e) => handleKeyDown(e, 7)}
                   type='date'
                   name='creditDay'
                   value={customer.creditDay}
@@ -186,6 +277,8 @@ function AddCustomer({ refresh, editingCustomer, setEditingCustomer }) {
               <Col md={6} className='mb-3'>
                 <Form.Label>GST No.</Form.Label>
                 <Form.Control
+                  ref={(el) => (inputRefs.current[8] = el)}
+                  onKeyDown={(e) => handleKeyDown(e, 8)}
                   name='gstNumber'
                   placeholder='GST No.'
                   value={customer.gstNumber}
