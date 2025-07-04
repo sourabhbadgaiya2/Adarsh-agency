@@ -2,16 +2,16 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import { Form, Button, Container, Row, Col } from "react-bootstrap";
-import axios from "../../Config/axios";
+import axios from "../../../Config/axios";
 import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
-import Loader from "../Loader";
+import Loader from "../../Loader";
 
 const IMAGE_BASE = import.meta.env.VITE_API
   ? import.meta.env.VITE_API.replace(/\/api$/, "")
   : "";
 
-function AddSalesMan() {
+function AddSalesMan({ idToEdit, onSuccess }) {
   const [formData, setFormData] = useState({
     name: "",
     designation: "",
@@ -25,7 +25,9 @@ function AddSalesMan() {
     beat: [{ area: "" }],
   });
 
-  const { id } = useParams();
+  // const { id } = useParams();
+  const id = idToEdit;
+
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [existingPhoto, setExistingPhoto] = useState(null);
@@ -165,7 +167,11 @@ function AddSalesMan() {
         password: "",
       });
       setPhoto(null);
-      navigate("/display-salesman");
+      if (onSuccess) {
+        onSuccess();
+      }
+
+      // navigate("/display-salesman");
     } catch (err) {
       console.error(
         "Error saving salesman:",
@@ -251,7 +257,7 @@ function AddSalesMan() {
 
   return (
     <Container>
-      <h3 className='my-4'>{isEditing ? "Edit Salesman" : "Add Salesman"}</h3>
+      {/* <h3 className='my-4'>{isEditing ? "Edit Salesman" : "Add Salesman"}</h3> */}
       <Form onSubmit={handleSubmit}>
         <Row>
           <Col md={6}>
@@ -353,7 +359,7 @@ function AddSalesMan() {
           {/* <hr className='my-4' /> */}
           <Form.Group className='mb-3'>
             <Form.Label>Beats</Form.Label>
-            {formData.beat.map((b, index) => (
+            {formData?.beat?.map((b, index) => (
               <Row key={index} className='mb-2 align-items-center'>
                 <Col md={5}>
                   <Form.Control

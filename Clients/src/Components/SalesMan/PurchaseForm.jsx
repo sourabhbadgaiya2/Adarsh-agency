@@ -24,13 +24,14 @@ import axiosInstance from "../../Config/axios";
 import dayjs from "dayjs";
 
 import useSearchableModal from "../../Components/SearchableModal";
+import CustomDataTable from "../CustomDataTable";
 
 const PurchaseForm = () => {
   const [vendors, setVendors] = useState([]);
   const [companies, setCompanies] = useState([]);
   const [products, setProducts] = useState([]);
   const [purchases, setPurchases] = useState([]);
-  const [editingId, setEditingId] = useState(null); // This needs to be set for main purchase edit
+  const [editingId, setEditingId] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const [showProductModal, setShowProductModal] = useState(false);
@@ -70,34 +71,8 @@ const PurchaseForm = () => {
     },
   });
 
-  // const handleProductSelect = (product) => {
-  //   // Yeh 'productId' ke update ke sath saare calculation bhi trigger karega
-  //   handleItemChange({
-  //     target: {
-  //       name: "productId",
-  //       value: product._id,
-  //     },
-  //   });
-
-  //   // Brand bhi auto-update hoga
-  //   setPurchaseData((prev) => ({
-  //     ...prev,
-  //     item: {
-  //       ...prev.item,
-  //       companyId: product.companyId || "", // fallback just in case
-  //     },
-  //   }));
-
-  //   // Modal band karo
-  //   productModal.setShowModal(false);
-
-  //   // Quantity field pe focus laana
-  //   setTimeout(() => {
-  //     document.querySelector('input[name="quantity"]')?.focus();
-  //   }, 100);
-  // };
-
   const handleProductSelect = (product) => {
+    console.log("Selected product", product);
     setPurchaseData((prev) => {
       const alreadySelectedBrand = prev.item.companyId;
 
@@ -108,12 +83,15 @@ const PurchaseForm = () => {
           productId: product._id,
           // ✅ brand/companyId only set if not already selected
           companyId: alreadySelectedBrand || product.companyId || "",
-          purchaseRate: product.purchaseRate || "",
-          availableQty: product.availableQty || "",
+          purchaseRate: product.purchaseRate ?? "",
+          availableQty: product.availableQty ?? "",
         },
       };
     });
 
+    setTimeout(() => {
+      console.log("Updated item", purchaseData.item);
+    }, 200);
     productModal.setShowModal(false);
 
     setTimeout(() => {
@@ -702,6 +680,7 @@ const PurchaseForm = () => {
     window.addEventListener("keydown", handleEscapeKey);
     return () => window.removeEventListener("keydown", handleEscapeKey);
   }, [showVendorModal, editItemIndex, editingId]);
+
   useEffect(() => {
     const handleCtrlQ = (e) => {
       if (e.ctrlKey && e.key.toLowerCase() === "q") {
@@ -716,6 +695,86 @@ const PurchaseForm = () => {
       window.removeEventListener("keydown", handleCtrlQ);
     };
   }, [handleSubmit]);
+
+  const getPurchaseColumns = (handleEditPurchase, handleDelete) => [
+    {
+      name: "SR",
+      selector: (row, index) => index + 1,
+      sortable: true,
+      width: "70px",
+    },
+    {
+      name: "Entry No.",
+      selector: (row) => row.entryNumber,
+      sortable: true,
+    },
+    {
+      name: "Party No.",
+      selector: (row) => row.partyNo,
+      sortable: true,
+    },
+    {
+      name: "Vendor",
+      selector: (row) => row.vendorId?.name || "-",
+      sortable: true,
+    },
+    {
+      name: "Items Count",
+      selector: (row) => row.items?.length || 0,
+      sortable: false,
+    },
+    {
+      name: "Item Quantity",
+      selector: (row) =>
+        row.items?.map((i, idx) => (
+          <div key={idx}>
+            {i.productId?.productName}: {i.quantity}
+          </div>
+        )),
+      wrap: true,
+    },
+    {
+      name: "Item Rate",
+      selector: (row) =>
+        row.items?.map((i, idx) => <div key={idx}>₹{i.purchaseRate}</div>),
+      wrap: true,
+    },
+    {
+      name: "Total Amount",
+      selector: (row) =>
+        row.items?.map((i, idx) => <div key={idx}>₹{i.totalAmount}</div>),
+      wrap: true,
+    },
+    {
+      name: "Purchase Date",
+      selector: (row) => dayjs(row.date).format("DD MMM YYYY"),
+      sortable: true,
+    },
+    {
+      name: "Actions",
+      cell: (row) => (
+        <div className='d-flex gap-2'>
+          <Button
+            variant='warning'
+            size='sm'
+            onClick={() => handleEditPurchase(row)}
+          >
+            <MdModeEdit />
+          </Button>
+          <Button
+            variant='danger'
+            size='sm'
+            onClick={() => handleDelete(row._id)}
+          >
+            <BsTrash />
+          </Button>
+        </div>
+      ),
+      ignoreRowClick: true,
+      allowOverflow: true,
+      button: true,
+    },
+  ];
 
   if (loading) {
     return <Loader />;
@@ -1037,14 +1096,19 @@ const PurchaseForm = () => {
 
       {/* Purchase List */}
       <Card className='p-3 mt-4'>
-        {/* Added mt-4 for spacing */}
         <h5>Purchase List</h5>
         {purchases.length === 0 ? (
           <p>No purchases found.</p>
         ) : (
-          <Table striped bordered responsive>
-            {" "}
-            {/* Added responsive for better mobile view */}
+          <CustomDataTable
+            title=''
+            columns={getPurchaseColumns(handleEditPurchase, handleDelete)}
+            data={purchases}
+            pagination={true}
+            loading={false}
+          />
+
+          /* <Table striped bordered responsive>
             <thead>
               <tr>
                 <th>Entry No.</th>
@@ -1102,7 +1166,7 @@ const PurchaseForm = () => {
                 </tr>
               ))}
             </tbody>
-          </Table>
+          </Table> */
         )}
       </Card>
 
