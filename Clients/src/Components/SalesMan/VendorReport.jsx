@@ -1,27 +1,12 @@
 import React, { useEffect, useState, useRef } from "react";
-import {
-  Form,
-  Button,
-  Container,
-  Row,
-  Col,
-  Table,
-  Card,
-} from "react-bootstrap";
+import { Form, Button, Container, Row, Col, Card } from "react-bootstrap";
 import axios from "../../Config/axios";
 import toast from "react-hot-toast";
 import Loader from "../Loader";
 
 import CustomDataTable from "../../Components/CustomDataTable";
 
-import {
-  BsPencilSquare,
-  BsTrash,
-  BsFileEarmarkExcel,
-  BsFileEarmarkPdf,
-  BsPencil,
-  BsTrash2,
-} from "react-icons/bs";
+import { BsPencil, BsTrash2 } from "react-icons/bs";
 
 const VendorReport = () => {
   const [vendor, setVendor] = useState({
@@ -180,7 +165,6 @@ const VendorReport = () => {
           next();
         }
       } catch (err) {
-        // Fallback if selectionStart is not supported (e.g., type=email)
         e.preventDefault();
         next();
       }
@@ -189,9 +173,10 @@ const VendorReport = () => {
 
   const columns = [
     {
-      name: "#",
+      name: "SR",
       selector: (row, index) => index + 1,
-      width: "60px",
+      sortable: true,
+      width: "70px",
     },
     {
       name: "Firm Name",
@@ -406,56 +391,6 @@ const VendorReport = () => {
       </Card>
 
       <Card className='mt-4 p-3'>
-        {/* <Table striped bordered hover responsive>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Firm Name</th>
-              <th>Vendor Name</th>
-              <th>Mobile</th>
-              <th>Email</th>
-              <th>Address</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {vendorList.length === 0 ? (
-              <tr>
-                <td colSpan='6' className='text-center'>
-                  No vendors found.
-                </td>
-              </tr>
-            ) : (
-              vendorList.map((v, index) => (
-                <tr key={v._id}>
-                  <td>{index + 1}</td>
-                  <td>{v.firm}</td>
-                  <td>{v.name}</td>
-                  <td>{v.mobile}</td>
-                  <td>{v.email}</td>
-                  <td>{v.address}</td>
-                  <td>
-                    <Button
-                      variant='warning'
-                      size='sm'
-                      onClick={() => handleEdit(v)}
-                    >
-                      Edit
-                    </Button>{" "}
-                    <Button
-                      variant='danger'
-                      size='sm'
-                      onClick={() => handleDelete(v._id)}
-                    >
-                      Delete
-                    </Button>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </Table> */}
-
         <Card className='mt-4 p-3'>
           <CustomDataTable
             title='Vendor List'

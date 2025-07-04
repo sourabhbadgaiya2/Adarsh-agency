@@ -14,7 +14,7 @@ const Navbarfristn = () => {
       <div className='blue-header   py-2'>
         <Container>
           <h1 className='brand-title mb-0'>
-            Aadarsh{" "}
+            Aadarsh
             <span style={{ color: "orange", backgroundColor: "white" }}>
               Agency
             </span>
@@ -96,9 +96,9 @@ const Navbarfristn = () => {
                         Sales Man
                       </Dropdown.Item>
 
-                      <Dropdown.Item as={Link} to='/display-salesman'>
+                      {/* <Dropdown.Item as={Link} to='/display-salesman'>
                         View Sales Man
-                      </Dropdown.Item>
+                      </Dropdown.Item> */}
                       {/* <Dropdown.Item as={Link} to="/display-billing-report">
                         Product Billing Report
                       </Dropdown.Item> */}

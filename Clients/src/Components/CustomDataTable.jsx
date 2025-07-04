@@ -1,52 +1,3 @@
-// import React from "react";
-// import DataTable from "react-data-table-component";
-
-// function CustomDataTable({
-//   title,
-//   columns,
-//   data,
-//   pagination = true,
-//   filterComponent = null,
-//   exportButtons = null,
-//   loading = false,
-// }) {
-//   const paginationOptions = {
-//     rowsPerPageText: "Rows per page:",
-//     rangeSeparatorText: "of",
-//     selectAllRowsItem: true,
-//     selectAllRowsItemText: "All",
-//   };
-
-//   if (loading) {
-//     return <div className='py-4 text-center'>Loading...</div>; // or your Loader component
-//   }
-
-//   return (
-//     <div>
-//       {filterComponent}
-//       {exportButtons}
-
-//       <DataTable
-//         title={title}
-//         columns={columns}
-//         data={data}
-//         pagination={pagination}
-//         persistTableHead
-//         responsive
-//         striped
-//         highlightOnHover
-//         pointerOnHover
-//         paginationComponentOptions={paginationOptions}
-//         defaultSortFieldId={1}
-//         defaultSortAsc={true}
-//         noDataComponent={<div className='py-4'>No data found</div>}
-//       />
-//     </div>
-//   );
-// }
-
-// export default CustomDataTable;
-
 import React, { useState, useEffect } from "react";
 import DataTable from "react-data-table-component";
 import { InputGroup, Form, Button } from "react-bootstrap";
@@ -69,18 +20,29 @@ function CustomDataTable({
     selectAllRowsItemText: "All",
   };
 
-  // ✅ Filter Logic - basic substring match
   useEffect(() => {
     const lowerText = filterText.toLowerCase();
 
-    const filtered = data.filter((item) =>
-      Object.values(item).some((value) => {
-        if (typeof value === "string") {
-          return value.toLowerCase().includes(lowerText);
+    const filtered = data.filter((item) => {
+      const flattenValues = (obj) => {
+        let result = [];
+
+        for (const key in obj) {
+          const value = obj[key];
+          if (typeof value === "string") {
+            result.push(value);
+          } else if (typeof value === "object" && value !== null) {
+            result = result.concat(flattenValues(value)); // recursively flatten
+          }
         }
-        return false;
-      })
-    );
+
+        return result;
+      };
+
+      const allValues = flattenValues(item);
+
+      return allValues.some((val) => val.toLowerCase().includes(lowerText));
+    });
 
     setFilteredData(filtered);
   }, [filterText, data]);

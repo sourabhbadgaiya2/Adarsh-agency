@@ -18,6 +18,7 @@ import {
   Table,
   Modal,
 } from "react-bootstrap";
+import CustomDataTable from "../../CustomDataTable";
 
 const Product = ({ onSuccess, onCancel, productToEdit }) => {
   const [loading, setLoading] = useState(false);
@@ -338,6 +339,92 @@ const Product = ({ onSuccess, onCancel, productToEdit }) => {
     }
   };
 
+  const productColumns = (handleEdit, handleDelete, IMAGE_BASE) => [
+    {
+      name: "SR",
+      selector: (row, index) => index + 1,
+      sortable: true,
+      width: "70px",
+    },
+    {
+      name: "Product Image",
+      selector: (row) =>
+        row.productImg ? (
+          <Image
+            src={`${IMAGE_BASE}/Images/${row.productImg}`}
+            roundedCircle
+            width={40}
+            height={40}
+          />
+        ) : (
+          "No Photo"
+        ),
+      sortable: false,
+    },
+    {
+      name: "Product Name",
+      selector: (row) => row.productName,
+      sortable: true,
+    },
+    {
+      name: "Brand",
+      selector: (row) => row.companyId?.name || "-",
+      sortable: true,
+    },
+    {
+      name: "HSN Code",
+      selector: (row) => row.hsnCode,
+      sortable: true,
+    },
+    {
+      name: "MRP",
+      selector: (row) => row.mrp,
+      sortable: true,
+    },
+    {
+      name: "Sales Rate",
+      selector: (row) => row.salesRate,
+      sortable: true,
+    },
+    {
+      name: "Purchase Rate",
+      selector: (row) => row.purchaseRate,
+      sortable: true,
+    },
+    {
+      name: "Available Qty",
+      selector: (row) => row.availableQty,
+      sortable: true,
+    },
+    {
+      name: "GST %",
+      selector: (row) => row.gstPercent,
+      sortable: true,
+    },
+    {
+      name: "Actions",
+      cell: (row, index) => (
+        <>
+          <button
+            className='btn btn-sm btn-warning me-2'
+            onClick={() => handleEdit(index)}
+          >
+            <PencilFill />
+          </button>
+          <button
+            className='btn btn-sm btn-danger'
+            onClick={() => handleDelete(index)}
+          >
+            <TrashFill />
+          </button>
+        </>
+      ),
+      ignoreRowClick: true,
+      allowOverflow: true,
+      button: true,
+    },
+  ];
+
   if (loading) {
     return <Loader />;
   }
@@ -564,69 +651,17 @@ const Product = ({ onSuccess, onCancel, productToEdit }) => {
                 {products.length === 0 ? (
                   <p>No products added yet.</p>
                 ) : (
-                  <div className='table-responsive'>
-                    <table className='table table-bordered mt-4'>
-                      <thead className='thead-light'>
-                        <tr>
-                          <th>Product Image</th>
-                          <th>Product Name</th>
-                          <th>Brand</th>
-                          <th>HSN Code</th>
-                          <th>MRP</th>
-                          <th>Sales Rate</th>
-                          <th>Purchase Rate</th>
-                          {/*<th>Primary Price</th>*/}
-                          <th>Available QTY.</th>
-                          <th>GST%</th>
-                          <th>Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {products.map((product, index) => (
-                          <tr key={product._id}>
-                            <td>
-                              {product.productImg ? (
-                                <Image
-                                  src={`${IMAGE_BASE}/Images/${product.productImg}`}
-                                  roundedCircle
-                                  width={50}
-                                  height={50}
-                                />
-                              ) : (
-                                "No Photo"
-                              )}
-                            </td>
-                            <td style={{ textAlign: "left" }}>
-                              {product.productName}
-                            </td>
-                            <td>{product.companyId?.name || "-"}</td>
-                            <td>{product.hsnCode}</td>
-                            <td>{product.mrp}</td>
-                            <td>{product.salesRate}</td>
-                            <td>{product.purchaseRate}</td>
-                            {/*  <td>{product.primaryUnit}</td>
-                          <td>{product.primaryPrice}</td>*/}
-                            <td>{product.availableQty}</td>
-                            <td>{product.gstPercent}</td>
-                            <td>
-                              <button
-                                className='btn btn-sm btn-warning me-2'
-                                onClick={() => handleEdit(index)}
-                              >
-                                <PencilFill />
-                              </button>
-                              <button
-                                className='btn btn-sm btn-danger'
-                                onClick={() => handleDelete(index)}
-                              >
-                                <TrashFill />
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
+                  <CustomDataTable
+                    title='Product Table'
+                    columns={productColumns(
+                      handleEdit,
+                      handleDelete,
+                      IMAGE_BASE
+                    )}
+                    data={products}
+                    pagination={true}
+                    loading={false} // You can link it to a loading state
+                  />
                 )}
               </div>
             </div>
