@@ -1,34 +1,5 @@
 const mongoose = require("mongoose");
 
-// const itemSchema = new mongoose.Schema({
-//   productId: {
-//     type: mongoose.Schema.Types.ObjectId,
-//     ref: "Product",
-//     required: true,
-//   },
-//   companyId: {
-//     type: mongoose.Schema.Types.ObjectId,
-//     ref: "Company",
-//     required: true,
-//   },
-//   purchaseRate: Number,
-//   quantity: Number,
-//   availableQty: Number,
-//   totalAmount: Number,
-// });
-
-// const purchaseSchema = new mongoose.Schema(
-//   {
-//     vendorId: {
-//       type: mongoose.Schema.Types.ObjectId,
-//       ref: "Vendor",
-//       required: true,
-//     },
-//     items: [itemSchema], // Array of item objects
-//   },
-//   { timestamps: true }
-// );
-
 const itemSchema = new mongoose.Schema({
   productId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -70,6 +41,12 @@ const purchaseSchema = new mongoose.Schema(
     partyNo: {
       type: String,
       required: true,
+    },
+    adjustedAmount: {
+      type: String,
+    },
+    pendingAmount: {
+      type: String,
     },
 
     items: [itemSchema], // Array of item objects

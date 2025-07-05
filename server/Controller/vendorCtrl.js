@@ -1,4 +1,5 @@
 const Vendor = require("../Models/VendorModel");
+const Purchase = require("../Models/PurchaseModel");
 
 const createVendor = async (req, res) => {
   try {
@@ -60,7 +61,32 @@ const deleteVendor = async (req, res) => {
   }
 };
 
+// GET /api/purchase/vendor/:vendorId
+const getBillsByVendorId = async (req, res) => {
+  const { vendorId } = req.params;
+
+  try {
+    // Optional: Verify vendor exists
+    const vendor = await Vendor.findById(vendorId);
+    if (!vendor) {
+      return res.status(404).json({ message: "Vendor not found" });
+    }
+
+    // Fetch all purchases (bills) for that vendor
+    const purchases = await Purchase.find({ vendorId }).sort({ date: -1 });
+
+    return res.status(200).json({
+      vendor,
+      bills: purchases,
+    });
+  } catch (error) {
+    console.error("Error fetching vendor bills:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 module.exports = {
+  getBillsByVendorId,
   createVendor,
   getallVendors,
   getVendorById,

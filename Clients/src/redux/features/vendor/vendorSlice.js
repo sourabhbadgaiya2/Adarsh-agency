@@ -6,11 +6,13 @@ import {
   fetchVendorById,
   updateVendor,
   deleteVendor,
+  fetchVendorBills, // 👈 NEW
 } from "./VendorThunks";
 
 const initialState = {
   vendors: [],
   currentVendor: null,
+  vendorBills: [], // 👈 NEW
   loading: false,
   error: null,
 };
@@ -99,6 +101,23 @@ const vendorSlice = createSlice({
       .addCase(deleteVendor.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+
+      // 📦 Fetch Vendor Bills
+      .addCase(fetchVendorBills.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.vendorBills = [];
+      })
+      .addCase(fetchVendorBills.fulfilled, (state, action) => {
+        state.loading = false;
+        state.currentVendor = action.payload.vendor; // optional
+        state.vendorBills = action.payload.bills;
+      })
+      .addCase(fetchVendorBills.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        state.vendorBills = [];
       });
   },
 });

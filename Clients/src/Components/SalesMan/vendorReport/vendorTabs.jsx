@@ -174,7 +174,7 @@ const VendorTabs = () => {
     }
 
     // Ctrl + Enter for Submit
-    if (e.ctrlKey && e.key === "Enter") {
+    if (e.ctrlKey && e.key === "q") {
       e.preventDefault();
       handleSubmit(e);
     }

@@ -209,7 +209,7 @@ function AddSalesMan({ idToEdit, onSuccess }) {
       prev();
     }
 
-    if (e.ctrlKey && e.key === "Enter") {
+    if (e.ctrlKey && e.key === "q") {
       e.preventDefault();
       handleSubmit(e);
     }

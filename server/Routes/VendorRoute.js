@@ -6,6 +6,10 @@ const vendorCtrl = require("../Controller/vendorCtrl");
 router.post("/", vendorCtrl.createVendor);
 // Get all vendors
 router.get("/", vendorCtrl.getallVendors);
+
+// vendor bills
+router.get("/vendor/:vendorId", vendorCtrl.getBillsByVendorId);
+
 // Get a vendor by ID
 router.get("/:id", vendorCtrl.getVendorById);
 // Update a vendor by ID
