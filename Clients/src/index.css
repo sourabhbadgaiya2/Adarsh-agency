@@ -452,3 +452,81 @@ table th {
     font-size: 12px;
   }
 }
+
+/* ---------------sidebar-------------------0 */
+.sidebar {
+
+  width: 260px;
+  min-height: 100vh;
+  transition: all 0.3s ease;
+}
+
+.sidebar.collapsed {
+  width: 0;
+  overflow: hidden;
+}
+
+.dropdown-item:hover {
+  background-color: #495057;
+  color: #fff !important;
+}
+
+.nav-link:hover {
+  background-color: #343a40;
+  color: #fff !important;
+}
+
+.custom-logo {
+  font-family: 'Cinzel', serif;
+  /* Premium serif font */
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.custom-logo-part1 {
+  background-color: #1c1c1e;
+  /* Dark charcoal */
+  color: white;
+  /* Elegant gold */
+  padding: 6px 14px;
+  border-radius: 10px 0 0 10px;
+  text-transform: uppercase;
+}
+
+.custom-logo-part2 {
+  background-color: #f0c040;
+  /* Elegant gold */
+  color: white;
+  /* Dark text */
+  padding: 6px 14px;
+  border-radius: 0 10px 10px 0;
+  text-transform: uppercase;
+}
+
+#new-sidebar a {
+  text-decoration: none !important;
+}
+
+/* Remove all borders and underlines in sidebar dropdowns */
+.sidebar .dropdown,
+.sidebar .dropdown div,
+.sidebar .dropdown a {
+  border: none;
+  text-decoration: none;
+}
+
+/* Improve dropdown item spacing */
+.sidebar .dropdown div {
+  margin: 0;
+  padding: 0;
+}
+
+.sidebar .dropdown div a {
+  padding: 6px 12px;
+  margin: 2px 0;
+  display: block;
+}
