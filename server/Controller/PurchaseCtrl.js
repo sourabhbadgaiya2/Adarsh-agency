@@ -88,17 +88,6 @@ exports.deletePurchase = async (req, res) => {
   }
 };
 
-// exports.getNextEntryNumber = async (req, res) => {
-//   try {
-//     const count = await Purchase.countDocuments();
-//     const nextNumber = (count + 1).toString().padStart(5, "0");
-
-//     res.json({ nextEntryNumber: nextNumber });
-//   } catch (err) {
-//     res.status(500).json({ error: "Failed to get next entry number" });
-//   }
-// };
-
 exports.getNextEntryNumber = async (req, res) => {
   try {
     const lastEntry = await Purchase.findOne().sort({ createdAt: -1 });
@@ -115,3 +104,4 @@ exports.getNextEntryNumber = async (req, res) => {
     res.status(500).json({ error: "Failed to get next entry number" });
   }
 };
+

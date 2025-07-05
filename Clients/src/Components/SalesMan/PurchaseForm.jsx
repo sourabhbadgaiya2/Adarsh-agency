@@ -89,9 +89,6 @@ const PurchaseForm = () => {
       };
     });
 
-    setTimeout(() => {
-      console.log("Updated item", purchaseData.item);
-    }, 200);
     productModal.setShowModal(false);
 
     setTimeout(() => {

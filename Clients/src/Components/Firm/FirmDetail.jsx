@@ -111,34 +111,34 @@ const FirmDetail = () => {
   const totalPages = Math.ceil(tasks.length / entriesPerPage);
 
   return (
-    <div className="container mt-2 mb-4">
+    <div className='container mt-2 mb-4'>
       <h4>Create Firm</h4>
-      <div className="row">
-        <div className="col-md-12">
-          <div className="card card-primary card-outline">
-            <div style={{ backgroundColor: "black" }} className="card-header">
+      <div className='row'>
+        <div className='col-md-12'>
+          <div className='card card-primary card-outline'>
+            <div style={{ backgroundColor: "black" }} className='card-header'>
               <Tabs
-                id="task-tabs"
+                id='task-tabs'
                 activeKey={activeTab}
                 onSelect={(k) => setActiveTab(k)}
-                className="mb-3"
+                className='mb-3'
               >
-                <Tab eventKey="view" title={<b>View Firm</b>} />
-                <Tab eventKey="add" title={<b>Add Firm</b>} />
+                <Tab eventKey='view' title={<b>View Firm</b>} />
+                <Tab eventKey='add' title={<b>Add Firm</b>} />
               </Tabs>
             </div>
 
-            <div className="card-body">
+            <div className='card-body'>
               {activeTab === "view" && (
-                <div className="table-responsive">
+                <div className='table-responsive'>
                   {/* <div className=" "> */}
-                  <div className="row mb-6 py-2 dataTables_filter float-center">
+                  <div className='row mb-6 py-2 dataTables_filter float-center'>
                     <label>
                       Search:
                       <input
-                        type="search"
-                        className="form-control form-control-sm"
-                        placeholder=""
+                        type='search'
+                        className='form-control form-control-sm'
+                        placeholder=''
                       />
                     </label>
                   </div>
@@ -178,7 +178,7 @@ const FirmDetail = () => {
                           </td>
                           <td>
                             <button
-                              className="btn btn-danger btn-sm"
+                              className='btn btn-danger btn-sm'
                               onClick={() => deleteFirm(c._id)}
                             >
                               Delete
@@ -189,16 +189,16 @@ const FirmDetail = () => {
                     </tbody>
                   </Table>
 
-                  <div className="row">
-                    <div className="col-sm-5">
-                      <div className="dataTables_info">
+                  <div className='row'>
+                    <div className='col-sm-5'>
+                      <div className='dataTables_info'>
                         Showing {indexOfFirstEntry + 1} to{" "}
                         {Math.min(indexOfLastEntry, tasks.length)} of{" "}
                         {tasks.length} entries
                       </div>
                     </div>
-                    <div className="col-sm-7">
-                      <Pagination className="float-right">
+                    <div className='col-sm-7'>
+                      <Pagination className='float-right'>
                         <Pagination.Prev
                           disabled={currentPage === 1}
                           onClick={() => setCurrentPage(currentPage - 1)}
@@ -236,7 +236,7 @@ const FirmDetail = () => {
       <Modal
         show={showDetailModal}
         onHide={() => setShowDetailModal(false)}
-        size="lg"
+        size='lg'
       >
         <Modal.Header closeButton>
           <Modal.Title>
@@ -247,7 +247,7 @@ const FirmDetail = () => {
           {currentTask?.description || "No description available"}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowDetailModal(false)}>
+          <Button variant='secondary' onClick={() => setShowDetailModal(false)}>
             Close
           </Button>
         </Modal.Footer>
@@ -271,7 +271,7 @@ const FirmDetail = () => {
         </Modal.Body>
         <Modal.Footer>
           <Button
-            variant="secondary"
+            variant='secondary'
             onClick={() => setShowChecklistModal(false)}
           >
             Close
@@ -289,7 +289,7 @@ const FirmDetail = () => {
           {currentTask?.sms || "No SMS template available"}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowSmsModal(false)}>
+          <Button variant='secondary' onClick={() => setShowSmsModal(false)}>
             Close
           </Button>
         </Modal.Footer>
@@ -298,7 +298,7 @@ const FirmDetail = () => {
       <Modal
         show={showEmailModal}
         onHide={() => setShowEmailModal(false)}
-        size="lg"
+        size='lg'
       >
         <Modal.Header closeButton>
           <Modal.Title>
@@ -313,7 +313,7 @@ const FirmDetail = () => {
           />
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowEmailModal(false)}>
+          <Button variant='secondary' onClick={() => setShowEmailModal(false)}>
             Close
           </Button>
         </Modal.Footer>
