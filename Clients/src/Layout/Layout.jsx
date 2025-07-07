@@ -1,5 +1,5 @@
 import React from "react";
- // Adjust path if needed
+ // Adjust path if needed asdasd
 import { Outlet } from "react-router-dom";
 import Navbarfrist from "../Components/Dashbord/Navbarfrist";
 
