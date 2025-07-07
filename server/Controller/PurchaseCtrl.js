@@ -105,3 +105,29 @@ exports.getNextEntryNumber = async (req, res) => {
   }
 };
 
+// const saveLedger = async (req, res) => {
+//   try {
+//     const { amount, adjustedAmount, pendingAmount, rows } = req.body;
+
+//     for (const row of rows) {
+//       const { billId, amount: rowAmount } = row;
+
+//       if (!billId) continue; // ignore if no ID
+
+//       const bill = await Bill.findById(billId);
+
+//       if (bill) {
+//         const adjusted = parseFloat(rowAmount) || 0;
+//         bill.pending = Math.max(0, bill.pending - adjusted);
+//         bill.status = bill.pending === 0 ? "Settled" : "Partial";
+
+//         await bill.save();
+//       }
+//     }
+
+//     return res.status(200).json({ message: "Ledger updated successfully." });
+//   } catch (error) {
+//     console.error("Ledger save error:", error);
+//     return res.status(500).json({ message: "Internal server error." });
+//   }
+// };

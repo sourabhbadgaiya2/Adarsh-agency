@@ -1,6 +1,3 @@
-// src/pages/Ledger.js
-
-import React from "react";
 import { Container, Table, Row, Col, Card } from "react-bootstrap";
 
 const Ledger = () => {
