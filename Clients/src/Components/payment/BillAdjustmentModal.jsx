@@ -93,26 +93,6 @@ const BillAdjustmentModal = forwardRef(
 
     const handleSave = async () => {
       try {
-        // const response = await fetch("/api/save-ledger", {
-        //   method: "POST",
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //   },
-        //   body: JSON.stringify({
-        //     amount,
-        //     adjustedAmount: totalAdjusted,
-        //     pendingAmount: pending,
-        //     rows,
-        //   }),
-        // });
-
-        // if (!response.ok) {
-        //   throw new Error("Failed to save ledger");
-        // }
-
-        // const data = await response.json();
-        // alert("Ledger saved successfully!");
-
         onHide(); // modal band karo
 
         // 🔁 Navigate to ledger page
@@ -126,7 +106,7 @@ const BillAdjustmentModal = forwardRef(
     const pending = amount - totalAdjusted;
 
     return (
-      <Modal show={show} onHide={onHide} size='lg' centered>
+      <Modal show={show} onHide={onHide} fullscreen>
         <Modal.Header closeButton>
           <Modal.Title>Bill Adjustment</Modal.Title>
         </Modal.Header>

@@ -42,9 +42,15 @@ const PaymentVoucherForm = () => {
   const vendorList = useSelector((state) => state.vendor.vendors);
   const vendorBills = useSelector((state) => state.vendor.vendorBills);
 
-  const handleOpenPendingModal = (rowIdx) => {
+  const handleOpenPendingBills = (rowIdx) => {
     setPendingRowIndex(rowIdx);
-    setShowPendingModal(true);
+    dispatch(fetchVendorBills(selectedVendor?._id)).then((res) => {
+      if (res.payload?.length > 0) {
+        setShowPendingModal(true);
+      } else {
+        // alert("No pending bills available.");
+      }
+    });
   };
 
   useEffect(() => {
@@ -330,8 +336,7 @@ const PaymentVoucherForm = () => {
         onHide={() => setShowBillModal(false)}
         amount={parseFloat(debitAmount || 0)}
         openPendingModal={(rowIndex) => {
-          setPendingRowIndex(rowIndex);
-          setShowPendingModal(true);
+          handleOpenPendingBills(rowIndex); // ✅ yeh safe version use karo
         }}
       />
 
