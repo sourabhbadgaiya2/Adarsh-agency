@@ -9,7 +9,17 @@ import { Modal, Form, Table } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 const BillAdjustmentModal = forwardRef(
-  ({ show, onHide, amount, openPendingModal, selectedVendorId }, ref) => {
+  (
+    {
+      show,
+      onHide,
+      amount,
+      openPendingModal,
+      selectedVendorId,
+      onPendingChange,
+    },
+    ref
+  ) => {
     const [rows, setRows] = useState([
       {
         type: "Adj Ref",
@@ -185,11 +195,18 @@ const BillAdjustmentModal = forwardRef(
         navigate("/ledger");
       } catch (error) {
         console.error("Error saving adjustment:", error);
-        alert("Failed to save adjustment");
+        // alert("Failed to save adjustment");
       }
     };
 
     const pending = amount - totalAdjusted;
+
+    useEffect(() => {
+      const pending = amount - totalAdjusted;
+      if (onPendingChange) {
+        onPendingChange(Number(pending.toFixed(2)));
+      }
+    }, [rows, amount, totalAdjusted, onPendingChange]);
 
     return (
       <Modal show={show} onHide={onHide} fullscreen>

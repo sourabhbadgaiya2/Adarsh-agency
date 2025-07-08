@@ -74,3 +74,29 @@ exports.adjustPayment = async (req, res) => {
     res.status(500).json({ success: false, error: "Internal server error" });
   }
 };
+
+exports.getLedgerByVendor = async (req, res) => {
+  try {
+    const { vendorId } = req.params;
+
+    if (!vendorId) {
+      return res.status(400).json({ message: "Vendor ID is required" });
+    }
+
+    const ledgerEntries = await Ledger.find({ vendorId })
+      .sort({ date: 1 }) // Sorted by date ascending
+      .lean(); // Faster read-only results
+
+    return res.json({
+      success: true,
+      count: ledgerEntries.length,
+      data: ledgerEntries,
+    });
+  } catch (error) {
+    console.error("Error fetching ledger:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Server error while fetching ledger",
+    });
+  }
+};

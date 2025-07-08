@@ -31,6 +31,7 @@ const PaymentVoucherForm = () => {
   const dispatch = useDispatch();
 
   const [showBillModal, setShowBillModal] = useState(false);
+  const [pendingValue, setPendingValue] = useState(0);
 
   const vendorList = useSelector((state) => state.vendor.vendors);
   const vendorBills = useSelector((state) => state.vendor.vendorBills);
@@ -41,7 +42,7 @@ const PaymentVoucherForm = () => {
       if (res.payload?.length > 0) {
         setShowPendingModal(true);
       } else {
-        alert("No pending bills available.");
+        // alert("No pending bills available.");
       }
     });
   };
@@ -333,17 +334,12 @@ const PaymentVoucherForm = () => {
           handleOpenPendingBills(rowIndex); // ✅ yeh safe version use karo
         }}
         selectedVendorId={selectedVendor?._id} // 👈 pass vendorId
+        onPendingChange={(value) => {
+          console.log("⏱ Pending from modal:", value);
+          setPendingValue(value); // 👈 Store it or use as needed
+        }}
       />
 
-      {/* <PendingBillsModal
-        show={!!showPendingModal}
-        onHide={() => setShowPendingModal(false)}
-        onBillSelect={(bill) => {
-          billAdjustmentModalRef.current?.insertBill(pendingRowIndex, bill);
-          setShowPendingModal(false);
-        }}
-        bills={vendorBills}
-      /> */}
       <PendingBillsModal
         show={!!showPendingModal}
         onHide={() => setShowPendingModal(false)}
@@ -352,6 +348,7 @@ const PaymentVoucherForm = () => {
           billAdjustmentModalRef.current?.insertBill(pendingRowIndex, result);
           setShowPendingModal(false);
         }}
+        amountBill={pendingValue}
       />
     </Container>
   );

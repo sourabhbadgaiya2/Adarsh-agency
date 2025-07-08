@@ -1,5 +1,6 @@
 const Purchase = require("../Models/PurchaseModel");
 const Product = require("../Models/ProductModel");
+const Ledger = require("../Models/Ledger"); // Make sure you import your model
 
 // exports.createPurchase = async (req, res) => {
 //   try {
@@ -254,6 +255,34 @@ exports.updatePendingAmount = async (req, res) => {
 
 //  "New Ref" Adjustment
 
+// exports.adjustNewRef = async (req, res) => {
+//   console.log(req.body, "KKI");
+//   const { vendorId, amount } = req.body;
+
+//   if (!vendorId || !amount) {
+//     return res.status(400).json({ message: "Missing vendorId or amount" });
+//   }
+
+//   const purchaseEntries = await Purchase.find({
+//     vendorId,
+//     pendingAmount: { $gt: 0 },
+//   }).sort({ date: 1 });
+
+//   let remaining = amount;
+
+//   for (const entry of purchaseEntries) {
+//     if (remaining <= 0) break;
+
+//     const deduct = Math.min(entry.pendingAmount, remaining);
+//     entry.pendingAmount -= deduct;
+//     remaining -= deduct;
+
+//     await entry.save();
+//   }
+
+//   return res.json({ message: "Vendor balance adjusted", remaining });
+// };
+
 exports.adjustNewRef = async (req, res) => {
   console.log(req.body, "KKI");
   const { vendorId, amount } = req.body;
@@ -262,6 +291,7 @@ exports.adjustNewRef = async (req, res) => {
     return res.status(400).json({ message: "Missing vendorId or amount" });
   }
 
+  // 1. Adjust Purchase Entries
   const purchaseEntries = await Purchase.find({
     vendorId,
     pendingAmount: { $gt: 0 },
@@ -279,5 +309,35 @@ exports.adjustNewRef = async (req, res) => {
     await entry.save();
   }
 
-  return res.json({ message: "Vendor balance adjusted", remaining });
+  // 2. 🧾 Calculate total balance (after adjustment)
+  const updatedVendorPurchases = await Purchase.find({
+    vendorId,
+  });
+
+  const totalBalance = updatedVendorPurchases.reduce((sum, p) => {
+    return sum + (p.pendingAmount || 0);
+  }, 0);
+
+  // 3. 🧾 Create Ledger Entry
+  await Ledger.create({
+    vendorId,
+    billId: null, // Since this is a new_ref, not a specific bill
+    date: new Date(),
+    refType: "new_ref",
+    debit: amount, // The full amount adjusted
+    credit: updatedVendorPurchases.pendingAmount,
+    entryNumber: `LDG-${Date.now()}`, // Or use a better system
+    remark: `Adjusted ₹${amount.toFixed(
+      2
+    )} | Balance after: ₹${totalBalance.toFixed(2)}`,
+  });
+
+  return res.json({
+    message: "Vendor balance adjusted",
+    remaining,
+    totalBalance,
+  });
 };
+
+
+

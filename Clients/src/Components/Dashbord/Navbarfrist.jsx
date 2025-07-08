@@ -501,19 +501,19 @@ const Navbarfrist = () => {
             {openDropdown === "ledger" && (
               <div className='ps-3'>
                 <Link
-                  to='/add-invoice'
-                  style={navLinkStyle("/add-invoice")}
+                  to='/test'
+                  style={navLinkStyle("/test")}
                   onClick={closeSidebar}
                 >
-                  Add New Billing
+                  view ledger
                 </Link>
-                <Link
+                {/* <Link
                   to='/display-invoice'
                   style={navLinkStyle("/display-invoice")}
                   onClick={closeSidebar}
                 >
                   View Billing
-                </Link>
+                </Link> */}
               </div>
             )}
           </div>
