@@ -114,7 +114,7 @@ const BillAdjustmentModal = forwardRef(
       setRows(updated);
     };
 
-    const handleKeyDown = (e, index) => {
+    const handleKeyDown = async (e, index) => {
       const selectedType = rows[index].type;
 
       if (e.key === "Enter") {
@@ -123,7 +123,6 @@ const BillAdjustmentModal = forwardRef(
         if (selectedType === "Adj Ref") {
           openPendingModal(index); // ✅ Open pending bills modal
         }
-
         if (selectedType === "New Ref") {
           const pendingAmount = amount - totalAdjusted;
           console.log(pendingAmount, "Before");
@@ -132,8 +131,8 @@ const BillAdjustmentModal = forwardRef(
             alert("Nothing to adjust.");
             return;
           }
-          console.log(pendingAmount, "after");
 
+          console.log(pendingAmount, "after");
           console.log(selectedVendorId, "Payload");
 
           const payload = {
@@ -141,29 +140,65 @@ const BillAdjustmentModal = forwardRef(
             vendorId: selectedVendorId,
           };
 
-          fetch(
-            "https://aadarshagency.onrender.com/api/purchase/adjust-vendor-direct",
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(payload),
-            }
-          )
-            .then((res) => {
-              if (!res.ok) throw new Error("Failed");
-              alert("✅ Amount adjusted successfully");
+          try {
+            const res = await axiosInstance.post(
+              "/purchase/adjust-vendor-direct",
+              payload
+            );
 
-              const updated = [...rows];
-              updated[index].particulars = "New Ref Adjustment";
-              updated[index].amount = pendingAmount.toFixed(2);
-              updated[index].balance = 0;
-              setRows(updated);
-            })
-            .catch((err) => {
-              console.error(err);
-              alert("❌ Failed to adjust amount");
-            });
+            alert("✅ Amount adjusted successfully");
+
+            const updated = [...rows];
+            updated[index].particulars = "New Ref Adjustment";
+            updated[index].amount = pendingAmount.toFixed(2);
+            updated[index].balance = 0;
+            setRows(updated);
+          } catch (err) {
+            console.error(err);
+            alert("❌ Failed to adjust amount");
+          }
         }
+
+        // if (selectedType === "New Ref") {
+        //   const pendingAmount = amount - totalAdjusted;
+        //   console.log(pendingAmount, "Before");
+
+        //   if (pendingAmount <= 0) {
+        //     alert("Nothing to adjust.");
+        //     return;
+        //   }
+        //   console.log(pendingAmount, "after");
+
+        //   console.log(selectedVendorId, "Payload");
+
+        //   const payload = {
+        //     amount: Number(pendingAmount.toFixed(2)),
+        //     vendorId: selectedVendorId,
+        //   };
+
+        //   fetch(
+        //     "https://aadarshagency.onrender.com/api/purchase/adjust-vendor-direct",
+        //     {
+        //       method: "POST",
+        //       headers: { "Content-Type": "application/json" },
+        //       body: JSON.stringify(payload),
+        //     }
+        //   )
+        //     .then((res) => {
+        //       if (!res.ok) throw new Error("Failed");
+        //       alert("✅ Amount adjusted successfully");
+
+        //       const updated = [...rows];
+        //       updated[index].particulars = "New Ref Adjustment";
+        //       updated[index].amount = pendingAmount.toFixed(2);
+        //       updated[index].balance = 0;
+        //       setRows(updated);
+        //     })
+        //     .catch((err) => {
+        //       console.error(err);
+        //       alert("❌ Failed to adjust amount");
+        //     });
+        // }
       }
     };
 
@@ -208,7 +243,7 @@ const BillAdjustmentModal = forwardRef(
 
       const payload = {
         vendorId: selectedVendorId,
-        amount: Number(pending),
+        amount: pending,
       };
 
       try {
