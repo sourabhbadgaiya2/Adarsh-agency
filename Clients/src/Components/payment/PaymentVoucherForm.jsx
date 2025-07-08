@@ -207,9 +207,8 @@ const PaymentVoucherForm = () => {
                 <Form.Group className='mb-3'>
                   <Form.Label>
                     Date{" "}
-                    <span>
-                      Press Enter to trigger a function (for testing or
-                      filtering)
+                    <span style={{ fontSize: "12px", color: "red" }}>
+                      (Press Enter to trigger a function)
                     </span>
                   </Form.Label>
                   <Form.Control
