@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import DataTable from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../../Config/axios";
 
 const PendingBillsModal = ({
   show,
@@ -141,18 +142,23 @@ const PendingBillsModal = ({
     };
 
     try {
-      const res = await fetch(
-        "https://aadarshagency.onrender.com/api/purchase/adjust-vendor-direct",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        }
-      );
+      // const res = await fetch(
+      //   "https://aadarshagency.onrender.com/api/purchase/adjust-vendor-direct",
+      //   {
+      //     method: "POST",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //     body: JSON.stringify(payload),
+      //   }
+      // );
 
-      if (!res.ok) throw new Error("Server error");
+      // if (!res.ok) throw new Error("Server error");
+
+      const res = await axiosInstance.post(
+        "/purchase/adjust-vendor-direct",
+        payload
+      );
 
       alert("Payment adjusted successfully");
       onHide();
