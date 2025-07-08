@@ -9,7 +9,7 @@ import { Modal, Form, Table } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 const BillAdjustmentModal = forwardRef(
-  ({ show, onHide, amount, openPendingModal }, ref) => {
+  ({ show, onHide, amount, openPendingModal, selectedVendorId }, ref) => {
     const [rows, setRows] = useState([
       {
         type: "Adj Ref",
@@ -21,7 +21,10 @@ const BillAdjustmentModal = forwardRef(
       },
     ]);
 
+    // console.log(selectedVendorId, "LION");
+
     const [focusedRowIndex, setFocusedRowIndex] = useState(null);
+    const [cashDiscount, setCashDiscount] = useState(0);
 
     const selectRef = useRef(); // Ref for first dropdown
 
@@ -61,28 +64,92 @@ const BillAdjustmentModal = forwardRef(
 
     // 🔁 Expose method to parent to insert bill
     useImperativeHandle(ref, () => ({
-      insertBill: (rowIndex, bill) => {
+      // insertBill: (rowIndex, bill) => {
+      //   const updated = [...rows];
+      //   updated[rowIndex].particulars = bill.particulars;
+      //   updated[rowIndex].amount = bill.pending;
+      //   updated[rowIndex].balance = bill.pending;
+      //   setRows(updated);
+      // },
+
+      insertBill: (rowIndex, { bill, itemId, enteredAmount }) => {
         const updated = [...rows];
-        updated[rowIndex].particulars = bill.particulars;
-        updated[rowIndex].amount = bill.pending;
-        updated[rowIndex].balance = bill.pending;
+        updated[rowIndex] = {
+          ...updated[rowIndex],
+          particulars: `Bill #${bill.entryNumber}`,
+          amount: enteredAmount,
+          balance: bill.pendingAmount,
+          purchaseEntryId: bill._id,
+          itemId: itemId,
+        };
         setRows(updated);
       },
     }));
 
     const handleChange = (index, field, value) => {
       const updated = [...rows];
+
       updated[index][field] = value;
+
+      // ✅ If type is changed to "New Ref", set amount = pending
+      if (field === "type" && value === "New Ref") {
+        const pendingAmount = amount - totalAdjusted;
+
+        if (pendingAmount > 0) {
+          updated[index].amount = pendingAmount.toFixed(2);
+        }
+      }
+
       setRows(updated);
     };
 
-    // 🔁 Only open modal when Enter is pressed & "Adj Ref" is selected
     const handleKeyDown = (e, index) => {
-      console.log("Pressed:", e.key, "on row", index); // 👈 Add this
       const selectedType = rows[index].type;
-      if (e.key === "Enter" && selectedType === "Adj Ref") {
-        console.log("Opening pending modal"); // 👈 Add this too
-        openPendingModal(index);
+
+      if (e.key === "Enter") {
+        e.preventDefault();
+
+        if (selectedType === "Adj Ref") {
+          openPendingModal(index); // ✅ Open pending bills modal
+        }
+
+        if (selectedType === "New Ref" || selectedType === "Clear") {
+          const pendingAmount = amount - totalAdjusted;
+          console.log(pendingAmount, "Before");
+
+          if (pendingAmount <= 0) {
+            alert("Nothing to adjust.");
+            return;
+          }
+          console.log(pendingAmount, "after");
+
+          console.log(selectedVendorId, "Payload");
+
+          const payload = {
+            amount: Number(pendingAmount.toFixed(2)),
+            vendorId: selectedVendorId,
+          };
+
+          fetch("http://localhost:8080/api/purchase/adjust-vendor-direct", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          })
+            .then((res) => {
+              if (!res.ok) throw new Error("Failed");
+              alert("✅ Amount adjusted successfully");
+
+              const updated = [...rows];
+              updated[index].particulars = "New Ref Adjustment";
+              updated[index].amount = pendingAmount.toFixed(2);
+              updated[index].balance = 0;
+              setRows(updated);
+            })
+            .catch((err) => {
+              console.error(err);
+              alert("❌ Failed to adjust amount");
+            });
+        }
       }
     };
 
@@ -92,14 +159,33 @@ const BillAdjustmentModal = forwardRef(
     }, 0);
 
     const handleSave = async () => {
-      try {
-        onHide(); // modal band karo
+      console.log("📦 Saving payload:", selectedVendorId, pending);
 
-        // 🔁 Navigate to ledger page
+      const payload = {
+        vendorId: selectedVendorId,
+        amount: Number(pending),
+      };
+
+      try {
+        const res = await fetch(
+          "http://localhost:8080/api/purchase/adjust-vendor-direct",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+          }
+        );
+
+        if (!res.ok) throw new Error("Server error");
+
+        alert("Payment adjusted successfully");
+        onHide();
         navigate("/ledger");
       } catch (error) {
-        console.error("Save error:", error);
-        alert("Error saving ledger. Please try again.");
+        console.error("Error saving adjustment:", error);
+        alert("Failed to save adjustment");
       }
     };
 
@@ -126,7 +212,7 @@ const BillAdjustmentModal = forwardRef(
                 <th>Balance</th>
               </tr>
             </thead>
-            <tbody>
+            {/* <tbody>
               {rows.map((row, idx) => (
                 <tr key={idx}>
                   <td>
@@ -145,7 +231,7 @@ const BillAdjustmentModal = forwardRef(
                       <option value='Clear'>Clear</option>
                     </Form.Control>
                   </td>
-                  {/* <td>
+                  <td>
                     <Form.Control
                       value={row.particulars || ""}
                       onChange={(e) =>
@@ -186,7 +272,92 @@ const BillAdjustmentModal = forwardRef(
                         handleChange(idx, "balance", e.target.value)
                       }
                     />
-                  </td> */}
+                  </td>
+                </tr>
+              ))}
+            </tbody> */}
+
+            <tbody>
+              {rows.map((row, idx) => (
+                <tr key={idx}>
+                  {/* TYPE */}
+                  <td>
+                    <Form.Control
+                      as='select'
+                      ref={idx === 0 ? selectRef : null}
+                      value={row.type || ""}
+                      onFocus={() => setFocusedRowIndex(idx)}
+                      onChange={(e) =>
+                        handleChange(idx, "type", e.target.value)
+                      }
+                      onKeyDown={(e) => handleKeyDown(e, idx)}
+                    >
+                      <option value='Adj Ref'>Adj Ref</option>
+                      <option value='New Ref'>New Ref</option>
+                      <option value='Clear'>Clear</option>
+                    </Form.Control>
+                  </td>
+
+                  {/* PARTICULARS */}
+                  <td>
+                    <Form.Control
+                      value={row.particulars || ""}
+                      onChange={(e) =>
+                        handleChange(idx, "particulars", e.target.value)
+                      }
+                      disabled={row.type === "New Ref"}
+                    />
+                  </td>
+
+                  {/* DUE DAYS */}
+                  <td>
+                    <Form.Control
+                      type='number'
+                      value={row.dueDays || ""}
+                      onChange={(e) =>
+                        handleChange(idx, "dueDays", e.target.value)
+                      }
+                      disabled={row.type === "New Ref"}
+                    />
+                  </td>
+
+                  {/* AMOUNT INPUT — ENABLE only for "New Ref" */}
+                  <td>
+                    <Form.Control
+                      type='number'
+                      value={row.amount || ""}
+                      onChange={(e) =>
+                        handleChange(idx, "amount", e.target.value)
+                      }
+                      onKeyDown={(e) => handleKeyDown(e, idx)}
+                      placeholder={
+                        row.type === "New Ref" ? "Enter amount to adjust" : ""
+                      }
+                      disabled={row.type !== "New Ref"}
+                    />
+                  </td>
+
+                  {/* REMARK */}
+                  <td>
+                    <Form.Control
+                      value={row.remark || ""}
+                      onChange={(e) =>
+                        handleChange(idx, "remark", e.target.value)
+                      }
+                      disabled={row.type === "New Ref"}
+                    />
+                  </td>
+
+                  {/* BALANCE */}
+                  <td>
+                    <Form.Control
+                      value={row.balance || ""}
+                      onChange={(e) =>
+                        handleChange(idx, "balance", e.target.value)
+                      }
+                      disabled={row.type === "New Ref"}
+                    />
+                  </td>
                 </tr>
               ))}
             </tbody>

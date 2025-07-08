@@ -10,13 +10,6 @@ import {
   fetchVendors,
 } from "../../redux/features/vendor/VendorThunks";
 
-// const vendorList = [
-//   { name: "Vendor A", city: "Delhi", balance: 12000 },
-//   { name: "Vendor B", city: "Bhopal", balance: 7500 },
-//   { name: "Vendor C", city: "Indore", balance: 9500 },
-//   { name: "Vendor D", city: "Mumbai", balance: 18300 },
-// ];
-
 const PaymentVoucherForm = () => {
   const [showModal, setShowModal] = useState(false);
   const [vendorIndex, setVendorIndex] = useState(0);
@@ -48,7 +41,7 @@ const PaymentVoucherForm = () => {
       if (res.payload?.length > 0) {
         setShowPendingModal(true);
       } else {
-        // alert("No pending bills available.");
+        alert("No pending bills available.");
       }
     });
   };
@@ -166,6 +159,8 @@ const PaymentVoucherForm = () => {
     }, 100);
   };
 
+  // console.log(vendorBills, "LLL");
+
   useEffect(() => {
     if (openBillModalRequested && vendorBills.length > 0) {
       setShowBillModal(true);
@@ -268,7 +263,7 @@ const PaymentVoucherForm = () => {
                   {vendor?.city}
                 </p>
                 <p className='mb-0 text-end' style={{ flex: 1 }}>
-                  {vendor?.balance}
+                  {vendorBills?.balance}
                 </p>
               </div>
             </div>
@@ -308,8 +303,7 @@ const PaymentVoucherForm = () => {
             <strong>City:</strong> {selectedVendor?.city}
           </p>
           <p>
-            <strong>Total Balance:</strong> ₹
-            {selectedVendor?.balance?.toLocaleString()}
+            <strong>Total Balance:</strong> ₹{vendorBills[0]?.pendingAmount}
           </p>
 
           <Form.Group as={Row} className='mb-3' controlId='formDebit'>
@@ -338,9 +332,10 @@ const PaymentVoucherForm = () => {
         openPendingModal={(rowIndex) => {
           handleOpenPendingBills(rowIndex); // ✅ yeh safe version use karo
         }}
+        selectedVendorId={selectedVendor?._id} // 👈 pass vendorId
       />
 
-      <PendingBillsModal
+      {/* <PendingBillsModal
         show={!!showPendingModal}
         onHide={() => setShowPendingModal(false)}
         onBillSelect={(bill) => {
@@ -348,6 +343,15 @@ const PaymentVoucherForm = () => {
           setShowPendingModal(false);
         }}
         bills={vendorBills}
+      /> */}
+      <PendingBillsModal
+        show={!!showPendingModal}
+        onHide={() => setShowPendingModal(false)}
+        bills={vendorBills}
+        onSelectItem={(result) => {
+          billAdjustmentModalRef.current?.insertBill(pendingRowIndex, result);
+          setShowPendingModal(false);
+        }}
       />
     </Container>
   );
