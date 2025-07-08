@@ -259,9 +259,9 @@ exports.adjustNewRef = async (req, res) => {
   console.log(req.body, "KKI");
   const { vendorId, amount } = req.body;
 
-  if (!vendorId || !amount) {
-    return res.status(400).json({ message: "Missing vendorId or amount" });
-  }
+  // if (!vendorId || !amount) {
+  //   return res.status(400).json({ message: "Missing vendorId or amount" });
+  // }
 
   // 1. Adjust Purchase Entries
   const purchaseEntries = await Purchase.find({

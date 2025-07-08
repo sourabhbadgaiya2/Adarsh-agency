@@ -124,7 +124,7 @@ const BillAdjustmentModal = forwardRef(
           openPendingModal(index); // ✅ Open pending bills modal
         }
 
-        if (selectedType === "New Ref" || selectedType === "Clear") {
+        if (selectedType === "New Ref") {
           const pendingAmount = amount - totalAdjusted;
           console.log(pendingAmount, "Before");
 
