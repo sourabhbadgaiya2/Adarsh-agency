@@ -299,9 +299,7 @@ exports.adjustNewRef = async (req, res) => {
     debit: amount, // Amount adjusted
     credit: 0, // Or use `remaining` if you need to track leftover
     entryNumber: `LDG-${Date.now()}`,
-    remark: `Adjusted ₹${amount.toFixed(
-      2
-    )} | Balance after: ₹${totalBalance.toFixed(2)}`,
+    remark: `Adjusted ₹${amount.toFixed(2)} | `,
   });
 
   return res.json({
