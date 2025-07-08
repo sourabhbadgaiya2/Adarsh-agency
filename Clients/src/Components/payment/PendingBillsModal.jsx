@@ -62,9 +62,23 @@ const PendingBillsModal = ({
       cell: (row) => `₹ ${row?.pendingAmount || 0}`,
       right: true,
     },
+    // {
+    //   name: "BILL DATE",
+    //   selector: (row) => row.billDate || "N/A", // assuming billDate is in YYYY-MM-DD
+    //   sortable: true,
+    // },
     {
       name: "BILL DATE",
-      selector: (row) => row.billDate || "N/A", // assuming billDate is in YYYY-MM-DD
+      selector: (row) => {
+        if (row.billDate) return row.billDate;
+
+        const today = new Date();
+        const day = String(today.getDate()).padStart(2, "0");
+        const month = String(today.getMonth() + 1).padStart(2, "0");
+        const year = today.getFullYear();
+
+        return `${day}-${month}-${year}`;
+      },
       sortable: true,
     },
     {
@@ -72,26 +86,26 @@ const PendingBillsModal = ({
       selector: (row) => row.dueDate || "N/A", // assume dueDate field
       sortable: true,
     },
-    {
-      name: "DAYS",
-      selector: (row) => {
-        const today = new Date();
-        const due = new Date(row.dueDate);
-        const diff = Math.ceil((today - due) / (1000 * 60 * 60 * 24));
-        return isNaN(diff) ? "-" : Math.abs(diff);
-      },
-      center: true,
-    },
-    {
-      name: "BALANCE",
-      selector: (row) => row.balance || 0,
-      cell: (row) =>
-        `₹ ${Math.abs(row.balance || 0).toLocaleString()} ${
-          row.balance >= 0 ? "Dr" : "Cr"
-        }`,
-      sortable: true,
-      right: true,
-    },
+    // {
+    //   name: "DAYS",
+    //   selector: (row) => {
+    //     const today = new Date();
+    //     const due = new Date(row.dueDate);
+    //     const diff = Math.ceil((today - due) / (1000 * 60 * 60 * 24));
+    //     return isNaN(diff) ? "-" : Math.abs(diff);
+    //   },
+    //   center: true,
+    // },
+    // {
+    //   name: "BALANCE",
+    //   selector: (row) => row.balance || 0,
+    //   cell: (row) =>
+    //     `₹ ${Math.abs(row.balance || 0).toLocaleString()} ${
+    //       row.balance >= 0 ? "Dr" : "Cr"
+    //     }`,
+    //   sortable: true,
+    //   right: true,
+    // },
     {
       name: "AMOUNT",
       cell: (row) => (
@@ -128,7 +142,7 @@ const PendingBillsModal = ({
 
     try {
       const res = await fetch(
-        "http://localhost:8080/api/purchase/adjust-vendor-direct",
+        "https://aadarshagency.onrender.com/api/purchase/adjust-vendor-direct",
         {
           method: "POST",
           headers: {

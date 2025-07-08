@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import { Modal, Form, Table } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../../Config/axios";
 
 const BillAdjustmentModal = forwardRef(
   (
@@ -31,7 +32,7 @@ const BillAdjustmentModal = forwardRef(
       },
     ]);
 
-    // console.log(selectedVendorId, "LION");
+    console.log(selectedVendorId, "LION");
 
     const [focusedRowIndex, setFocusedRowIndex] = useState(null);
     const [cashDiscount, setCashDiscount] = useState(0);
@@ -140,11 +141,14 @@ const BillAdjustmentModal = forwardRef(
             vendorId: selectedVendorId,
           };
 
-          fetch("http://localhost:8080/api/purchase/adjust-vendor-direct", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload),
-          })
+          fetch(
+            "https://aadarshagency.onrender.com/api/purchase/adjust-vendor-direct",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload),
+            }
+          )
             .then((res) => {
               if (!res.ok) throw new Error("Failed");
               alert("✅ Amount adjusted successfully");
@@ -168,6 +172,37 @@ const BillAdjustmentModal = forwardRef(
       return sum + (isNaN(amt) ? 0 : amt);
     }, 0);
 
+    // const handleSave = async () => {
+    //   console.log("📦 Saving payload:", selectedVendorId, pending);
+
+    //   const payload = {
+    //     vendorId: selectedVendorId,
+    //     amount: Number(pending),
+    //   };
+
+    //   try {
+    //     const res = await fetch(
+    //       "http://localhost:8080/api/purchase/adjust-vendor-direct",
+    //       {
+    //         method: "POST",
+    //         headers: {
+    //           "Content-Type": "application/json",
+    //         },
+    //         body: JSON.stringify(payload),
+    //       }
+    //     );
+
+    //     if (!res.ok) throw new Error("Server error");
+
+    //     alert("Payment adjusted successfully");
+    //     onHide();
+    //     navigate("/ledger");
+    //   } catch (error) {
+    //     console.error("Error saving adjustment:", error);
+    //     // alert("Failed to save adjustment");
+    //   }
+    // };
+
     const handleSave = async () => {
       console.log("📦 Saving payload:", selectedVendorId, pending);
 
@@ -177,25 +212,19 @@ const BillAdjustmentModal = forwardRef(
       };
 
       try {
-        const res = await fetch(
-          "http://localhost:8080/api/purchase/adjust-vendor-direct",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(payload),
-          }
+        const res = await axiosInstance.post(
+          "/purchase/adjust-vendor-direct",
+          payload
         );
 
-        if (!res.ok) throw new Error("Server error");
+        if (res.status !== 200) throw new Error("Server error");
 
-        alert("Payment adjusted successfully");
+        alert("✅ Payment adjusted successfully");
         onHide();
         navigate("/ledger");
       } catch (error) {
-        console.error("Error saving adjustment:", error);
-        // alert("Failed to save adjustment");
+        console.error("❌ Error saving adjustment:", error.message);
+        alert("Failed to save adjustment");
       }
     };
 

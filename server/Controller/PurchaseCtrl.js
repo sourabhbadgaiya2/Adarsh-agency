@@ -255,34 +255,6 @@ exports.updatePendingAmount = async (req, res) => {
 
 //  "New Ref" Adjustment
 
-// exports.adjustNewRef = async (req, res) => {
-//   console.log(req.body, "KKI");
-//   const { vendorId, amount } = req.body;
-
-//   if (!vendorId || !amount) {
-//     return res.status(400).json({ message: "Missing vendorId or amount" });
-//   }
-
-//   const purchaseEntries = await Purchase.find({
-//     vendorId,
-//     pendingAmount: { $gt: 0 },
-//   }).sort({ date: 1 });
-
-//   let remaining = amount;
-
-//   for (const entry of purchaseEntries) {
-//     if (remaining <= 0) break;
-
-//     const deduct = Math.min(entry.pendingAmount, remaining);
-//     entry.pendingAmount -= deduct;
-//     remaining -= deduct;
-
-//     await entry.save();
-//   }
-
-//   return res.json({ message: "Vendor balance adjusted", remaining });
-// };
-
 exports.adjustNewRef = async (req, res) => {
   console.log(req.body, "KKI");
   const { vendorId, amount } = req.body;
@@ -303,17 +275,17 @@ exports.adjustNewRef = async (req, res) => {
     if (remaining <= 0) break;
 
     const deduct = Math.min(entry.pendingAmount, remaining);
-    entry.pendingAmount -= deduct;
-    remaining -= deduct;
 
-    await entry.save();
+    console.log(deduct, "deduct");
+    const newPending = entry.pendingAmount - deduct;
+
+    entry.pendingAmount = newPending;
+    await entry.save(); // ✅ save updated value
+    remaining -= deduct;
   }
 
   // 2. 🧾 Calculate total balance (after adjustment)
-  const updatedVendorPurchases = await Purchase.find({
-    vendorId,
-  });
-
+  const updatedVendorPurchases = await Purchase.find({ vendorId });
   const totalBalance = updatedVendorPurchases.reduce((sum, p) => {
     return sum + (p.pendingAmount || 0);
   }, 0);
@@ -321,12 +293,12 @@ exports.adjustNewRef = async (req, res) => {
   // 3. 🧾 Create Ledger Entry
   await Ledger.create({
     vendorId,
-    billId: null, // Since this is a new_ref, not a specific bill
+    billId: null,
     date: new Date(),
     refType: "new_ref",
-    debit: amount, // The full amount adjusted
-    credit: updatedVendorPurchases.pendingAmount,
-    entryNumber: `LDG-${Date.now()}`, // Or use a better system
+    debit: amount, // Amount adjusted
+    credit: 0, // Or use `remaining` if you need to track leftover
+    entryNumber: `LDG-${Date.now()}`,
     remark: `Adjusted ₹${amount.toFixed(
       2
     )} | Balance after: ₹${totalBalance.toFixed(2)}`,
@@ -338,6 +310,3 @@ exports.adjustNewRef = async (req, res) => {
     totalBalance,
   });
 };
-
-
-
