@@ -156,7 +156,7 @@ const PendingBillsModal = ({
       // if (!res.ok) throw new Error("Server error");
 
       const res = await axiosInstance.post(
-        "/purchase/adjust-vendor-direct",
+        "/purchase/update-pending-amount",
         payload
       );
 

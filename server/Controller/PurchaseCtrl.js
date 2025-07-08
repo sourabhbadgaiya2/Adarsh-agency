@@ -1,6 +1,5 @@
 const Purchase = require("../Models/PurchaseModel");
 const Product = require("../Models/ProductModel");
-const Ledger = require("../Models/Ledger"); // Make sure you import your model
 
 // exports.createPurchase = async (req, res) => {
 //   try {
@@ -211,9 +210,9 @@ exports.getNextEntryNumber = async (req, res) => {
 exports.updatePendingAmount = async (req, res) => {
   try {
     console.log(req.body);
-    const { purchaseEntryId, amount, items } = req.body;
+    const { vendorId, amount, items } = req.body;
 
-    const purchaseEntry = await Purchase.findById(purchaseEntryId);
+    const purchaseEntry = await Purchase.findById(vendorId);
     if (!purchaseEntry) {
       return res.status(404).json({ message: "Purchase entry not found" });
     }
@@ -254,16 +253,14 @@ exports.updatePendingAmount = async (req, res) => {
 };
 
 //  "New Ref" Adjustment
-
 exports.adjustNewRef = async (req, res) => {
   console.log(req.body, "KKI");
   const { vendorId, amount } = req.body;
 
-  // if (!vendorId || !amount) {
-  //   return res.status(400).json({ message: "Missing vendorId or amount" });
-  // }
+  if (!vendorId || !amount) {
+    return res.status(400).json({ message: "Missing vendorId or amount" });
+  }
 
-  // 1. Adjust Purchase Entries
   const purchaseEntries = await Purchase.find({
     vendorId,
     pendingAmount: { $gt: 0 },
@@ -274,37 +271,14 @@ exports.adjustNewRef = async (req, res) => {
   for (const entry of purchaseEntries) {
     if (remaining <= 0) break;
 
+    console.log(entry, "entry");
+
     const deduct = Math.min(entry.pendingAmount, remaining);
-
-    console.log(deduct, "deduct");
-    const newPending = entry.pendingAmount - deduct;
-
-    entry.pendingAmount = newPending;
-    await entry.save(); // ✅ save updated value
+    entry.pendingAmount -= deduct;
     remaining -= deduct;
+
+    await entry.save();
   }
 
-  // 2. 🧾 Calculate total balance (after adjustment)
-  const updatedVendorPurchases = await Purchase.find({ vendorId });
-  const totalBalance = updatedVendorPurchases.reduce((sum, p) => {
-    return sum + (p.pendingAmount || 0);
-  }, 0);
-
-  // 3. 🧾 Create Ledger Entry
-  await Ledger.create({
-    vendorId,
-    billId: null,
-    date: new Date(),
-    refType: "new_ref",
-    debit: amount, // Amount adjusted
-    credit: 0, // Or use `remaining` if you need to track leftover
-    entryNumber: `LDG-${Date.now()}`,
-    remark: `Adjusted ₹${amount.toFixed(2)} | `,
-  });
-
-  return res.json({
-    message: "Vendor balance adjusted",
-    remaining,
-    totalBalance,
-  });
+  return res.json({ message: "Vendor balance adjusted", remaining });
 };
