@@ -205,7 +205,13 @@ const PaymentVoucherForm = () => {
             <Row>
               <Col md={6}>
                 <Form.Group className='mb-3'>
-                  <Form.Label>Date</Form.Label>
+                  <Form.Label>
+                    Date{" "}
+                    <span>
+                      Press Enter to trigger a function (for testing or
+                      filtering)
+                    </span>
+                  </Form.Label>
                   <Form.Control
                     type='text'
                     name='date'
