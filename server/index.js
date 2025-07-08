@@ -40,7 +40,7 @@ mongoose
 app.use(express.static(path.join(__dirname, "public")));
 // app.use("public", express.static(path.join(__dirname, "public/Images")));
 
-// app.use("/admin", adminRoute);
+app.use("/payment", require("./Routes/payment.routes"));
 // app.use("/api/firm", FirmRoute);
 app.use("/api/company", CompanyRoute);
 app.use("/api/category", CategoryRoute);
@@ -59,11 +59,6 @@ const port = process.env.PORT;
 // -----------------------
 
 // 404 Not Found
-app.use((req, res, next) => {
-  const error = new Error("🔍 Resource not found");
-  error.status = 404;
-  next(error);
-});
 
 // Global Error Handler
 app.use((err, req, res, next) => {
@@ -73,6 +68,12 @@ app.use((err, req, res, next) => {
     message: err.message || "Internal Server Error",
     stack: process.env.NODE_ENV === "production" ? null : err.stack,
   });
+});
+
+app.use((req, res, next) => {
+  const error = new Error("🔍 Resource not found");
+  error.status = 404;
+  next(error);
 });
 
 app.listen(port, () => {

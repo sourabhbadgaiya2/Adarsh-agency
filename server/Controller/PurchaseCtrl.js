@@ -1,16 +1,47 @@
 const Purchase = require("../Models/PurchaseModel");
 const Product = require("../Models/ProductModel");
 
+// exports.createPurchase = async (req, res) => {
+//   try {
+//     const newPurchase = new Purchase(req.body);
+//     const savedPurchase = await newPurchase.save();
+
+//     // Update availableQty for each product in items
+//     for (const item of savedPurchase.items) {
+//       const product = await Product.findById(item.productId);
+//       if (!product) continue;
+//       product.availableQty -= item.quantity;
+//       await product.save();
+//     }
+
+//     res.status(201).json(savedPurchase);
+//   } catch (err) {
+//     res.status(400).json({ error: err.message });
+//   }
+// };
+
 exports.createPurchase = async (req, res) => {
   try {
-    const newPurchase = new Purchase(req.body);
+    // Step 1: Calculate total of all item.totalAmount
+    let totalBalance = 0;
+    for (const item of req.body.items) {
+      totalBalance += parseFloat(item.totalAmount || 0);
+    }
+
+    // Step 2: Create new purchase object with balance
+    const newPurchase = new Purchase({
+      ...req.body, // Spread all existing fields
+      pendingAmount: totalBalance, // Override or set balance field
+    });
+
+    // Step 3: Save the new purchase
     const savedPurchase = await newPurchase.save();
 
-    // Update availableQty for each product in items
+    // Step 4: Update availableQty for each product
     for (const item of savedPurchase.items) {
       const product = await Product.findById(item.productId);
       if (!product) continue;
-      product.availableQty -= item.quantity;
+      product.availableQty -= Number(item.quantity);
       await product.save();
     }
 
@@ -131,3 +162,122 @@ exports.getNextEntryNumber = async (req, res) => {
 //     return res.status(500).json({ message: "Internal server error." });
 //   }
 // };
+
+// exports.minusItemAmount = async (req, res) => {
+//   try {
+//     const { billId, itemId, enteredAmount } = req.body;
+
+//     if (!billId || !itemId || enteredAmount == null) {
+//       return res.status(400).json({ error: "Missing required fields." });
+//     }
+
+//     // Fetch the bill by billId
+//     const bill = await Bill.findById(billId);
+//     if (!bill) {
+//       return res.status(404).json({ error: "Bill not found." });
+//     }
+
+//     // Find the item by itemId in the bill's items array
+//     const item = bill.items.find((it) => it._id.toString() === itemId);
+
+//     if (!item) {
+//       return res.status(404).json({ error: "Item not found in bill." });
+//     }
+
+//     // Convert amounts to numbers (they might be strings)
+//     const originalAmount = Number(item.totalAmount);
+//     const subtractAmount = Number(enteredAmount);
+//     const remainingAmount = originalAmount - subtractAmount;
+
+//     // Optional: Update the amount inside DB
+//     item.totalAmount = remainingAmount;
+//     await bill.save();
+
+//     // Return updated item or remaining amount
+//     res.json({
+//       message: "Amount subtracted successfully.",
+//       itemId: item._id,
+//       originalAmount,
+//       enteredAmount: subtractAmount,
+//       remainingAmount,
+//     });
+//   } catch (error) {
+//     console.error("Error subtracting amount:", error);
+//     res.status(500).json({ error: "Internal server error." });
+//   }
+// };
+
+exports.updatePendingAmount = async (req, res) => {
+  try {
+    console.log(req.body);
+    const { purchaseEntryId, amount, items } = req.body;
+
+    const purchaseEntry = await Purchase.findById(purchaseEntryId);
+    if (!purchaseEntry) {
+      return res.status(404).json({ message: "Purchase entry not found" });
+    }
+
+    let updatedPendingAmount = Number(purchaseEntry.pendingAmount);
+
+    // ✅ If specific items are passed
+    if (items && items.length > 0) {
+      items.forEach(({ itemId, amount: paidAmount }) => {
+        const item = purchaseEntry.items.id(itemId);
+        if (item) {
+          const itemAmount = Number(item.totalAmount);
+          const deduction = Math.min(itemAmount, paidAmount);
+
+          item.totalAmount -= deduction; // update item amount
+          updatedPendingAmount -= deduction; // reduce from pendingAmount
+        }
+      });
+    } else {
+      // ✅ If no items, deduct from total pendingAmount
+      const deduction = Math.min(updatedPendingAmount, amount);
+      updatedPendingAmount -= deduction;
+    }
+
+    // Ensure no negative amounts
+    purchaseEntry.pendingAmount = Math.max(0, updatedPendingAmount);
+
+    await purchaseEntry.save();
+
+    return res.status(200).json({
+      message: "Pending amount updated successfully",
+      updatedEntry: purchaseEntry,
+    });
+  } catch (error) {
+    console.error("Error updating pending amount:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+//  "New Ref" Adjustment
+
+exports.adjustNewRef = async (req, res) => {
+  console.log(req.body, "KKI");
+  const { vendorId, amount } = req.body;
+
+  if (!vendorId || !amount) {
+    return res.status(400).json({ message: "Missing vendorId or amount" });
+  }
+
+  const purchaseEntries = await Purchase.find({
+    vendorId,
+    pendingAmount: { $gt: 0 },
+  }).sort({ date: 1 });
+
+  let remaining = amount;
+
+  for (const entry of purchaseEntries) {
+    if (remaining <= 0) break;
+
+    const deduct = Math.min(entry.pendingAmount, remaining);
+    entry.pendingAmount -= deduct;
+    remaining -= deduct;
+
+    await entry.save();
+  }
+
+  return res.json({ message: "Vendor balance adjusted", remaining });
+};
