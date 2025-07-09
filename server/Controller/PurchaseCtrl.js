@@ -1,25 +1,6 @@
 const Purchase = require("../Models/PurchaseModel");
 const Product = require("../Models/ProductModel");
 
-// exports.createPurchase = async (req, res) => {
-//   try {
-//     const newPurchase = new Purchase(req.body);
-//     const savedPurchase = await newPurchase.save();
-
-//     // Update availableQty for each product in items
-//     for (const item of savedPurchase.items) {
-//       const product = await Product.findById(item.productId);
-//       if (!product) continue;
-//       product.availableQty -= item.quantity;
-//       await product.save();
-//     }
-
-//     res.status(201).json(savedPurchase);
-//   } catch (err) {
-//     res.status(400).json({ error: err.message });
-//   }
-// };
-
 exports.createPurchase = async (req, res) => {
   try {
     // Step 1: Calculate total of all item.totalAmount
@@ -135,77 +116,6 @@ exports.getNextEntryNumber = async (req, res) => {
     res.status(500).json({ error: "Failed to get next entry number" });
   }
 };
-
-// const saveLedger = async (req, res) => {
-//   try {
-//     const { amount, adjustedAmount, pendingAmount, rows } = req.body;
-
-//     for (const row of rows) {
-//       const { billId, amount: rowAmount } = row;
-
-//       if (!billId) continue; // ignore if no ID
-
-//       const bill = await Bill.findById(billId);
-
-//       if (bill) {
-//         const adjusted = parseFloat(rowAmount) || 0;
-//         bill.pending = Math.max(0, bill.pending - adjusted);
-//         bill.status = bill.pending === 0 ? "Settled" : "Partial";
-
-//         await bill.save();
-//       }
-//     }
-
-//     return res.status(200).json({ message: "Ledger updated successfully." });
-//   } catch (error) {
-//     console.error("Ledger save error:", error);
-//     return res.status(500).json({ message: "Internal server error." });
-//   }
-// };
-
-// exports.minusItemAmount = async (req, res) => {
-//   try {
-//     const { billId, itemId, enteredAmount } = req.body;
-
-//     if (!billId || !itemId || enteredAmount == null) {
-//       return res.status(400).json({ error: "Missing required fields." });
-//     }
-
-//     // Fetch the bill by billId
-//     const bill = await Bill.findById(billId);
-//     if (!bill) {
-//       return res.status(404).json({ error: "Bill not found." });
-//     }
-
-//     // Find the item by itemId in the bill's items array
-//     const item = bill.items.find((it) => it._id.toString() === itemId);
-
-//     if (!item) {
-//       return res.status(404).json({ error: "Item not found in bill." });
-//     }
-
-//     // Convert amounts to numbers (they might be strings)
-//     const originalAmount = Number(item.totalAmount);
-//     const subtractAmount = Number(enteredAmount);
-//     const remainingAmount = originalAmount - subtractAmount;
-
-//     // Optional: Update the amount inside DB
-//     item.totalAmount = remainingAmount;
-//     await bill.save();
-
-//     // Return updated item or remaining amount
-//     res.json({
-//       message: "Amount subtracted successfully.",
-//       itemId: item._id,
-//       originalAmount,
-//       enteredAmount: subtractAmount,
-//       remainingAmount,
-//     });
-//   } catch (error) {
-//     console.error("Error subtracting amount:", error);
-//     res.status(500).json({ error: "Internal server error." });
-//   }
-// };
 
 exports.updatePendingAmount = async (req, res) => {
   try {

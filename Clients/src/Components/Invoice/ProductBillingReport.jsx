@@ -366,22 +366,6 @@ const ProductBillingReport = ({ onBillingDataChange }, ref) => {
       return;
     }
 
-    // if (isEscape) {
-    //   e.preventDefault();
-
-    //   const prev = allFocusable[currentIndex - 1];
-    //   if (prev) {
-    //     prev.focus();
-    //   } else {
-    //     if (selectRef.current) {
-    //       selectRef.current.focus();
-    //     } else {
-    //       console.log("Select ref not ready");
-    //     }
-    //   }
-    //   return;
-    // }
-
     if (isEscape) {
       e.preventDefault();
 
@@ -634,7 +618,7 @@ const ProductBillingReport = ({ onBillingDataChange }, ref) => {
                         type='number'
                         className='form-control'
                         value={row[field]}
-                        readOnly
+                        // readOnly
                       />
                     ) : field === "GST" ? (
                       <input
