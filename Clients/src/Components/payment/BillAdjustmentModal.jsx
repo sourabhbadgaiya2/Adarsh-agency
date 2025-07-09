@@ -207,37 +207,6 @@ const BillAdjustmentModal = forwardRef(
       return sum + (isNaN(amt) ? 0 : amt);
     }, 0);
 
-    // const handleSave = async () => {
-    //   console.log("📦 Saving payload:", selectedVendorId, pending);
-
-    //   const payload = {
-    //     vendorId: selectedVendorId,
-    //     amount: Number(pending),
-    //   };
-
-    //   try {
-    //     const res = await fetch(
-    //       "http://localhost:8080/api/purchase/adjust-vendor-direct",
-    //       {
-    //         method: "POST",
-    //         headers: {
-    //           "Content-Type": "application/json",
-    //         },
-    //         body: JSON.stringify(payload),
-    //       }
-    //     );
-
-    //     if (!res.ok) throw new Error("Server error");
-
-    //     alert("Payment adjusted successfully");
-    //     onHide();
-    //     navigate("/ledger");
-    //   } catch (error) {
-    //     console.error("Error saving adjustment:", error);
-    //     // alert("Failed to save adjustment");
-    //   }
-    // };
-
     const handleSave = async () => {
       console.log("📦 Saving payload:", selectedVendorId, pending);
 
