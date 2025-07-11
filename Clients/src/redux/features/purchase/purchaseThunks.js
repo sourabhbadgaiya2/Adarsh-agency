@@ -2,7 +2,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../../../Config/axios";
 
-const API_URL = "/api/purchase";
+const API_URL = "/purchase";
 
 const getError = (err) => err.response?.data?.error || err.message;
 
@@ -80,6 +80,22 @@ export const fetchNextEntryNumber = createAsyncThunk(
       return res.data.nextEntryNumber;
     } catch (err) {
       return rejectWithValue(getError(err));
+    }
+  }
+);
+
+// 🔢 Get balance
+export const getBalance = createAsyncThunk(
+  "purchase/getBalance",
+  async (vendorId, { rejectWithValue }) => {
+    console.log("sourabh", vendorId);
+    try {
+      const response = await axios.get(`${API_URL}/get-balance/${vendorId}`);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || "Error fetching balance"
+      );
     }
   }
 );
