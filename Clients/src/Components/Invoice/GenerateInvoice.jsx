@@ -347,7 +347,7 @@ const GenerateInvoice = () => {
                     const product = productDetails[item.productId?._id] || {};
                     const gst = product?.gstPercent || 0;
                     return (
-                      <tr key={index}>
+                      <tr id="border-table" style={{ border:"none" }} key={index}>
                         <td
                           style={{
                             borderLeft: "1px solid black",
@@ -489,10 +489,26 @@ const GenerateInvoice = () => {
                     </tr>
                   )}
 
-                  {chunk.length < itemsPerPage &&
-                    Array.from({ length: itemsPerPage - chunk.length }).map(
-                      (_, i) => <tr key={`empty-${i}`}></tr>
-                    )}
+
+                    {chunk.length < itemsPerPage &&
+  Array.from({ length: itemsPerPage - chunk.length }).map((_, i) => (
+    <tr key={`empty-${i}`}>
+      {Array.from({ length: 14 }).map((_, j) => (
+        <td
+          key={j}
+          style={{
+            borderRight: "1px solid black",
+            borderLeft: j === 0 ? "1px solid black" : undefined,
+            textAlign: "center",
+            padding: "2px",
+            height: "22px", // Consistent height
+          }}
+        >
+
+        </td>
+      ))}
+    </tr>
+  ))}
 
                   {pageIndex === billingChunks.length - 1 && (
                     <tr style={{ fontWeight: "bold" }}>

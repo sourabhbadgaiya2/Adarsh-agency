@@ -196,7 +196,7 @@ const Navbarfrist = () => {
 
   const navLinkStyle = (path) => ({
     backgroundColor: isActive(path) ? "#DC3545" : "transparent",
-    borderRadius: "0.375rem",
+    // borderRadius: "0.375rem",
     padding: "8px 12px",
     fontWeight: isActive(path) ? "bold" : "normal",
     display: "block",
@@ -209,7 +209,7 @@ const Navbarfrist = () => {
     <>
       {/* Toggle Button for All Screens */}
       <div
-        className='position-fixed w-100 bg-white py-2  d-flex align-items-center justify-content-between top-0 mb-5 start-0 p-2 z-3'
+        className='position-fixed w-100 bg-white py-2  d-flex align-items-center justify-content-between top-0 mb-5 start-0 z-3'
         style={{ zIndex: 1050 }}
       >
         <div className='d-flex align-items-center justify-content-between'>
@@ -263,7 +263,7 @@ const Navbarfrist = () => {
         </div>
 
         {/* Navigation */}
-        <nav className='nav flex-column px-3 py-2'>
+        <nav className='nav flex-column  py-2'>
           <Link
             to='/'
             style={navLinkStyle("/")}
@@ -282,7 +282,7 @@ const Navbarfrist = () => {
               <FiLayers /> Master <FiChevronDown size={12} />
             </button>
             {openDropdown === "master" && (
-              <div className='ps-3'>
+              <div className='ps-3 colored'>
                 <Link
                   to='/brand'
                   style={navLinkStyle("/brand")}
@@ -311,20 +311,15 @@ const Navbarfrist = () => {
                 >
                   Customer
                 </Link>
-                <Link
+
+                 <Link
                   to='/add-salesman'
                   style={navLinkStyle("/add-salesman")}
                   onClick={closeSidebar}
                 >
                   Sales Man
                 </Link>
-                <Link
-                  to='/display-salesman'
-                  style={navLinkStyle("/display-salesman")}
-                  onClick={closeSidebar}
-                >
-                  View Sales Man
-                </Link>
+
               </div>
             )}
           </div>
@@ -338,55 +333,45 @@ const Navbarfrist = () => {
               <FiLayers /> Sales <FiChevronDown size={12} />
             </button>
             {openDropdown === "sales" && (
-              <div className='ps-3'>
+              <div  className='ps-3 colored'>
+
                 <Link
-                  to='/brand'
-                  style={navLinkStyle("/brand")}
+                  to='/add-invoice'
+                  style={navLinkStyle("/add-invoice")}
                   onClick={closeSidebar}
                 >
-                  Brand
+                  Add New Billing
                 </Link>
                 <Link
-                  to='/product'
-                  style={navLinkStyle("/product")}
+                  to='/display-invoice'
+                  style={navLinkStyle("/display-invoice")}
                   onClick={closeSidebar}
                 >
-                  Product
+                  View Billing
                 </Link>
-                <Link
-                  to='/Vendor-report'
-                  style={navLinkStyle("/Vendor-report")}
-                  onClick={closeSidebar}
-                >
-                  Vendor
-                </Link>
-                <Link
-                  to='/add-customer'
-                  style={navLinkStyle("/add-customer")}
-                  onClick={closeSidebar}
-                >
-                  Customer
-                </Link>
-                <Link
-                  to='/add-salesman'
-                  style={navLinkStyle("/add-salesman")}
-                  onClick={closeSidebar}
-                >
-                  Sales Man
-                </Link>
-                <Link
+                {/* <Link
                   to='/display-salesman'
                   style={navLinkStyle("/display-salesman")}
                   onClick={closeSidebar}
                 >
                   View Sales Man
-                </Link>
+                </Link> */}
               </div>
             )}
           </div>
 
+
+             <Link
+            to='/purchase'
+            style={navLinkStyle("/purchase")}
+            onClick={closeSidebar}
+            className='d-flex align-items-center gap-2'
+          >
+            <FiLayers /> Purchase Bill
+          </Link>
+
           {/* Purchasing */}
-          <div className='dropdown mt-2'>
+          {/* <div className='dropdown mt-2'>
             <button
               onClick={() => toggleDropdown("purchasing")}
               className='btn  text-white w-100 text-start d-flex align-items-center gap-2'
@@ -394,7 +379,7 @@ const Navbarfrist = () => {
               <FiLayers /> Purchase Bill <FiChevronDown size={12} />
             </button>
             {openDropdown === "purchasing" && (
-              <div className='ps-3'>
+              <div className='ps-3 colored'>
                 <Link
                   to='/purchase'
                   style={navLinkStyle("/purchase")}
@@ -404,7 +389,7 @@ const Navbarfrist = () => {
                 </Link>
               </div>
             )}
-          </div>
+          </div> */}
 
           {/*Reciept  */}
           <div className='dropdown mt-2'>
@@ -414,8 +399,8 @@ const Navbarfrist = () => {
             >
               <FiLayers /> Reciept <FiChevronDown size={12} />
             </button>
-            {openDropdown === "reciept" && (
-              <div className='ps-3'>
+            {/* {openDropdown === "reciept" && (
+              <div className='ps-3 colored'>
                 <Link
                   to='/add-invoice'
                   style={navLinkStyle("/add-invoice")}
@@ -431,11 +416,21 @@ const Navbarfrist = () => {
                   View Billing
                 </Link>
               </div>
-            )}
+            )} */}
           </div>
 
+
+            <Link
+            to='/test'
+            style={navLinkStyle("/test")}
+            onClick={closeSidebar}
+            className='d-flex align-items-center gap-2'
+          >
+            <FiLayers /> Payment
+          </Link>
+
           {/*Payment  */}
-          <div className='dropdown mt-2'>
+          {/* <div className='dropdown mt-2'>
             <button
               onClick={() => toggleDropdown("payment")}
               className='btn  text-white w-100 text-start d-flex align-items-center gap-2'
@@ -443,7 +438,15 @@ const Navbarfrist = () => {
               <FiLayers /> Payment <FiChevronDown size={12} />
             </button>
             {openDropdown === "payment" && (
-              <div className='ps-3'>
+              <div className='ps-3 colored'>
+ <Link
+                  to='/test'
+                  style={navLinkStyle("/test")}
+                  onClick={closeSidebar}
+                >
+                  view ledger
+                </Link>
+
                 <Link
                   to='/add-invoice'
                   style={navLinkStyle("/add-invoice")}
@@ -460,7 +463,7 @@ const Navbarfrist = () => {
                 </Link>
               </div>
             )}
-          </div>
+          </div> */}
 
           {/*Modify Bill  */}
           <div className='dropdown mt-2'>
@@ -470,8 +473,8 @@ const Navbarfrist = () => {
             >
               <FiLayers /> Modify Bill <FiChevronDown size={12} />
             </button>
-            {openDropdown === "modifybill" && (
-              <div className='ps-3'>
+            {/* {openDropdown === "modifybill" && (
+              <div className='ps-3 colored'>
                 <Link
                   to='/add-invoice'
                   style={navLinkStyle("/add-invoice")}
@@ -487,11 +490,11 @@ const Navbarfrist = () => {
                   View Billing
                 </Link>
               </div>
-            )}
+            )} */}
           </div>
 
           {/*Ledger Account */}
-          <div className='dropdown mt-2'>
+          {/* <div className='dropdown mt-2'>
             <button
               onClick={() => toggleDropdown("ledger")}
               className='btn  text-white w-100 text-start d-flex align-items-center gap-2'
@@ -499,7 +502,7 @@ const Navbarfrist = () => {
               <FiLayers /> Ledger Account <FiChevronDown size={12} />
             </button>
             {openDropdown === "ledger" && (
-              <div className='ps-3'>
+              <div className='ps-3 colored'>
                 <Link
                   to='/test'
                   style={navLinkStyle("/test")}
@@ -507,16 +510,10 @@ const Navbarfrist = () => {
                 >
                   view ledger
                 </Link>
-                {/* <Link
-                  to='/display-invoice'
-                  style={navLinkStyle("/display-invoice")}
-                  onClick={closeSidebar}
-                >
-                  View Billing
-                </Link> */}
+
               </div>
             )}
-          </div>
+          </div> */}
 
           {/*Outstanding*/}
           <div className='dropdown mt-2'>
@@ -526,8 +523,8 @@ const Navbarfrist = () => {
             >
               <FiLayers /> Outstanding <FiChevronDown size={12} />
             </button>
-            {openDropdown === "outstanding" && (
-              <div className='ps-3'>
+            {/* {openDropdown === "outstanding" && (
+              <div className='ps-3 colored'>
                 <Link
                   to='/add-invoice'
                   style={navLinkStyle("/add-invoice")}
@@ -543,7 +540,7 @@ const Navbarfrist = () => {
                   View Billing
                 </Link>
               </div>
-            )}
+            )} */}
           </div>
 
           {/*Stock Status*/}
@@ -554,8 +551,8 @@ const Navbarfrist = () => {
             >
               <FiLayers /> Stock Status <FiChevronDown size={12} />
             </button>
-            {openDropdown === "stockstatus" && (
-              <div className='ps-3'>
+            {/* {openDropdown === "stockstatus" && (
+              <div className='ps-3 colored'>
                 <Link
                   to='/add-invoice'
                   style={navLinkStyle("/add-invoice")}
@@ -571,7 +568,7 @@ const Navbarfrist = () => {
                   View Billing
                 </Link>
               </div>
-            )}
+            )} */}
           </div>
 
           {/*Stock And sale Analysis*/}
@@ -582,8 +579,8 @@ const Navbarfrist = () => {
             >
               <FiLayers /> Stock And sale Analysis <FiChevronDown size={12} />
             </button>
-            {openDropdown === "stocksale" && (
-              <div className='ps-3'>
+            {/* {openDropdown === "stocksale" && (
+              <div className='ps-3 colored'>
                 <Link
                   to='/add-invoice'
                   style={navLinkStyle("/add-invoice")}
@@ -599,7 +596,7 @@ const Navbarfrist = () => {
                   View Billing
                 </Link>
               </div>
-            )}
+            )} */}
           </div>
 
           {/*Dispatch Summary*/}
@@ -611,8 +608,8 @@ const Navbarfrist = () => {
               <FiLayers />
               Dispatch Summary <FiChevronDown size={12} />
             </button>
-            {openDropdown === "dispatch" && (
-              <div className='ps-3'>
+            {/* {openDropdown === "dispatch" && (
+              <div className='ps-3 colored'>
                 <Link
                   to='/add-invoice'
                   style={navLinkStyle("/add-invoice")}
@@ -628,7 +625,7 @@ const Navbarfrist = () => {
                   View Billing
                 </Link>
               </div>
-            )}
+            )} */}
           </div>
 
           {/*Today Gross Profit*/}
@@ -640,8 +637,8 @@ const Navbarfrist = () => {
               <FiLayers />
               Today Gross Profit <FiChevronDown size={12} />
             </button>
-            {openDropdown === "grossprofit" && (
-              <div className='ps-3'>
+            {/* {openDropdown === "grossprofit" && (
+              <div className='ps-3 colored'>
                 <Link
                   to='/add-invoice'
                   style={navLinkStyle("/add-invoice")}
@@ -657,7 +654,7 @@ const Navbarfrist = () => {
                   View Billing
                 </Link>
               </div>
-            )}
+            )} */}
           </div>
 
           {/* Billing */}
@@ -668,8 +665,8 @@ const Navbarfrist = () => {
             >
               <FiLayers /> Billing <FiChevronDown size={12} />
             </button>
-            {openDropdown === "billing" && (
-              <div className='ps-3'>
+            {/* {openDropdown === "billing" && (
+              <div className='ps-3 colored'>
                 <Link
                   to='/add-invoice'
                   style={navLinkStyle("/add-invoice")}
@@ -685,7 +682,7 @@ const Navbarfrist = () => {
                   View Billing
                 </Link>
               </div>
-            )}
+            )} */}
           </div>
 
           {/* Report */}
@@ -696,11 +693,11 @@ const Navbarfrist = () => {
             >
               <FiLayers /> Report <FiChevronDown size={12} />
             </button>
-            {openDropdown === "report" && (
-              <div className='ps-3'>
+            {/* {openDropdown === "report" && (
+              <div className='ps-3 colored'>
                 <span className='nav-link text-white ps-3'>(Coming Soon)</span>
               </div>
-            )}
+            )} */}
           </div>
         </nav>
       </div>
