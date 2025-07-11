@@ -9,6 +9,7 @@ import {
   fetchVendorBills,
   fetchVendors,
 } from "../../redux/features/vendor/VendorThunks";
+import { getBalance } from "../../redux/features/purchase/purchaseThunks";
 
 const PaymentVoucherForm = () => {
   const [showModal, setShowModal] = useState(false);
@@ -35,6 +36,7 @@ const PaymentVoucherForm = () => {
 
   const vendorList = useSelector((state) => state.vendor.vendors);
   const vendorBills = useSelector((state) => state.vendor.vendorBills);
+  const balance = useSelector((state) => state.purchase?.balance);
 
   const handleOpenPendingBills = (rowIdx) => {
     setPendingRowIndex(rowIdx);
@@ -148,10 +150,13 @@ const PaymentVoucherForm = () => {
 
   //! date end
 
-  const selectVendor = (vendor) => {
+  const selectVendor = async (vendor) => {
+    // console.log("ssss", vendor._id);
     setSelectedVendor(vendor);
+    const res = await dispatch(getBalance(vendor._id));
+    console.log("Balance thunk result:", res);
 
-    dispatch(fetchVendorBills(vendor._id)); // 👈 Dispatch API call
+    dispatch(fetchVendorBills(vendor._id));
 
     setShowModal(false);
     // Focus next input after vendor selection
@@ -160,12 +165,10 @@ const PaymentVoucherForm = () => {
     }, 100);
   };
 
-  // console.log(vendorBills, "LLL");
-
   useEffect(() => {
     if (openBillModalRequested && vendorBills.length > 0) {
       setShowBillModal(true);
-      setOpenBillModalRequested(false); // reset
+      setOpenBillModalRequested(false);
     }
   }, [openBillModalRequested, vendorBills]);
 
@@ -239,7 +242,7 @@ const PaymentVoucherForm = () => {
         </Row>
       </Form>
 
-      {/* ✅ Modal for Vendor Selection */}
+      {/*  Modal for Vendor Selection */}
       <Modal show={showModal} onHide={() => setShowModal(false)} centered>
         <Modal.Header closeButton>
           <Modal.Title>Select Vendor</Modal.Title>
@@ -297,7 +300,7 @@ const PaymentVoucherForm = () => {
         </Modal.Body>
       </Modal>
 
-      {/* ✅ Selected Vendor Info + Debit Input */}
+      {/*  Selected Vendor Info + Debit Input */}
       {selectedVendor && (
         <>
           <hr />
@@ -309,7 +312,8 @@ const PaymentVoucherForm = () => {
             <strong>City:</strong> {selectedVendor?.city}
           </p>
           <p>
-            <strong>Total Balance:</strong> ₹{vendorBills[0]?.pendingAmount}
+            <strong>Total Balance:</strong> ₹
+            {balance?.balance?.toFixed(2) || "0.00"}
           </p>
 
           <Form.Group as={Row} className='mb-3' controlId='formDebit'>
@@ -336,12 +340,12 @@ const PaymentVoucherForm = () => {
         onHide={() => setShowBillModal(false)}
         amount={parseFloat(debitAmount || 0)}
         openPendingModal={(rowIndex) => {
-          handleOpenPendingBills(rowIndex); // ✅ yeh safe version use karo
+          handleOpenPendingBills(rowIndex);
         }}
-        selectedVendorId={selectedVendor?._id} // 👈 pass vendorId
+        selectedVendorId={selectedVendor?._id}
         onPendingChange={(value) => {
           console.log("⏱ Pending from modal:", value);
-          setPendingValue(value); // 👈 Store it or use as needed
+          setPendingValue(value);
         }}
       />
 

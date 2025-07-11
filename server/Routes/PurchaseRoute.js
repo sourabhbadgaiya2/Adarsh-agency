@@ -12,6 +12,8 @@ router.post("/update-pending-amount", purchaseCtrl.updatePendingAmount);
 
 router.post("/adjust-vendor-direct", purchaseCtrl.adjustNewRef);
 
+router.get("/get-balance/:vendorId", purchaseCtrl.getBalanceByVendor);
+
 router.get("/:id", purchaseCtrl.getPurchaseById);
 router.put("/:id", purchaseCtrl.updatePurchase);
 router.delete("/:id", purchaseCtrl.deletePurchase);
