@@ -1,4 +1,5 @@
 const Purchase = require("../Models/PurchaseModel");
+const mongoose = require("mongoose");
 const Product = require("../Models/ProductModel");
 
 exports.createPurchase = async (req, res) => {
@@ -191,4 +192,85 @@ exports.adjustNewRef = async (req, res) => {
   }
 
   return res.json({ message: "Vendor balance adjusted", remaining });
+};
+
+// controller get balance
+// exports.getBalance = async (req, res) => {
+//   try {
+//     const result = await Purchase.aggregate([
+//       {
+//         $group: {
+//           _id: null,
+//           balance: { $sum: { $toDouble: "$pendingAmount" } }, // $toInt agar decimal hai
+//         },
+//       },
+//     ]);
+
+//     const balance = result[0]?.balance || 0;
+
+//     res.status(200).json({ balance });
+//   } catch (err) {
+//     console.error("Error fetching balance:", err.message);
+//     res.status(500).json({ message: "Server error" });
+//   }
+// };
+
+exports.getBalanceByVendor = async (req, res) => {
+  try {
+    console.log(req.params, "get Balance by vendor purchase");
+
+    const { vendorId } = req.params;
+
+    if (!vendorId) {
+      return res.status(400).json({ message: "Vendor ID is required" });
+    }
+
+    const result = await Purchase.aggregate([
+      {
+        $match: {
+          vendorId: new mongoose.Types.ObjectId(vendorId), // ✅ FIXED
+        },
+      },
+      {
+        $group: {
+          _id: "$vendorId",
+          balance: { $sum: { $toDouble: "$pendingAmount" } },
+        },
+      },
+    ]);
+
+    const balance = result[0]?.balance || 0;
+
+    res.status(200).json({ balance });
+  } catch (err) {
+    console.error("Error fetching vendor balance:", err.message);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// controllers/clear
+
+exports.clearVendorPending = async (req, res) => {
+  try {
+    const { vendorId } = req.body;
+
+    if (!vendorId) {
+      return res.status(400).json({ message: "Vendor ID is required" });
+    }
+
+    const purchases = await Purchase.find({
+      vendorId,
+      pendingAmount: { $gt: 0 },
+    });
+
+    for (const entry of purchases) {
+      entry.pendingAmount = 0;
+      await entry.save();
+    }
+
+    return res.status(200).json({ message: "✅ All pending amounts cleared" });
+  } catch (error) {
+    console.error("❌ Error clearing vendor balance:", error.message);
+    res.status(500).json({ message: "Server error" });
+  }
 };
