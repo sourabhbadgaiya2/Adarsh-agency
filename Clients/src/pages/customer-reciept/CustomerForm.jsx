@@ -8,6 +8,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchCustomers } from "../../redux/features/customer/customerThunks";
 import { fetchVendorBills } from "../../redux/features/vendor/VendorThunks";
 import { getBalance } from "../../redux/features/purchase/purchaseThunks";
+import {
+  fetchBalanceByCustomer,
+  fetchInvoicesByCustomer,
+} from "../../redux/features/product-bill/invoiceThunks";
 
 const CustomerForm = () => {
   const [showModal, setShowModal] = useState(false);
@@ -30,9 +34,16 @@ const CustomerForm = () => {
   const [showBillModal, setShowBillModal] = useState(false);
   const [pendingValue, setPendingValue] = useState(0);
 
+  const [searchQuery, setSearchQuery] = useState("");
+
   const customerList = useSelector((state) => state.customer.customers);
   const vendorBills = useSelector((state) => state.vendor.vendorBills);
   const balance = useSelector((state) => state.purchase?.balance);
+  const { balanceByCustomer, invoicesByCustomer } = useSelector(
+    (state) => state.invoice
+  );
+
+  console.log("Invoices by Customer:", invoicesByCustomer);
 
   const handleOpenPendingBills = (rowIdx) => {
     setPendingRowIndex(rowIdx);
@@ -136,13 +147,13 @@ const CustomerForm = () => {
 
   const selectCustomer = async (customer) => {
     setSelectedCustomer(customer);
-    await dispatch(getBalance(customer._id));
-    dispatch(fetchVendorBills(customer._id));
+    await dispatch(fetchBalanceByCustomer(customer._id));
+    dispatch(fetchInvoicesByCustomer(customer._id));
     setShowModal(false);
 
-    setTimeout(() => {
-      formRefs.current[4]?.focus();
-    }, 100);
+    // setTimeout(() => {
+    //   formRefs.current[4]?.focus();
+    // }, 100);
   };
 
   useEffect(() => {
@@ -151,6 +162,11 @@ const CustomerForm = () => {
       setOpenBillModalRequested(false);
     }
   }, [openBillModalRequested, vendorBills]);
+
+  // ✅ Filter customers based on search input
+  const filteredCustomers = customerList.filter((customer) =>
+    customer.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <Container className='mt-4'>
@@ -228,10 +244,22 @@ const CustomerForm = () => {
         </Modal.Header>
 
         <Modal.Body>
-          {customerList.map((customer, index) => (
+          {/* ✅ Search Input */}
+          <input
+            type='text'
+            placeholder='Search customer name...'
+            className='form-control mb-3'
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+
+          {filteredCustomers.map((customer, index) => (
             <div
               key={customer._id}
-              onClick={() => selectCustomer(customer)}
+              onClick={() => {
+                selectCustomer(customer);
+                setCustomerIndex(index);
+              }}
               style={{
                 padding: "12px 16px",
                 backgroundColor:
@@ -253,7 +281,7 @@ const CustomerForm = () => {
             </div>
           ))}
 
-          {customerList[customerIndex] && (
+          {filteredCustomers[customerIndex] && (
             <div
               style={{
                 marginTop: "20px",
@@ -268,14 +296,13 @@ const CustomerForm = () => {
               </h6>
               <p style={{ margin: 0, fontStyle: "italic", color: "#495057" }}>
                 🏠{" "}
-                {customerList[customerIndex]?.address ||
+                {filteredCustomers[customerIndex]?.address ||
                   "Address not available"}
               </p>
             </div>
           )}
         </Modal.Body>
       </Modal>
-
       {selectedCustomer && (
         <>
           <hr />
@@ -288,7 +315,7 @@ const CustomerForm = () => {
           </p>
           <p>
             <strong>Total Balance:</strong> ₹
-            {balance?.balance?.toFixed(2) || "0.00"}
+            {balanceByCustomer.toFixed(2) || "0.00"}
           </p>
 
           <Form.Group as={Row} className='mb-3' controlId='formDebit'>
@@ -327,7 +354,7 @@ const CustomerForm = () => {
       <PendingBillsModal
         show={!!showPendingModal}
         onHide={() => setShowPendingModal(false)}
-        bills={vendorBills}
+        bills={invoicesByCustomer}
         onSelectItem={(result) => {
           billAdjustmentModalRef.current?.insertBill(pendingRowIndex, result);
           setShowPendingModal(false);

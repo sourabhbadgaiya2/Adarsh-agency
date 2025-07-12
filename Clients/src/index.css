@@ -17,15 +17,15 @@ body {
   text-transform: uppercase;
 }
 
-.colored{
+.colored {
   padding: 10px !important;
-  background-color: #3F3F46 ;
+  background-color: #3F3F46;
   color: black;
   /* box-shadow: 2px 2px 15px rgb(238, 237, 237, 0.5); */
 }
 
-#border-table{
-border: transparent !important;
+#border-table {
+  border: transparent !important;
 
   /* border-left:1px solid black ;
 border-right: 1px solid black; */
@@ -37,7 +37,7 @@ border-right: 1px solid black; */
 .invoice-page td {
 
   margin: 0 !important;
-  padding: 0 5px !important;
+  padding: 0 2px !important;
 }
 
 .auto-width-input {
@@ -473,7 +473,7 @@ table th {
 .sidebar {
 
   width: 260px;
-  min-height: 100vh;
+  /* min-height: 100vh; */
   transition: all 0.3s ease;
 }
 
