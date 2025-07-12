@@ -1,25 +1,6 @@
 const Purchase = require("../Models/PurchaseModel");
+const mongoose = require("mongoose");
 const Product = require("../Models/ProductModel");
-const Ledger = require("../Models/Ledger"); // Make sure you import your model
-
-// exports.createPurchase = async (req, res) => {
-//   try {
-//     const newPurchase = new Purchase(req.body);
-//     const savedPurchase = await newPurchase.save();
-
-//     // Update availableQty for each product in items
-//     for (const item of savedPurchase.items) {
-//       const product = await Product.findById(item.productId);
-//       if (!product) continue;
-//       product.availableQty -= item.quantity;
-//       await product.save();
-//     }
-
-//     res.status(201).json(savedPurchase);
-//   } catch (err) {
-//     res.status(400).json({ error: err.message });
-//   }
-// };
 
 exports.createPurchase = async (req, res) => {
   try {
@@ -137,83 +118,12 @@ exports.getNextEntryNumber = async (req, res) => {
   }
 };
 
-// const saveLedger = async (req, res) => {
-//   try {
-//     const { amount, adjustedAmount, pendingAmount, rows } = req.body;
-
-//     for (const row of rows) {
-//       const { billId, amount: rowAmount } = row;
-
-//       if (!billId) continue; // ignore if no ID
-
-//       const bill = await Bill.findById(billId);
-
-//       if (bill) {
-//         const adjusted = parseFloat(rowAmount) || 0;
-//         bill.pending = Math.max(0, bill.pending - adjusted);
-//         bill.status = bill.pending === 0 ? "Settled" : "Partial";
-
-//         await bill.save();
-//       }
-//     }
-
-//     return res.status(200).json({ message: "Ledger updated successfully." });
-//   } catch (error) {
-//     console.error("Ledger save error:", error);
-//     return res.status(500).json({ message: "Internal server error." });
-//   }
-// };
-
-// exports.minusItemAmount = async (req, res) => {
-//   try {
-//     const { billId, itemId, enteredAmount } = req.body;
-
-//     if (!billId || !itemId || enteredAmount == null) {
-//       return res.status(400).json({ error: "Missing required fields." });
-//     }
-
-//     // Fetch the bill by billId
-//     const bill = await Bill.findById(billId);
-//     if (!bill) {
-//       return res.status(404).json({ error: "Bill not found." });
-//     }
-
-//     // Find the item by itemId in the bill's items array
-//     const item = bill.items.find((it) => it._id.toString() === itemId);
-
-//     if (!item) {
-//       return res.status(404).json({ error: "Item not found in bill." });
-//     }
-
-//     // Convert amounts to numbers (they might be strings)
-//     const originalAmount = Number(item.totalAmount);
-//     const subtractAmount = Number(enteredAmount);
-//     const remainingAmount = originalAmount - subtractAmount;
-
-//     // Optional: Update the amount inside DB
-//     item.totalAmount = remainingAmount;
-//     await bill.save();
-
-//     // Return updated item or remaining amount
-//     res.json({
-//       message: "Amount subtracted successfully.",
-//       itemId: item._id,
-//       originalAmount,
-//       enteredAmount: subtractAmount,
-//       remainingAmount,
-//     });
-//   } catch (error) {
-//     console.error("Error subtracting amount:", error);
-//     res.status(500).json({ error: "Internal server error." });
-//   }
-// };
-
 exports.updatePendingAmount = async (req, res) => {
   try {
     console.log(req.body);
-    const { purchaseEntryId, amount, items } = req.body;
+    const { vendorId, amount, items } = req.body;
 
-    const purchaseEntry = await Purchase.findById(purchaseEntryId);
+    const purchaseEntry = await Purchase.findById(vendorId);
     if (!purchaseEntry) {
       return res.status(404).json({ message: "Purchase entry not found" });
     }
@@ -254,7 +164,6 @@ exports.updatePendingAmount = async (req, res) => {
 };
 
 //  "New Ref" Adjustment
-
 exports.adjustNewRef = async (req, res) => {
   console.log(req.body, "KKI");
   const { vendorId, amount } = req.body;
@@ -263,7 +172,6 @@ exports.adjustNewRef = async (req, res) => {
     return res.status(400).json({ message: "Missing vendorId or amount" });
   }
 
-  // 1. Adjust Purchase Entries
   const purchaseEntries = await Purchase.find({
     vendorId,
     pendingAmount: { $gt: 0 },
@@ -274,37 +182,95 @@ exports.adjustNewRef = async (req, res) => {
   for (const entry of purchaseEntries) {
     if (remaining <= 0) break;
 
+    console.log(entry, "entry");
+
     const deduct = Math.min(entry.pendingAmount, remaining);
-
-    console.log(deduct, "deduct");
-    const newPending = entry.pendingAmount - deduct;
-
-    entry.pendingAmount = newPending;
-    await entry.save(); // ✅ save updated value
+    entry.pendingAmount -= deduct;
     remaining -= deduct;
+
+    await entry.save();
   }
 
-  // 2. 🧾 Calculate total balance (after adjustment)
-  const updatedVendorPurchases = await Purchase.find({ vendorId });
-  const totalBalance = updatedVendorPurchases.reduce((sum, p) => {
-    return sum + (p.pendingAmount || 0);
-  }, 0);
+  return res.json({ message: "Vendor balance adjusted", remaining });
+};
 
-  // 3. 🧾 Create Ledger Entry
-  await Ledger.create({
-    vendorId,
-    billId: null,
-    date: new Date(),
-    refType: "new_ref",
-    debit: amount, // Amount adjusted
-    credit: 0, // Or use `remaining` if you need to track leftover
-    entryNumber: `LDG-${Date.now()}`,
-    remark: `Adjusted ₹${amount.toFixed(2)} | `,
-  });
+// controller get balance
+// exports.getBalance = async (req, res) => {
+//   try {
+//     const result = await Purchase.aggregate([
+//       {
+//         $group: {
+//           _id: null,
+//           balance: { $sum: { $toDouble: "$pendingAmount" } }, // $toInt agar decimal hai
+//         },
+//       },
+//     ]);
 
-  return res.json({
-    message: "Vendor balance adjusted",
-    remaining,
-    totalBalance,
-  });
+//     const balance = result[0]?.balance || 0;
+
+//     res.status(200).json({ balance });
+//   } catch (err) {
+//     console.error("Error fetching balance:", err.message);
+//     res.status(500).json({ message: "Server error" });
+//   }
+// };
+
+exports.getBalanceByVendor = async (req, res) => {
+  try {
+    console.log(req.params, "get Balance by vendor purchase");
+
+    const { vendorId } = req.params;
+
+    if (!vendorId) {
+      return res.status(400).json({ message: "Vendor ID is required" });
+    }
+
+    const result = await Purchase.aggregate([
+      {
+        $match: {
+          vendorId: new mongoose.Types.ObjectId(vendorId), // ✅ FIXED
+        },
+      },
+      {
+        $group: {
+          _id: "$vendorId",
+          balance: { $sum: { $toDouble: "$pendingAmount" } },
+        },
+      },
+    ]);
+
+    const balance = result[0]?.balance || 0;
+
+    res.status(200).json({ balance });
+  } catch (err) {
+    console.error("Error fetching vendor balance:", err.message);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// controllers/clear
+
+exports.clearVendorPending = async (req, res) => {
+  try {
+    const { vendorId } = req.body;
+
+    if (!vendorId) {
+      return res.status(400).json({ message: "Vendor ID is required" });
+    }
+
+    const purchases = await Purchase.find({
+      vendorId,
+      pendingAmount: { $gt: 0 },
+    });
+
+    for (const entry of purchases) {
+      entry.pendingAmount = 0;
+      await entry.save();
+    }
+
+    return res.status(200).json({ message: "✅ All pending amounts cleared" });
+  } catch (error) {
+    console.error("❌ Error clearing vendor balance:", error.message);
+    res.status(500).json({ message: "Server error" });
+  }
 };

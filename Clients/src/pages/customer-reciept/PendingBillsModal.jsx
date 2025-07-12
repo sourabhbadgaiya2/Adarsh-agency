@@ -13,7 +13,9 @@ const PendingBillsModal = ({
 }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
 
-  const pendingBills = bills;
+  console.log(bills, "LIOM");
+
+  const pendingBills = bills || [];
 
   const navigate = useNavigate();
 
@@ -52,8 +54,8 @@ const PendingBillsModal = ({
 
   const columns = [
     {
-      name: "INVOICE NO.",
-      selector: (row) => row.invoiceNumber || row.entryNumber || "N/A",
+      name: "Customer Name",
+      selector: (row) => row.customer?.CustomerName || "N/A",
       sortable: true,
     },
     {

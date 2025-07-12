@@ -366,22 +366,6 @@ const ProductBillingReport = ({ onBillingDataChange }, ref) => {
       return;
     }
 
-    // if (isEscape) {
-    //   e.preventDefault();
-
-    //   const prev = allFocusable[currentIndex - 1];
-    //   if (prev) {
-    //     prev.focus();
-    //   } else {
-    //     if (selectRef.current) {
-    //       selectRef.current.focus();
-    //     } else {
-    //       console.log("Select ref not ready");
-    //     }
-    //   }
-    //   return;
-    // }
-
     if (isEscape) {
       e.preventDefault();
 
@@ -533,6 +517,7 @@ const ProductBillingReport = ({ onBillingDataChange }, ref) => {
               ))}
             </tr>
           </thead>
+          {/* //! Form Inputs */}
           <tbody>
             {rows.map((row, rowIndex) => (
               <tr key={rowIndex} onKeyDown={(e) => handleKeyDown(e, rowIndex)}>
@@ -624,6 +609,8 @@ const ProductBillingReport = ({ onBillingDataChange }, ref) => {
                         }}
                       />
                     ) : [
+                        "Sch",
+                        "CD", //! enter this line
                         "SchAmt",
                         "CDAmt",
                         "Total",
@@ -631,10 +618,33 @@ const ProductBillingReport = ({ onBillingDataChange }, ref) => {
                         "Basic",
                       ].includes(field) ? (
                       <input
-                        type='number'
+                        type='text'
                         className='form-control'
                         value={row[field]}
-                        readOnly
+                        onFocus={() => {
+                          if (row[field] === "0.00" || row[field] === 0) {
+                            handleChange(rowIndex, field, "");
+                          }
+                        }}
+                        onBlur={() => {
+                          let val = parseFloat(row[field]);
+                          if (isNaN(val)) val = 0;
+                          handleChange(rowIndex, field, val.toFixed(2));
+                        }}
+                        onChange={(e) => {
+                          let value = e.target.value;
+
+                          // सिर्फ नंबर और एक dot allow
+                          if (!/^\d*\.?\d*$/.test(value)) return;
+
+                          //  max 2 decimals
+                          if (value.includes(".")) {
+                            const [int, dec] = value.split(".");
+                            if (dec.length > 2) return;
+                          }
+
+                          handleChange(rowIndex, field, value);
+                        }}
                       />
                     ) : field === "GST" ? (
                       <input

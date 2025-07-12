@@ -312,14 +312,13 @@ const Navbarfrist = () => {
                   Customer
                 </Link>
 
-                 <Link
+                <Link
                   to='/add-salesman'
                   style={navLinkStyle("/add-salesman")}
                   onClick={closeSidebar}
                 >
                   Sales Man
                 </Link>
-
               </div>
             )}
           </div>
@@ -333,8 +332,7 @@ const Navbarfrist = () => {
               <FiLayers /> Sales <FiChevronDown size={12} />
             </button>
             {openDropdown === "sales" && (
-              <div  className='ps-3 colored'>
-
+              <div className='ps-3 colored'>
                 <Link
                   to='/add-invoice'
                   style={navLinkStyle("/add-invoice")}
@@ -360,8 +358,7 @@ const Navbarfrist = () => {
             )}
           </div>
 
-
-             <Link
+          <Link
             to='/purchase'
             style={navLinkStyle("/purchase")}
             onClick={closeSidebar}
@@ -393,12 +390,18 @@ const Navbarfrist = () => {
 
           {/*Reciept  */}
           <div className='dropdown mt-2'>
-            <button
+            {/* <button
               onClick={() => toggleDropdown("reciept")}
               className='btn  text-white w-100 text-start d-flex align-items-center gap-2'
+            ></button> */}
+            <Link
+              to='/report'
+              style={navLinkStyle("/report")}
+              onClick={closeSidebar}
+              className='d-flex align-items-center gap-2'
             >
-              <FiLayers /> Reciept <FiChevronDown size={12} />
-            </button>
+              <FiLayers /> Reciept
+            </Link>
             {/* {openDropdown === "reciept" && (
               <div className='ps-3 colored'>
                 <Link
@@ -419,8 +422,7 @@ const Navbarfrist = () => {
             )} */}
           </div>
 
-
-            <Link
+          <Link
             to='/test'
             style={navLinkStyle("/test")}
             onClick={closeSidebar}

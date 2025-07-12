@@ -3,7 +3,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../../../Config/axios";
 
-const API_URL = "/api/pro-billing";
+const API_URL = "/pro-billing";
 
 // Utility for error messaging
 const getError = (err) =>
@@ -57,6 +57,38 @@ export const fetchInvoiceById = createAsyncThunk(
       return res.data;
     } catch (err) {
       return rejectWithValue(getError(err));
+    }
+  }
+);
+
+// 👇 Thunk to get invoices by customer ID or Name
+export const fetchInvoicesByCustomer = createAsyncThunk(
+  "invoice/fetchInvoicesByCustomer",
+  async (customerIdOrName, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(
+        `${API_URL}/customer/${customerIdOrName}`
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
+// ✅ Get total balance by customer
+export const fetchBalanceByCustomer = createAsyncThunk(
+  "invoice/fetchBalanceByCustomer",
+  async (customerId, thunkAPI) => {
+    try {
+      const response = await axios.get(
+        `${API_URL}/balance/customer/${customerId}`
+      );
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "Failed to fetch balance"
+      );
     }
   }
 );

@@ -1,5 +1,6 @@
 const Product = require("../Models/ProductModel");
 const Invoice = require("../Models/BillingModel");
+const mongoose = require("mongoose");
 
 // const createBilling = async (req, res) => {
 //   console.log(req.body, "create Billing");
@@ -207,9 +208,77 @@ const getInvoiceById = async (req, res) => {
   }
 };
 
+const getInvoicesByCustomer = async (req, res) => {
+  const { customerIdOrName } = req.params;
+
+  try {
+    const invoices = await Invoice.find({
+      $or: [
+        { customerId: customerIdOrName }, // direct ObjectId
+        { "customer.selectedCustomerId": customerIdOrName }, // nested customer obj
+        { "customer.CustomerName": customerIdOrName }, // nested customer name
+      ],
+    })
+      .sort({ createdAt: -1 })
+      .populate("companyId")
+      .populate("salesmanId")
+      .populate("billing.productId")
+      .populate("customerId");
+
+    if (!invoices || invoices.length === 0) {
+      return res.status(404).json({
+        message: `No invoices found for ${customerIdOrName}`,
+      });
+    }
+
+    res.status(200).json(invoices);
+  } catch (error) {
+    console.error("Error fetching customer invoices:", error);
+    res.status(500).json({
+      error: "Failed to fetch customer invoices",
+      details: error.message,
+    });
+  }
+};
+
+const getBalanceByCustomer = async (req, res) => {
+  try {
+    console.log(req.params, "➡️ Get Balance by Customer");
+
+    const { customerId } = req.params;
+
+    if (!customerId) {
+      return res.status(400).json({ message: "Customer ID is required" });
+    }
+
+    const result = await Invoice.aggregate([
+      {
+        $match: {
+          customerId: new mongoose.Types.ObjectId(customerId), // ✅ FIXED
+        },
+      },
+      {
+        $group: {
+          _id: "$customerId",
+          totalBalance: { $sum: { $toDouble: "$finalAmount" } },
+        },
+      },
+    ]);
+
+    const balance = result[0]?.totalBalance || 0;
+
+    res.status(200).json({ balance });
+  } catch (err) {
+    console.error("Error fetching customer balance:", err.message);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 module.exports = {
   createBilling,
   getAllInvoices,
-  deleteInvoice, // 👈 export it
+  deleteInvoice,
   getInvoiceById,
+  getInvoicesByCustomer,
+  getBalanceByCustomer,
 };

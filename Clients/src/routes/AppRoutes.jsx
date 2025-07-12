@@ -24,6 +24,7 @@ import FirmDetail from "../Components/Firm/FirmDetail";
 import Test from "../Components/Test";
 import PaymentVoucherForm from "../Components/payment/PaymentVoucherForm";
 import Ledger from "../Components/payment/Ledger";
+import CustomerForm from "../pages/customer-reciept/CustomerForm";
 
 const AppRoutes = () => {
   return (
@@ -47,6 +48,7 @@ const AppRoutes = () => {
         <Route path='/add-customer' element={<CustomerDetail />} />
 
         <Route path='/test' element={<PaymentVoucherForm />} />
+        <Route path='/report' element={<CustomerForm />} />
         <Route path='/ledger' element={<Ledger />} />
       </Route>
     </Routes>

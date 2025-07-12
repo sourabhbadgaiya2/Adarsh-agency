@@ -9,32 +9,37 @@ const VendorList = ({ vendorList, handleEdit, handleDelete, loading }) => {
       name: "SR",
       selector: (row, index) => index + 1,
       width: "70px",
-      sortable: true, // ✅ add this
+      sortable: true,
     },
     {
       name: "Firm",
       selector: (row) => row.firm,
-      sortable: true, // ✅ add this
+      sortable: true,
     },
     {
       name: "Name",
       selector: (row) => row.name,
-      sortable: true, // ✅ add this
+      sortable: true,
     },
     {
       name: "Mobile",
       selector: (row) => row.mobile,
-      sortable: true, // ✅ add this
+      sortable: true,
     },
     {
-      name: "Email",
-      selector: (row) => row.email,
-      sortable: true, // ✅ add this
+      name: "City",
+      selector: (row) => row.city,
+      sortable: true,
     },
     {
       name: "Address",
       selector: (row) => row.address,
-      sortable: true, // ✅ add this
+      sortable: true,
+    },
+    {
+      name: "GST NO.",
+      selector: (row) => row.gstNumber,
+      sortable: true,
     },
     {
       name: "Actions",

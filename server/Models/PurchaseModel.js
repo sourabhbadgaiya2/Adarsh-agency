@@ -45,9 +45,16 @@ const purchaseSchema = new mongoose.Schema(
     adjustedAmount: {
       type: String,
     },
+    // pendingAmount: {
+    //   type: String,
+    // },
     pendingAmount: {
-      type: String,
+      type: Number,
+      // required: true,
+      default: 0,
     },
+
+    balance: { type: Number, required: true, default: 0 },
 
     items: [itemSchema], // Array of item objects
   },
