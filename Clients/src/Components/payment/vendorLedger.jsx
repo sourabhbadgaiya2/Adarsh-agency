@@ -1,40 +1,42 @@
 import React, { useState } from "react";
 import { Container, Row, Col, Form, Table, Button } from "react-bootstrap";
 import axios from "../../Config/axios";
-import CustomerModal from "./CustomerModal"; // ✅ Modal
+import VendorModel from "./VendorModel";
 
-const Ledger = () => {
-  const [selectedCustomer, setSelectedCustomer] = useState(null);
+const vendorLedger = () => {
+  const [selectedVendor, setSelectedVendor] = useState(null);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [ledgerEntries, setLedgerEntries] = useState([]);
   const [showModal, setShowModal] = useState(false);
 
+  console.log(ledgerEntries, "Ledger Entries");
+
   // ✅ Ledger Fetch
   const fetchLedger = async () => {
-    if (!selectedCustomer) return alert("Please select customer");
+    if (!selectedVendor) return alert("Please select customer");
 
-    const res = await axios.get("/ledger", {
+    const res = await axios.get(`/vendor/ledger/${selectedVendor._id}`, {
       params: {
-        customerId: selectedCustomer._id,
         startDate,
         endDate,
       },
     });
-    setLedgerEntries(res.data);
+
+    setLedgerEntries(res.data.data || []);
   };
 
   return (
     <Container fluid className='p-4'>
-      <h2>Customer Ledger</h2>
+      <h2>Vendor Ledger</h2>
 
       <Row className='mb-4'>
         <Col md={3}>
           <Form.Group>
-            <Form.Label>Customer</Form.Label>
+            <Form.Label>Vendor</Form.Label>
             <div className='d-flex'>
               <Form.Control
-                value={selectedCustomer ? selectedCustomer.name : ""}
+                value={selectedVendor ? selectedVendor.name : ""}
                 placeholder='Select customer'
                 readOnly
               />
@@ -87,13 +89,15 @@ const Ledger = () => {
             <th>Narration</th>
             <th>Debit Account</th>
             <th>Credit Account</th>
-            <th>Amount</th>
+            <th>Debit</th>
+            {/* <th>Credit</th> */}
+            {/* <th>Net</th> */}
           </tr>
         </thead>
         <tbody>
           {ledgerEntries.length === 0 ? (
             <tr>
-              <td colSpan='7' className='text-center'>
+              <td colSpan='9' className='text-center'>
                 No records found
               </td>
             </tr>
@@ -106,7 +110,11 @@ const Ledger = () => {
                 <td>{entry.narration}</td>
                 <td>{entry.debitAccount}</td>
                 <td>{entry.creditAccount}</td>
-                <td>₹ {entry.amount.toFixed(2)}</td>
+                <td>₹ {Number(entry.debit).toFixed(2)}</td>
+                {/* <td>₹ {Number(entry.credit).toFixed(2)}</td> */}
+                {/* <td>
+                  ₹ {(Number(entry.debit) - Number(entry.credit)).toFixed(2)}
+                </td> */}
               </tr>
             ))
           )}
@@ -114,13 +122,13 @@ const Ledger = () => {
       </Table>
 
       {/* ✅ Modal Component */}
-      <CustomerModal
+      <VendorModel
         show={showModal}
         onHide={() => setShowModal(false)}
-        onSelect={(c) => setSelectedCustomer(c)}
+        onSelect={(c) => setSelectedVendor(c)}
       />
     </Container>
   );
 };
 
-export default Ledger;
+export default vendorLedger;
