@@ -87,23 +87,6 @@ const BillAdjustmentModal = forwardRef(
       },
     }));
 
-    // const handleChange = (index, field, value) => {
-    //   const updated = [...rows];
-
-    //   updated[index][field] = value;
-
-    //   // ✅ If type is changed to "New Ref", set amount = pending
-    //   if (field === "type" && value === "New Ref") {
-    //     const pendingAmount = amount - totalAdjusted;
-
-    //     if (pendingAmount > 0) {
-    //       updated[index].amount = pendingAmount.toFixed(2);
-    //     }
-    //   }
-
-    //   setRows(updated);
-    // };
-
     const handleChange = (index, field, value) => {
       const updated = [...rows];
 
@@ -194,22 +177,37 @@ const BillAdjustmentModal = forwardRef(
     const handleSave = async () => {
       console.log("📦 Saving payload:", selectedVendorId, pending);
 
+      // Jo type user ne select kiya hai woh dekho — pehle row ka hi enough hai
+      const selectedType = rows[0].type;
+
       const payload = {
         vendorId: selectedVendorId,
-        amount: amount,
+        amount: amount, // Same for both
       };
 
       try {
-        const res = await axiosInstance.post(
-          "/purchase/adjust-vendor-direct",
-          payload
-        );
+        let res;
+
+        if (selectedType === "New Ref") {
+          res = await axiosInstance.post(
+            "/purchase/adjust-vendor-direct",
+            payload
+          );
+        } else if (selectedType === "Clear") {
+          res = await axiosInstance.post(
+            "/purchase/clear-vendor-pending",
+            payload
+          );
+        } else {
+          alert("⚠️ Please select valid type (New Ref or Clear).");
+          return;
+        }
 
         if (res.status !== 200) throw new Error("Server error");
 
-        alert("✅ Payment adjusted successfully");
+        alert("✅ Adjustment saved successfully!");
         onHide();
-        navigate("/ledger");
+        // navigate("/ledger");
       } catch (error) {
         console.error("❌ Error saving adjustment:", error.message);
         alert("Failed to save adjustment");

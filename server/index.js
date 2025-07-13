@@ -40,7 +40,9 @@ mongoose
 app.use(express.static(path.join(__dirname, "public")));
 // app.use("public", express.static(path.join(__dirname, "public/Images")));
 
-app.use("/payment", require("./Routes/payment.routes"));
+app.use("/api/vendor/ledger", require("./Routes/ledger.routes"));
+app.use("/api/ledger", require("./Routes/CustomerledgerRoute"));
+app.use("/api/invoices", require("./Routes/customerBillroute"));
 // app.use("/api/firm", FirmRoute);
 app.use("/api/company", CompanyRoute);
 app.use("/api/category", CategoryRoute);

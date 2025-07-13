@@ -496,26 +496,32 @@ const Navbarfrist = () => {
           </div>
 
           {/*Ledger Account */}
-          {/* <div className='dropdown mt-2'>
+          <div className='dropdown mt-2'>
             <button
               onClick={() => toggleDropdown("ledger")}
-              className='btn  text-white w-100 text-start d-flex align-items-center gap-2'
+              className='btn text-white w-100 text-start d-flex align-items-center gap-2'
             >
-              <FiLayers /> Ledger Account <FiChevronDown size={12} />
+              <FiLayers /> Ledger <FiChevronDown size={12} />
             </button>
             {openDropdown === "ledger" && (
               <div className='ps-3 colored'>
                 <Link
-                  to='/test'
-                  style={navLinkStyle("/test")}
+                  to='/ledger'
+                  style={navLinkStyle("/ledger")}
                   onClick={closeSidebar}
                 >
-                  view ledger
+                  Customer Ledger
                 </Link>
-
+                <Link
+                  to='/vendor-ledger'
+                  style={navLinkStyle("/vendor-ledger")}
+                  onClick={closeSidebar}
+                >
+                  Vendor Ledger
+                </Link>
               </div>
             )}
-          </div> */}
+          </div>
 
           {/*Outstanding*/}
           <div className='dropdown mt-2'>

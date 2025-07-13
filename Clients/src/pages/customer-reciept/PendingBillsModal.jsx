@@ -13,9 +13,9 @@ const PendingBillsModal = ({
 }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
 
-  console.log(bills, "LIOM");
+  // console.log(bills, "LIOM");
 
-  const pendingBills = bills || [];
+  const pendingBills = bills.invoices || [];
 
   const navigate = useNavigate();
 
@@ -136,35 +136,20 @@ const PendingBillsModal = ({
   ];
 
   const handleSave = async (id) => {
-    console.log("📦 Saving payload:", id, amountBill);
+    // console.log("📦 Saving payload:", id, amountBill);
 
     const payload = {
-      vendorId: id,
+      invoiceId: id,
       amount: Number(amountBill),
     };
 
     try {
-      // const res = await fetch(
-      //   "https://aadarshagency.onrender.com/api/purchase/adjust-vendor-direct",
-      //   {
-      //     method: "POST",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //     body: JSON.stringify(payload),
-      //   }
-      // );
-
-      // if (!res.ok) throw new Error("Server error");
-
-      const res = await axiosInstance.post(
-        "/purchase/update-pending-amount",
-        payload
-      );
+      const res = await axiosInstance.post("/pro-billing/adjust", payload);
 
       alert("Payment adjusted successfully");
+      console.log("Adjustment response:", res.data);
       onHide();
-      navigate("/ledger");
+      navigate(`/ledger/${res.data?.updatedEntry?._id}`);
     } catch (error) {
       console.error("Error saving adjustment:", error);
       alert("Failed to save adjustment");
@@ -174,7 +159,7 @@ const PendingBillsModal = ({
   return (
     <Modal show={show} onHide={onHide} fullscreen>
       <Modal.Header closeButton>
-        <Modal.Title>Pending Bills</Modal.Title>
+        <Modal.Title>All Bills</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         {pendingBills.length > 0 ? (

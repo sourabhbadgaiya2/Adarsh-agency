@@ -43,7 +43,7 @@ const CustomerForm = () => {
     (state) => state.invoice
   );
 
-  console.log("Invoices by Customer:", invoicesByCustomer);
+  // console.log("Invoices by Customer:", invoicesByCustomer);
 
   const handleOpenPendingBills = (rowIdx) => {
     setPendingRowIndex(rowIdx);
