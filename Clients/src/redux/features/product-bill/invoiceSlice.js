@@ -5,11 +5,15 @@ import {
   fetchInvoices,
   fetchInvoiceById,
   deleteInvoice,
+  fetchInvoicesByCustomer,
+  fetchBalanceByCustomer,
 } from "./invoiceThunks";
 
 const initialState = {
   invoices: [],
   currentInvoice: null,
+  invoicesByCustomer: [],
+  balanceByCustomer: 0,
   loading: false,
   error: null,
 };
@@ -27,6 +31,34 @@ const invoiceSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+
+      // ✅ Invoices
+      .addCase(fetchInvoicesByCustomer.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchInvoicesByCustomer.fulfilled, (state, action) => {
+        state.loading = false;
+        state.invoicesByCustomer = action.payload;
+      })
+      .addCase(fetchInvoicesByCustomer.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      // ✅ Balance
+      .addCase(fetchBalanceByCustomer.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchBalanceByCustomer.fulfilled, (state, action) => {
+        state.loading = false;
+        state.balanceByCustomer = action.payload.balance; // ✅
+      })
+      .addCase(fetchBalanceByCustomer.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
       // ➕ Create
       .addCase(createInvoice.pending, (state) => {
         state.loading = true;

@@ -349,47 +349,6 @@ const CustomerBilling = ({ onDataChange, resetTrigger, onNextFocus }) => {
             />
           </div>
 
-          {/* Credit / Cash Selection */}
-          {/* <div className='form-group col-md-6'>
-            <label>
-              <strong>Billing Type</strong>
-            </label>
-            <select
-              name='billingType'
-              className='form-control'
-              value={formData.billingType || ""}
-              onChange={handleInputChange}
-              onKeyDown={handleKeyDown}
-              required
-            >
-              <option value=''>-- Select --</option>
-              <option value='Credit'>Credit</option>
-              <option value='Cash'>Cash</option>
-            </select>
-          </div> */}
-
-          {/* Payment Mode */}
-          {/* <div className='form-group col-md-6'>
-            <label>
-              <strong>Payment Mode</strong>
-            </label>
-            <select
-              name='paymentMode'
-              className='form-control'
-              value={formData.paymentMode}
-              onChange={handleInputChange}
-              onKeyDown={handleKeyDown}
-              required
-            >
-              <option value=''>-- Select --</option>
-              <option value='Cash'>Cash</option>
-              <option value='Card'>Card</option>
-              <option value='UPI'>UPI</option>
-              <option value='Net Banking'>Net Banking</option>
-              <option value='Cheque'>Cheque</option>
-            </select>
-          </div> */}
-
           <div className='form-group col-md-6'>
             <label>
               <strong>Billing Type</strong>

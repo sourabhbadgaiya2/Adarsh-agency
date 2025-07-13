@@ -37,6 +37,12 @@ const BillAdjustmentModal = forwardRef(
 
     const selectRef = useRef(); // Ref for first dropdown
 
+    const typeMap = {
+      "Adj Ref": "adjustment",
+      "New Ref": "new_ref",
+      Clear: "clear_ref",
+    };
+
     const navigate = useNavigate();
 
     // 🔁 Reset rows when modal is closed
@@ -86,23 +92,6 @@ const BillAdjustmentModal = forwardRef(
         setRows(updated);
       },
     }));
-
-    // const handleChange = (index, field, value) => {
-    //   const updated = [...rows];
-
-    //   updated[index][field] = value;
-
-    //   // ✅ If type is changed to "New Ref", set amount = pending
-    //   if (field === "type" && value === "New Ref") {
-    //     const pendingAmount = amount - totalAdjusted;
-
-    //     if (pendingAmount > 0) {
-    //       updated[index].amount = pendingAmount.toFixed(2);
-    //     }
-    //   }
-
-    //   setRows(updated);
-    // };
 
     const handleChange = (index, field, value) => {
       const updated = [...rows];
@@ -162,12 +151,13 @@ const BillAdjustmentModal = forwardRef(
 
           const payload = {
             amount: Number(pendingAmount.toFixed(2)),
-            vendorId: selectedVendorId,
+            customerId: selectedVendorId,
+            refType: typeMap[selectedType],
           };
 
           try {
             const res = await axiosInstance.post(
-              "/purchase/adjust-vendor-direct",
+              "/pro-billing/adjust-vendor-direct",
               payload
             );
 
@@ -195,21 +185,19 @@ const BillAdjustmentModal = forwardRef(
       console.log("📦 Saving payload:", selectedVendorId, pending);
 
       const payload = {
-        vendorId: selectedVendorId,
+        customerId: selectedVendorId,
         amount: amount,
+        refType: typeMap[rows[0].type], // ✅ pehli row ka type map karo
       };
 
       try {
-        const res = await axiosInstance.post(
-          "/purchase/adjust-vendor-direct",
-          payload
-        );
+        const res = await axiosInstance.post("/pro-billing/new", payload);
 
         if (res.status !== 200) throw new Error("Server error");
-
+        console.log("Response:", res.data);
         alert("✅ Payment adjusted successfully");
         onHide();
-        navigate("/ledger");
+        navigate("/");
       } catch (error) {
         console.error("❌ Error saving adjustment:", error.message);
         alert("Failed to save adjustment");
