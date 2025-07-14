@@ -149,7 +149,7 @@ const PendingBillsModal = ({
       alert("Payment adjusted successfully");
       console.log("Adjustment response:", res.data);
       onHide();
-      navigate(`/ledger/${res.data?.updatedEntry?._id}`);
+      navigate(`/`);
     } catch (error) {
       console.error("Error saving adjustment:", error);
       alert("Failed to save adjustment");

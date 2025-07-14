@@ -207,7 +207,7 @@ const BillAdjustmentModal = forwardRef(
 
         alert("✅ Adjustment saved successfully!");
         onHide();
-        // navigate("/ledger");
+        navigate("/");
       } catch (error) {
         console.error("❌ Error saving adjustment:", error.message);
         alert("Failed to save adjustment");
