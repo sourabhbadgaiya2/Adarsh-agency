@@ -357,7 +357,9 @@ import React, {
 import { Modal, Form, Table } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../Config/axios";
+
 import Header from "./Header";
+
 
 const BillAdjustmentModal = forwardRef(
   (
@@ -564,6 +566,7 @@ const BillAdjustmentModal = forwardRef(
     }, [rows, amount, totalAdjusted, onPendingChange]);
 
     return (
+
       <>
         <Modal show={show} onHide={onHide} fullscreen>
           <Header />
@@ -716,6 +719,126 @@ const BillAdjustmentModal = forwardRef(
           </Modal.Body>
         </Modal>
       </>
+=======
+<>
+
+  <Modal show={show} onHide={onHide} fullscreen>
+   <Header/>
+
+        <Modal.Header style={{ backgroundColor:"#3C6360" }} className="bg-bg-success" closeButton>
+          <Modal.Title className="text-white">Bill Adjustment</Modal.Title>
+        </Modal.Header>
+      <Modal.Body className="px-4 py-3" style={{ fontFamily: "Courier New, monospace" }}>
+  <div className="mb-3">
+    <div className="d-flex justify-content-between">
+      <div>
+        <strong>JYOTI LABS LIMITED-INDORE</strong><br />
+        INDORE SALES DEPO 37-38 LASUDIYA MORI DEWAS NA
+      </div>
+      <div className="text-end">
+        <strong>Amount :</strong> ₹{amount.toFixed(2)} Dr
+      </div>
+    </div>
+  </div>
+
+  <div className="border border-dark" style={{ borderWidth: "2px" }}></div>
+
+  <div className="d-flex text-uppercase fw-bold mt-2 mb-2 px-1" style={{ fontSize: "13px" }}>
+    <div style={{ width: "15%" }}>Type</div>
+    <div style={{ width: "30%" }}>Particulars</div>
+    <div style={{ width: "15%" }}>Due Days</div>
+    <div style={{ width: "15%" }}>Amount</div>
+    <div style={{ width: "15%" }}>Remark</div>
+    <div style={{ width: "15%" }}>Balance</div>
+  </div>
+
+  <div className="border border-dark" style={{ borderWidth: "1px" }}></div>
+
+  {/* Render Table-Like Editable Rows */}
+  {rows.map((row, idx) => (
+    <div className="d-flex align-items-center mb-2 px-1" key={idx}>
+      {/* Type */}
+      <div style={{ width: "15%" }}>
+        <Form.Select
+          size="sm"
+          value={row.type}
+          onChange={(e) => handleChange(idx, "type", e.target.value)}
+          onKeyDown={(e) => handleKeyDown(e, idx)}
+          ref={idx === 0 ? selectRef : null}
+        >
+          <option value="Adj Ref">Adj Ref</option>
+          <option value="New Ref">New Ref</option>
+          <option value="Clear">Clear</option>
+        </Form.Select>
+      </div>
+
+      {/* Particulars */}
+      <div style={{ width: "30%", padding: "0 4px" }}>
+        <Form.Control
+          size="sm"
+          value={row.particulars}
+          onChange={(e) => handleChange(idx, "particulars", e.target.value)}
+          disabled={row.type === "New Ref"}
+        />
+      </div>
+
+      {/* Due Days */}
+      <div style={{ width: "15%", padding: "0 4px" }}>
+        <Form.Control
+          size="sm"
+          type="number"
+          value={row.dueDays}
+          onChange={(e) => handleChange(idx, "dueDays", e.target.value)}
+          disabled={row.type === "New Ref"}
+        />
+      </div>
+
+      {/* Amount */}
+      <div style={{ width: "15%", padding: "0 4px" }}>
+        <Form.Control
+          size="sm"
+          type="number"
+          value={row.amount}
+          onChange={(e) => handleChange(idx, "amount", e.target.value)}
+          onKeyDown={(e) => handleKeyDown(e, idx)}
+          disabled={row.type !== "New Ref"}
+        />
+      </div>
+
+      {/* Remark */}
+      <div style={{ width: "15%", padding: "0 4px" }}>
+        <Form.Control
+          size="sm"
+          value={row.remark}
+          onChange={(e) => handleChange(idx, "remark", e.target.value)}
+          disabled={row.type === "New Ref"}
+        />
+      </div>
+
+      {/* Balance */}
+      <div style={{ width: "15%" }}>
+        <Form.Control
+          size="sm"
+          value={row.balance}
+          onChange={(e) => handleChange(idx, "balance", e.target.value)}
+          disabled={row.type === "New Ref"}
+        />
+      </div>
+    </div>
+  ))}
+
+  <div className="border border-dark mt-2" style={{ borderWidth: "2px" }}></div>
+
+  <div className="d-flex justify-content-end gap-5 mt-2" style={{ fontSize: "14px" }}>
+    <span><strong>ADJUSTED:</strong> ₹{totalAdjusted.toFixed(2)} Dr</span>
+    <span><strong>PENDING:</strong> ₹{pending.toFixed(2)} Dr</span>
+  </div>
+</Modal.Body>
+
+      </Modal>
+</>
+
+
     );
   }
 );

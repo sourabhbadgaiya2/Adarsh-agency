@@ -544,6 +544,7 @@ const CustomerForm = () => {
         H.NO 2, NAGAR NIGAM COLONY COAL & TIMBER MARKET CHHOLA ROAD, BHOPAL
       </p>
       <p className='text-center mb-4'>Period : 01-04-2025 - 31-03-2026</p>
+
       <div className='line mb-3'></div>
 
       <Form>
@@ -626,6 +627,90 @@ const CustomerForm = () => {
         <hr />
       </Form>
 
+  <div className="line mb-3"></div>
+      
+
+      <Form>
+  <Row className="mb-4">
+    {/* Left Side */}
+    <Col md={6} className="mt-4">
+      {/* Voucher Type */}
+      <Form.Group as={Row} className="mb-3 align-items-center">
+        <Form.Label column sm={4} className="col-form-label">
+          Voucher Type
+        </Form.Label>
+        <Col sm={8}>
+          <Form.Control
+            type="text"
+            defaultValue="Receipt"
+            ref={(el) => (formRefs.current[0] = el)}
+            onKeyDown={(e) => handleKeyDown(e, 0)}
+          />
+        </Col>
+      </Form.Group>
+
+      {/* Voucher No. */}
+      <Form.Group as={Row} className="mb-3 align-items-center">
+        <Form.Label column sm={4} className="col-form-label">
+          Voucher No.
+        </Form.Label>
+        <Col sm={8}>
+          <Form.Control
+            type="text"
+            placeholder="Enter Voucher No."
+            ref={(el) => (formRefs.current[1] = el)}
+            onKeyDown={(e) => handleKeyDown(e, 1)}
+          />
+        </Col>
+      </Form.Group>
+    </Col>
+
+    {/* Right Side */}
+    <Col md={6} className="mt-4">
+      {/* Date */}
+      <Form.Group as={Row} className="mb-3 align-items-center">
+        <Form.Label column sm={4} className="col-form-label">
+          Date{" "}
+          <span style={{ fontSize: "12px", color: "red" }}>
+            (Press Enter to trigger a function)
+          </span>
+        </Form.Label>
+        <Col sm={8}>
+          <Form.Control
+            type="text"
+            name="date"
+            placeholder="DD/MM/YYYY"
+            value={dateValue}
+            onChange={handleDateChange}
+            ref={(el) => (formRefs.current[2] = el)}
+            onKeyDown={(e) => handleKeyDown(e, 2)}
+          />
+        </Col>
+      </Form.Group>
+
+      {/* Day */}
+      <Form.Group as={Row} className="mb-3 align-items-center">
+        <Form.Label column sm={4} className="col-form-label">
+          Day
+        </Form.Label>
+        <Col sm={8}>
+          <Form.Control
+            type="text"
+            value={dayValue}
+            readOnly
+            ref={(el) => (formRefs.current[3] = el)}
+            onKeyDown={(e) => handleKeyDown(e, 3)}
+          />
+        </Col>
+      </Form.Group>
+    </Col>
+  </Row>
+
+  {/* Optional horizontal line */}
+  <hr />
+</Form>
+
+
       <Modal show={showModal} onHide={() => setShowModal(false)} centered>
         <Modal.Header closeButton>
           <Modal.Title>Select Customer</Modal.Title>
@@ -692,6 +777,7 @@ const CustomerForm = () => {
         </Modal.Body>
       </Modal>
 
+
       {selectedCustomer && (
         <>
           <div className='d-flex align-items-center gap-5 mt-4 w-full'>
@@ -721,6 +807,41 @@ const CustomerForm = () => {
             </Form.Group>
           </div>
           <div className='line mt-5'></div>
+
+
+      {selectedCustomer && (
+        <>
+        <div className="d-flex align-items-center gap-5 mt-4 w-full">
+
+          <p className="mb-0">
+            <strong></strong> {selectedCustomer?.name}
+          </p>
+          <p  className="mb-0">
+            <strong></strong> {selectedCustomer?.city}
+          </p>
+          <p  className="mb-0">
+            <strong>Total Balance:</strong> ₹
+            {balanceByCustomer.toFixed(2) || "0.00"}
+          </p>
+
+          <Form.Group  className=' d-flex ' controlId='formDebit'>
+            <Form.Label column >
+              Debit Amount
+            </Form.Label>
+            <Col >
+              <Form.Control
+                type='number'
+                placeholder='Enter amount'
+                value={debitAmount}
+                ref={(el) => (formRefs.current[4] = el)}
+                onChange={(e) => setDebitAmount(e.target.value)}
+                onKeyDown={(e) => handleKeyDown(e, 4)}
+              />
+            </Col>
+          </Form.Group>
+          </div>
+           <div className="line mt-5"></div>
+
         </>
       )}
 
