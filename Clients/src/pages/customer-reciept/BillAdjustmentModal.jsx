@@ -37,6 +37,12 @@ const BillAdjustmentModal = forwardRef(
 
     const selectRef = useRef(); // Ref for first dropdown
 
+    const typeMap = {
+      "Adj Ref": "adjustment",
+      "New Ref": "new_ref",
+      Clear: "clear_ref",
+    };
+
     const navigate = useNavigate();
 
     // 🔁 Reset rows when modal is closed
@@ -145,12 +151,13 @@ const BillAdjustmentModal = forwardRef(
 
           const payload = {
             amount: Number(pendingAmount.toFixed(2)),
-            vendorId: selectedVendorId,
+            customerId: selectedVendorId,
+            refType: typeMap[selectedType],
           };
 
           try {
             const res = await axiosInstance.post(
-              "/purchase/adjust-vendor-direct",
+              "/pro-billing/adjust-vendor-direct",
               payload
             );
 
@@ -177,35 +184,18 @@ const BillAdjustmentModal = forwardRef(
     const handleSave = async () => {
       console.log("📦 Saving payload:", selectedVendorId, pending);
 
-      // Jo type user ne select kiya hai woh dekho — pehle row ka hi enough hai
-      const selectedType = rows[0].type;
-
       const payload = {
-        vendorId: selectedVendorId,
-        amount: amount, // Same for both
+        customerId: selectedVendorId,
+        amount: amount,
+        refType: typeMap[rows[0].type], // ✅ pehli row ka type map karo
       };
 
       try {
-        let res;
-
-        if (selectedType === "New Ref") {
-          res = await axiosInstance.post(
-            "/purchase/adjust-vendor-direct",
-            payload
-          );
-        } else if (selectedType === "Clear") {
-          res = await axiosInstance.post(
-            "/purchase/clear-vendor-pending",
-            payload
-          );
-        } else {
-          alert("⚠️ Please select valid type (New Ref or Clear).");
-          return;
-        }
+        const res = await axiosInstance.post("/pro-billing/new", payload);
 
         if (res.status !== 200) throw new Error("Server error");
-
-        alert("✅ Adjustment saved successfully!");
+        console.log("Response:", res.data);
+        alert("✅ Payment adjusted successfully");
         onHide();
         navigate("/");
       } catch (error) {

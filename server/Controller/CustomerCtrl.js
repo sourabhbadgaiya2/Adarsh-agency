@@ -33,19 +33,6 @@ exports.getCustomerById = async (req, res) => {
   }
 };
 
-// UPDATE customer
-// exports.updateCustomer = async (req, res) => {
-//   try {
-//     const customer = await Customer.findByIdAndUpdate(req.params.id, req.body, {
-//       new: true,
-//       runValidators: true,
-//     });
-//     if (!customer) return res.status(404).json({ error: "Customer not found" });
-//     res.json(customer);
-//   } catch (err) {
-//     res.status(400).json({ error: err.message });
-//   }
-// };
 exports.updateCustomer = async (req, res) => {
   try {
     // If 'beat' is sent in the request, map it to 'beats'

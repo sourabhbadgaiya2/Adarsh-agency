@@ -17,15 +17,15 @@ body {
   text-transform: uppercase;
 }
 
-.colored{
+.colored {
   padding: 10px !important;
-  background-color: #3F3F46 ;
+  background-color: #3F3F46;
   color: black;
   /* box-shadow: 2px 2px 15px rgb(238, 237, 237, 0.5); */
 }
 
-#border-table{
-border: transparent !important;
+#border-table {
+  border: transparent !important;
 
   /* border-left:1px solid black ;
 border-right: 1px solid black; */

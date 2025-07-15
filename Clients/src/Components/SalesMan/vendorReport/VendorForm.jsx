@@ -1,4 +1,3 @@
-import React, { useEffect, useRef } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
 
 const VendorForm = ({
@@ -51,19 +50,6 @@ const VendorForm = ({
             />
           </Form.Group>
         </Col>
-        <Col md={4} className='mb-3'>
-          <Form.Label>Designation</Form.Label>
-          <Form.Control
-            ref={(el) => (inputRefs.current[2] = el)}
-            onKeyDown={(e) => handleKeyDown(e, 2)}
-            name='designation'
-            placeholder='Designation'
-            value={vendor.designation}
-            onChange={handleChange}
-          />
-        </Col>
-      </Row>
-      <Row className='mt-3'>
         <Col md={4}>
           <Form.Group controlId='vendorMobile'>
             <Form.Label>
@@ -81,7 +67,20 @@ const VendorForm = ({
             />
           </Form.Group>
         </Col>
-        <Col md={4} className='mb-3'>
+        {/* <Col md={4} className='mb-3'>
+          <Form.Label>Designation</Form.Label>
+          <Form.Control
+            ref={(el) => (inputRefs.current[2] = el)}
+            onKeyDown={(e) => handleKeyDown(e, 2)}
+            name='designation'
+            placeholder='Designation'
+            value={vendor.designation}
+            onChange={handleChange}
+          />
+        </Col> */}
+      </Row>
+      <Row className='mt-3'>
+        {/* <Col md={4} className='mb-3'>
           <Form.Label>Alternate Mobile</Form.Label>
           <Form.Control
             ref={(el) => (inputRefs.current[4] = el)}
@@ -91,8 +90,8 @@ const VendorForm = ({
             value={vendor.alternateMobile}
             onChange={handleChange}
           />
-        </Col>
-        <Col md={4}>
+        </Col> */}
+        {/* <Col md={4}>
           <Form.Group controlId='vendorEmail'>
             <Form.Label>Email</Form.Label>
             <Form.Control
@@ -105,10 +104,10 @@ const VendorForm = ({
               placeholder='Enter email'
             />
           </Form.Group>
-        </Col>
+        </Col> */}
       </Row>
       <Row className='mt-3'>
-        <Col md={4} className='mb-3'>
+        {/* <Col md={4} className='mb-3'>
           <Form.Label>WhatsApp No.</Form.Label>
           <Form.Control
             ref={(el) => (inputRefs.current[6] = el)}
@@ -118,7 +117,7 @@ const VendorForm = ({
             value={vendor.whatsapp}
             onChange={handleChange}
           />
-        </Col>
+        </Col> */}
         <Col md={4} className='mb-3'>
           <Form.Label>City</Form.Label>
           <Form.Control

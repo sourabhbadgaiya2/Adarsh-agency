@@ -3,8 +3,6 @@ import { Modal } from "react-bootstrap";
 import DataTable from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../Config/axios";
-import { payAgainstPurchase } from "../../redux/features/purchase/purchaseThunks";
-import { useDispatch } from "react-redux";
 
 const PendingBillsModal = ({
   show,
@@ -15,10 +13,11 @@ const PendingBillsModal = ({
 }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
 
-  const pendingBills = bills;
+  // console.log(bills, "LIOM");
+
+  const pendingBills = bills.invoices || [];
 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   useEffect(() => {
     if (show) {
@@ -55,8 +54,8 @@ const PendingBillsModal = ({
 
   const columns = [
     {
-      name: "INVOICE NO.",
-      selector: (row) => row.invoiceNumber || row.entryNumber || "N/A",
+      name: "Customer Name",
+      selector: (row) => row.customer?.CustomerName || "N/A",
       sortable: true,
     },
     {
@@ -66,11 +65,11 @@ const PendingBillsModal = ({
       cell: (row) => `₹ ${row?.pendingAmount || 0}`,
       right: true,
     },
-    {
-      name: "BILL DATE",
-      selector: (row) => row.billDate || "N/A", // assuming billDate is in YYYY-MM-DD
-      sortable: true,
-    },
+    // {
+    //   name: "BILL DATE",
+    //   selector: (row) => row.billDate || "N/A", // assuming billDate is in YYYY-MM-DD
+    //   sortable: true,
+    // },
     {
       name: "BILL DATE",
       selector: (row) => {
@@ -90,10 +89,38 @@ const PendingBillsModal = ({
       selector: (row) => row.dueDate || "N/A", // assume dueDate field
       sortable: true,
     },
-
+    // {
+    //   name: "DAYS",
+    //   selector: (row) => {
+    //     const today = new Date();
+    //     const due = new Date(row.dueDate);
+    //     const diff = Math.ceil((today - due) / (1000 * 60 * 60 * 24));
+    //     return isNaN(diff) ? "-" : Math.abs(diff);
+    //   },
+    //   center: true,
+    // },
+    // {
+    //   name: "BALANCE",
+    //   selector: (row) => row.balance || 0,
+    //   cell: (row) =>
+    //     `₹ ${Math.abs(row.balance || 0).toLocaleString()} ${
+    //       row.balance >= 0 ? "Dr" : "Cr"
+    //     }`,
+    //   sortable: true,
+    //   right: true,
+    // },
     {
       name: "AMOUNT",
       cell: (row) => (
+        // <button
+        //   className='btn btn-sm btn-primary'
+        //   onClick={() => {
+        //     onBillSelect(row);
+        //     onHide();
+        //   }}
+        // >
+        //   Select
+        // </button>
         <button
           className='btn btn-sm btn-primary'
           onClick={() => {
@@ -109,37 +136,20 @@ const PendingBillsModal = ({
   ];
 
   const handleSave = async (id) => {
-    console.log("📦 Saving payload:", id, amountBill);
+    // console.log("📦 Saving payload:", id, amountBill);
 
     const payload = {
-      vendorId: id,
+      invoiceId: id,
       amount: Number(amountBill),
     };
 
     try {
-      // const res = await axiosInstance.post(
-      //   "/purchase/update-pending-amount",
-      //   payload
-      // );
-
-      // Somewhere in your React Component
-
-      await dispatch(
-        payAgainstPurchase({ purchaseId: id, amount: Number(amountBill) })
-      )
-        .unwrap()
-        .then((res) => {
-          console.log("✅ Payment Success:", res);
-          alert("Payment Done!");
-        })
-        .catch((err) => {
-          console.error("❌ Payment Error:", err);
-          alert(err);
-        });
+      const res = await axiosInstance.post("/pro-billing/adjust", payload);
 
       alert("Payment adjusted successfully");
+      console.log("Adjustment response:", res.data);
       onHide();
-      navigate("/");
+      navigate(`/`);
     } catch (error) {
       console.error("Error saving adjustment:", error);
       alert("Failed to save adjustment");
@@ -149,7 +159,7 @@ const PendingBillsModal = ({
   return (
     <Modal show={show} onHide={onHide} fullscreen>
       <Modal.Header closeButton>
-        <Modal.Title>Pending Bills</Modal.Title>
+        <Modal.Title>All Bills</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         {pendingBills.length > 0 ? (

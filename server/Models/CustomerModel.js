@@ -76,6 +76,9 @@ const customerSchema = new mongoose.Schema(
       type: Number,
       // required: true,
     },
+
+    totalBalance: { type: Number, default: 0 }, // Outstanding across all bills
+    advanceBalance: { type: Number, default: 0 }, // Overpayment stored here
     gstNumber: {
       type: String,
       // required: true,

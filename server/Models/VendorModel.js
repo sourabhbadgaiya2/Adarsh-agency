@@ -17,6 +17,9 @@ const vendorSchema = new mongoose.Schema({
   gstNumber: {
     type: String,
   },
+
+  totalBalance: { type: Number, default: 0 }, // Outstanding across all bills
+  advanceBalance: { type: Number, default: 0 }, // Overpayment stored here
   address: String,
 });
 
