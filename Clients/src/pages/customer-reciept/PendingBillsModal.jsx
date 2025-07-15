@@ -158,7 +158,7 @@ import React, { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../Config/axios";
-import Header from "./header";
+import Header from "./Header";
 // import "./PendingBillsModal.css"; // ✅ Make sure you create this file
 
 const dummyInvoices = [
