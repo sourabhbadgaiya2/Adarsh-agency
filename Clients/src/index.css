@@ -37,7 +37,7 @@ border-right: 1px solid black; */
 .invoice-page td {
 
   margin: 0 !important;
-  padding: 0 5px !important;
+  padding: 0 2px !important;
 }
 
 .auto-width-input {
@@ -473,7 +473,7 @@ table th {
 .sidebar {
 
   width: 260px;
-  min-height: 100vh;
+  /* min-height: 100vh; */
   transition: all 0.3s ease;
 }
 

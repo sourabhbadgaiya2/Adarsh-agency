@@ -152,6 +152,10 @@ const GenerateInvoice = () => {
               width: 100%;
             }
 
+            p{
+            margin:0 ;
+            }
+
             .d-print-none {
               display: none !important;
             }
@@ -180,10 +184,14 @@ const GenerateInvoice = () => {
             margin-top: 20px;
             font-weight: bold;
           }
+
+
+
+
         `}
       </style>
 
-      <div id='print-area'>
+      <div id='print-area' style={{ lineHeight:"1" }}>
         {billingChunks.map((chunk, pageIndex) => (
           <div
             key={pageIndex}
@@ -206,20 +214,24 @@ const GenerateInvoice = () => {
                   marginTop: "0px",
                 }}
               >
-                <p style={{ margin: "0 0 5px 0", fontSize: "14px" }}>
+                <div className="d-flex  mt-2">
+                   <p style={{  marginBottom:"0px", fontSize: "14px" }}>
                   <strong>GSTIN: 23BJUPR9537F1ZK</strong>
                 </p>
 
                 <h2
                   style={{
+                    width:"45%",
                     //fontWeight: "bold",
                     fontSize: "22px",
-                    textAlign: "center",
+                    textAlign: "right",
                     margin: "-3px",
                   }}
                 >
                   SAMRIDDHI ENTERPRISES
                 </h2>
+                </div>
+
 
                 <p
                   style={{
@@ -274,7 +286,7 @@ const GenerateInvoice = () => {
                 <div
                   style={{
                     textAlign: "left",
-                    width: "25%",
+                    width: "30%",
                     display: "flex",
                     flexDirection: "column",
                     gap: "2px",
@@ -306,7 +318,7 @@ const GenerateInvoice = () => {
               <Table
                 bordered
                 className='mt-1 table-sm'
-                style={{ border: "1px solid #000", fontSize: "12px" }}
+                style={{ fontSize: "12px", borderBottom:"none" }}
               >
                 <thead>
                   <tr>
@@ -342,12 +354,12 @@ const GenerateInvoice = () => {
                     ))}
                   </tr>
                 </thead>
-                <tbody>
+                <tbody style={{ borderBottom:"none !important" }}>
                   {chunk.map((item, index) => {
                     const product = productDetails[item.productId?._id] || {};
                     const gst = product?.gstPercent || 0;
                     return (
-                      <tr id="border-table" style={{ border:"none" }} key={index}>
+                      <tr id="border-table" style={{ border:"none", background:"red" }} key={index}>
                         <td
                           style={{
                             borderLeft: "1px solid black",
@@ -364,6 +376,7 @@ const GenerateInvoice = () => {
                             textAlign: "left",
                             paddingLeft: "5px",
                             paddingRight: "5px",
+                            whiteSpace:"nowrap"
                           }}
                         >
                           {item.itemName || "N/A"}
@@ -382,6 +395,7 @@ const GenerateInvoice = () => {
                             borderRight: "1px solid black",
                             textAlign: "right",
                             padding: "2px",
+                             whiteSpace:"nowrap"
                           }}
                         >
                           {product.mrp || 0}
@@ -391,6 +405,7 @@ const GenerateInvoice = () => {
                             borderRight: "1px solid black",
                             textAlign: "right",
                             padding: "2px",
+                            whiteSpace:"nowrap"
                           }}
                         >
                           {item.qty || 0}
@@ -480,19 +495,19 @@ const GenerateInvoice = () => {
                     );
                   })}
 
-                  {chunk.length > 0 && (
-                    <tr style={{ borderBottom: "1px solid black" }}>
+                  {/* {chunk.length > 0 && (
+                    <tr style={{  }}>
                       <td
                         colSpan={14}
                         style={{ height: "1px", padding: 0 }}
                       ></td>
                     </tr>
-                  )}
+                  )} */}
 
 
                     {chunk.length < itemsPerPage &&
   Array.from({ length: itemsPerPage - chunk.length }).map((_, i) => (
-    <tr key={`empty-${i}`}>
+    <tr style={{ border:"none" }} key={`empty-${i}`}>
       {Array.from({ length: 14 }).map((_, j) => (
         <td
           key={j}
@@ -526,9 +541,10 @@ const GenerateInvoice = () => {
                         QTY:{" "}
                       </td>
                       <td
-                        className='p-1'
+                        className='p-1 '
                         style={{
-                          borderBottom: "1px solid black",
+                          whiteSpace:"nowrap",
+                          borderBottom: " 1px solid black",
                           borderTop: "1px solid black",
                         }}
                       >
@@ -541,9 +557,10 @@ const GenerateInvoice = () => {
                           borderRight: "1px solid black",
                           borderTop: "1px solid black",
                           textAlign: "center",
+                            whiteSpace:"nowrap"
                         }}
                       >
-                        PCS : {totals.totalQty || 0}
+                        PCS:{totals.totalQty || 0}
                       </td>
                       <td
                         style={{ textAlign: "right" }}
@@ -608,7 +625,7 @@ const GenerateInvoice = () => {
                   className='invoice-footer '
                   style={{
                     display: "flex",
-                    padding: "5px",
+                    padding: "2px",
                     paddingBottom: "0",
                     marginTop: "-16px",
                     fontSize: "11px",
@@ -616,10 +633,11 @@ const GenerateInvoice = () => {
                     border: "1px solid black",
                     borderTop: "0",
                     width: "100%",
+                    whiteSpace:"nowrap"
                   }}
                 >
                   <div>
-                    <p style={{ marginBottom: "0" }}>
+                    <p style={{ marginBottom: "0", whiteSpace:"nowrap" }}>
                       Goods once sold will not be taken back
                     </p>
                     <p style={{ marginBottom: "0" }}>
@@ -673,7 +691,7 @@ const GenerateInvoice = () => {
                   }}
                 >
                   <div>
-                    <p style={{ marginBottom: "0" }}>
+                    <p style={{ marginBottom: "0", whiteSpace:"nowrap" }}>
                       Goods once sold will not be taken back
                     </p>
                     <p style={{ marginBottom: "0" }}>
@@ -683,7 +701,7 @@ const GenerateInvoice = () => {
                     <p style={{ marginBottom: "0" }}>
                       Subject to Bhopal jurisdiction/-
                     </p>
-                    <p>E.&.O.E</p>
+                    <p className="mb-0">E.&.O.E</p>
                   </div>
                   {/* //!SGST */}
                   <div
@@ -695,7 +713,7 @@ const GenerateInvoice = () => {
                     }}
                   >
                     {Object.entries(gstSummary).map(([rate, value]) => (
-                      <p style={{ margin: "0", padding: "2px" }} key={rate}>
+                      <p style={{ margin: "0", padding: "2px", whiteSpace:"nowrap" }} key={rate}>
                         {rate}%: SGST {value.sgst.toFixed(2)}, CGST{" "}
                         {value.cgst.toFixed(2)} ={" "}
                         {(value.sgst + value.cgst).toFixed(2)} /{" "}
@@ -707,6 +725,7 @@ const GenerateInvoice = () => {
                         borderTop: "1px solid black",
                         paddingLeft: "5px",
                         paddingTop: "8px",
+                        marginBottom:"0",
                         borderTopStyle: "dashed",
                       }}
                     >

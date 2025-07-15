@@ -9,7 +9,7 @@ const Layout = () => {
       <Navbarfrist />
       <div
         className='flex-grow-1 mt-5 p-3'
-        style={{ backgroundColor: "#f5f6fa", minHeight: "100vh" }}
+        style={{ backgroundColor: "#f5f6fa",  }}
       >
         <Outlet />
       </div>
