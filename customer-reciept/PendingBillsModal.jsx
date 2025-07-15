@@ -1,4 +1,5 @@
 
+// export default PendingBillsModal;
 import React, { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
@@ -112,19 +113,6 @@ const PendingBillsModal = ({
 
   return (
     <Modal show={show} onHide={onHide} fullscreen>
-
-      <Header />
-      <Modal.Header
-        style={{ backgroundColor: "#3C6360" }}
-        closeButton
-        className='bg-bg-success'
-      >
-        <Modal.Title className='text-white'>PENDING INVOICE</Modal.Title>
-      </Modal.Header>
-      <Modal.Body className='pending-modal-body'>
-        <div className='pending-table-wrapper'>
-          <div className='pending-table-header'>
-
       <Header/>
       <Modal.Header style={{ backgroundColor:"#3C6360" }} closeButton className="bg-bg-success">
         <Modal.Title className="text-white">PENDING INVOICE</Modal.Title>
@@ -132,7 +120,6 @@ const PendingBillsModal = ({
       <Modal.Body className="pending-modal-body">
         <div className="pending-table-wrapper">
           <div className="pending-table-header">
-
             <span>INVOICE NO.</span>
             <span>INV. AMOUNT</span>
             <span>BILL DATE</span>
@@ -148,13 +135,7 @@ const PendingBillsModal = ({
               const daysDiff = (() => {
                 const billDate = new Date(bill?.billDate);
                 const dueDate = new Date(bill?.dueDate);
-
-                const diff = Math.floor(
-                  (dueDate - billDate) / (1000 * 60 * 60 * 24)
-                );
-
                 const diff = Math.floor((dueDate - billDate) / (1000 * 60 * 60 * 24));
-
                 return isNaN(diff) ? "-" : diff;
               })();
               return (
@@ -163,20 +144,6 @@ const PendingBillsModal = ({
                   className={`pending-row ${isSelected ? "active-row" : ""}`}
                 >
                   <span>{bill?.invoiceNo}</span>
-
-                  <span>
-                    {balance.toFixed(2)} {bill?.type}
-                  </span>
-                  <span>{formatDate(bill?.billDate)}</span>
-                  <span>{formatDate(bill?.dueDate)}</span>
-                  <span>{daysDiff}</span>
-                  <span>
-                    {balance.toFixed(2)} {bill?.type}
-                  </span>
-                  <span>
-                    <button
-                      className='select-btn'
-
                   <span>{balance.toFixed(2)} {bill?.type}</span>
                   <span>{formatDate(bill?.billDate)}</span>
                   <span>{formatDate(bill?.dueDate)}</span>
@@ -185,7 +152,6 @@ const PendingBillsModal = ({
                   <span>
                     <button
                       className="select-btn"
-
                       onClick={() => {
                         handleSave(bill._id);
                         onHide();
@@ -198,11 +164,7 @@ const PendingBillsModal = ({
               );
             })
           ) : (
-
-            <div className='pending-empty'>No pending bills available.</div>
-
             <div className="pending-empty">No pending bills available.</div>
-
           )}
         </div>
       </Modal.Body>

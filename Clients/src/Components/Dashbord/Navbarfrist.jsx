@@ -458,15 +458,6 @@ const Navbarfrist = () => {
             )} */}
           </div>
 
-           <Link
-            to='#'
-            style={navLinkStyle("/")}
-            onClick={closeSidebar}
-            className='d-flex align-items-center gap-2'
-          >
-            <FiLayers />Today Gross Profit
-          </Link>
-
 
 
           {/* Billing */}
