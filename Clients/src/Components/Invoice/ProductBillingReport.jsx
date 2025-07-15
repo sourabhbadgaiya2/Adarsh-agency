@@ -465,6 +465,26 @@ const ProductBillingReport = ({ onBillingDataChange }, ref) => {
     }
   };
 
+  //!
+  const getVirtualStockMap = () => {
+    // Create a map of productId -> totalQtyInRows
+    const usedQtyMap = {};
+    rows.forEach((row) => {
+      if (row.product && row.Qty) {
+        const pid = row.product._id;
+        usedQtyMap[pid] = (usedQtyMap[pid] || 0) + parseFloat(row.Qty || 0);
+      }
+    });
+    // Return a map of productId -> availableQty - usedQtyInRows
+    const stockMap = {};
+    products.forEach((prod) => {
+      stockMap[prod._id] = prod.availableQty - (usedQtyMap[prod._id] || 0);
+    });
+    return stockMap;
+  };
+
+  const virtualStockMap = getVirtualStockMap();
+
   return (
     <div
       className='mt-4'
@@ -766,7 +786,8 @@ const ProductBillingReport = ({ onBillingDataChange }, ref) => {
                   >
                     <td>{product.productName}</td>
                     <td>{product.hsnCode}</td>
-                    <td>{product.availableQty}</td>
+                    {/* <td>{product.availableQty}</td> */}
+                    <td>{virtualStockMap[product._id]}</td>
                     <td>{product.salesRate}</td>
                   </tr>
                 ))}
