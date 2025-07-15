@@ -8,7 +8,7 @@ const path = require("path");
 
 app.use(
   cors({
-    origin: ["https://adarsh-agency.vercel.app", "http://localhost:5173"],
+    origin: ["https://adarsh-new.vercel.app", "http://localhost:5173"],
     methods: ["GET", "POST", "PUT", "DELETE"], // allowed methods
     credentials: true, // if you're using cookies/auth headers
   })
