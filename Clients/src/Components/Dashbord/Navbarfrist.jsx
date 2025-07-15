@@ -1,182 +1,4 @@
-// import React, { useState } from "react";
-// import { Navbar, Container, Nav, Dropdown } from "react-bootstrap";
-// import { Link } from "react-router-dom";
-// import { FiGrid, FiLayers, FiChevronDown, FiMenu } from "react-icons/fi";
-// import "bootstrap/dist/css/bootstrap.min.css";
 
-// const Navbarfristn = () => {
-//   const [expanded, setExpanded] = useState(false);
-
-//   const [activeDropdown, setActiveDropdown] = useState("");
-
-//   return (
-//     <div className='vpfinancial-navbar'>
-//       <div className='blue-header   py-2'>
-//         <Container>
-//           <h1 className='brand-title mb-0'>
-//             Aadarsh
-//             <span style={{ color: "orange", backgroundColor: "white" }}>
-//               Agency
-//             </span>
-//           </h1>
-//         </Container>
-//       </div>
-
-//       <div className='dashboard-section p-4 '>
-//         <Container>
-//           <div className='dashboard-header d-flex justify-content-between align-items-center'>
-//             <h2 className='dashboard-title m-0'>Dashboard</h2>
-//             <div className='breadcrumb'>Aadarsh &gt; Dashboard</div>
-//           </div>
-//         </Container>
-//       </div>
-
-//       <Navbar
-//         bg='white'
-//         expand='lg'
-//         className='main-navigation border-top border-bottom'
-//         expanded={expanded}
-//         onToggle={() => setExpanded(!expanded)}
-//       >
-//         <Container fluid>
-//           <Navbar.Toggle
-//             aria-controls='main-navbar-nav'
-//             className='navbar-toggler-custom'
-//           >
-//             <FiMenu className='toggle-icon' />
-//           </Navbar.Toggle>
-
-//           <Navbar.Collapse id='main-navbar-nav'>
-//             <Nav className='me-auto gap-4'>
-//               <Nav.Link as={Link} to='/' className='nav-item'>
-//                 <FiGrid className='nav-icon' />
-//                 <span className='nav-text'>Dashboard</span>
-//               </Nav.Link>
-
-//               {/* Master */}
-//               <Dropdown as={Nav.Item} className='nav-item dropdown-hover'>
-//                 <Dropdown.Toggle as={Nav.Link}>
-//                   <FiLayers className='nav-icon' />
-//                   Master <FiChevronDown size={12} className='ms-1' />
-//                 </Dropdown.Toggle>
-//                 <Dropdown.Menu
-//                   className='custom-dropdown p-4'
-//                   style={{ minWidth: "500px" }}
-//                 >
-//                   <div className='row'>
-//                     {/* Brand */}
-//                     <div className='col-md-4'>
-//                       {/* <Dropdown.Item as={Link} to="/add-company">
-//                         Add Company
-//                       </Dropdown.Item> */}
-//                       <Dropdown.Item as={Link} to='/brand'>
-//                         Brand
-//                       </Dropdown.Item>
-//                       <Dropdown.Item as={Link} to='/product'>
-//                         Product
-//                       </Dropdown.Item>
-//                       <Dropdown.Item as={Link} to='/Vendor-report'>
-//                         Vendor
-//                       </Dropdown.Item>
-
-//                       {/* <Dropdown.Item as={Link} to="/pro-categories">
-//                         Product Category
-//                       </Dropdown.Item>
-//                       <Dropdown.Item as={Link} to="/pro-SubCat">
-//                         Product SubCategory
-//                       </Dropdown.Item> */}
-//                     </div>
-
-//                     {/* Product Master */}
-//                     <div className='col-md-4'>
-//                       <Dropdown.Item as={Link} to='/add-customer'>
-//                         Customer
-//                       </Dropdown.Item>
-//                       <Dropdown.Item as={Link} to='/add-salesman'>
-//                         Sales Man
-//                       </Dropdown.Item>
-
-//                       {/* <Dropdown.Item as={Link} to='/display-salesman'>
-//                         View Sales Man
-//                       </Dropdown.Item> */}
-//                       {/* <Dropdown.Item as={Link} to="/display-billing-report">
-//                         Product Billing Report
-//                       </Dropdown.Item> */}
-//                     </div>
-//                   </div>
-//                 </Dropdown.Menu>
-//               </Dropdown>
-
-//               {/* Purchasing */}
-//               <Dropdown as={Nav.Item} className='nav-item dropdown-hover'>
-//                 <Dropdown.Toggle as={Nav.Link}>
-//                   <FiLayers className='nav-icon' />
-//                   Purchasing <FiChevronDown size={12} className='ms-1' />
-//                 </Dropdown.Toggle>
-//                 <Dropdown.Menu
-//                   className='custom-dropdown p-4'
-//                   style={{ minWidth: "200px" }}
-//                 >
-//                   <div className='row'>
-//                     <div className='col-md-4'>
-//                       <Dropdown.Item as={Link} to='/purchase'>
-//                         Purchase
-//                       </Dropdown.Item>
-//                     </div>
-//                   </div>
-//                 </Dropdown.Menu>
-//               </Dropdown>
-
-//               {/*Billing Product Invoice  */}
-//               <Dropdown as={Nav.Item} className='nav-item dropdown-hover'>
-//                 <Dropdown.Toggle as={Nav.Link}>
-//                   <FiLayers className='nav-icon' />
-//                   Billing <FiChevronDown size={12} className='ms-1' />
-//                 </Dropdown.Toggle>
-//                 <Dropdown.Menu
-//                   className='custom-dropdown p-4'
-//                   style={{ minWidth: "300px" }}
-//                 >
-//                   <div className='row'>
-//                     <div className='col-md-4'>
-//                       {/* Invoice */}
-//                       <Dropdown.Item as={Link} to='/add-invoice'>
-//                         Add New Billing
-//                       </Dropdown.Item>
-
-//                       <Dropdown.Item as={Link} to='/display-invoice'>
-//                         View Billing
-//                       </Dropdown.Item>
-//                     </div>
-//                   </div>
-//                 </Dropdown.Menu>
-//               </Dropdown>
-
-//               {/* Report */}
-//               <Dropdown as={Nav.Item} className='nav-item dropdown-hover'>
-//                 <Dropdown.Toggle as={Nav.Link}>
-//                   <FiLayers className='nav-icon' />
-//                   Report
-//                   <FiChevronDown size={12} className='ms-1' />
-//                 </Dropdown.Toggle>
-//                 <Dropdown.Menu
-//                   className='custom-dropdown p-4'
-//                   style={{ minWidth: "300px" }}
-//                 >
-//                   <div className='row'>
-//                     <div className='col-md-2'></div>
-//                   </div>
-//                 </Dropdown.Menu>
-//               </Dropdown>
-//             </Nav>
-//           </Navbar.Collapse>
-//         </Container>
-//       </Navbar>
-//     </div>
-//   );
-// };
-
-// export default Navbarfristn;
 
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
@@ -312,14 +134,13 @@ const Navbarfrist = () => {
                   Customer
                 </Link>
 
-                 <Link
+                <Link
                   to='/add-salesman'
                   style={navLinkStyle("/add-salesman")}
                   onClick={closeSidebar}
                 >
                   Sales Man
                 </Link>
-
               </div>
             )}
           </div>
@@ -333,8 +154,7 @@ const Navbarfrist = () => {
               <FiLayers /> Sales <FiChevronDown size={12} />
             </button>
             {openDropdown === "sales" && (
-              <div  className='ps-3 colored'>
-
+              <div className='ps-3 colored1'>
                 <Link
                   to='/add-invoice'
                   style={navLinkStyle("/add-invoice")}
@@ -360,8 +180,7 @@ const Navbarfrist = () => {
             )}
           </div>
 
-
-             <Link
+          <Link
             to='/purchase'
             style={navLinkStyle("/purchase")}
             onClick={closeSidebar}
@@ -393,12 +212,18 @@ const Navbarfrist = () => {
 
           {/*Reciept  */}
           <div className='dropdown mt-2'>
-            <button
+            {/* <button
               onClick={() => toggleDropdown("reciept")}
               className='btn  text-white w-100 text-start d-flex align-items-center gap-2'
+            ></button> */}
+            <Link
+              to='/report'
+              style={navLinkStyle("/report")}
+              onClick={closeSidebar}
+              className='d-flex align-items-center gap-2'
             >
-              <FiLayers /> Reciept <FiChevronDown size={12} />
-            </button>
+              <FiLayers /> Reciept
+            </Link>
             {/* {openDropdown === "reciept" && (
               <div className='ps-3 colored'>
                 <Link
@@ -419,8 +244,7 @@ const Navbarfrist = () => {
             )} */}
           </div>
 
-
-            <Link
+          <Link
             to='/test'
             style={navLinkStyle("/test")}
             onClick={closeSidebar}
@@ -494,26 +318,32 @@ const Navbarfrist = () => {
           </div>
 
           {/*Ledger Account */}
-          {/* <div className='dropdown mt-2'>
+          <div className='dropdown mt-2'>
             <button
               onClick={() => toggleDropdown("ledger")}
-              className='btn  text-white w-100 text-start d-flex align-items-center gap-2'
+              className='btn text-white w-100 text-start d-flex align-items-center gap-2'
             >
-              <FiLayers /> Ledger Account <FiChevronDown size={12} />
+              <FiLayers /> Ledger <FiChevronDown size={12} />
             </button>
             {openDropdown === "ledger" && (
-              <div className='ps-3 colored'>
+              <div className='ps-3 colored2'>
                 <Link
-                  to='/test'
-                  style={navLinkStyle("/test")}
+                  to='/ledger'
+                  style={navLinkStyle("/ledger")}
                   onClick={closeSidebar}
                 >
-                  view ledger
+                  Customer Ledger
                 </Link>
-
+                <Link
+                  to='/vendor-ledger'
+                  style={navLinkStyle("/vendor-ledger")}
+                  onClick={closeSidebar}
+                >
+                  Vendor Ledger
+                </Link>
               </div>
             )}
-          </div> */}
+          </div>
 
           {/*Outstanding*/}
           <div className='dropdown mt-2'>
@@ -628,34 +458,16 @@ const Navbarfrist = () => {
             )} */}
           </div>
 
-          {/*Today Gross Profit*/}
-          <div className='dropdown mt-2'>
-            <button
-              onClick={() => toggleDropdown("grossprofit")}
-              className='btn  text-white w-100 text-start d-flex align-items-center gap-2'
-            >
-              <FiLayers />
-              Today Gross Profit <FiChevronDown size={12} />
-            </button>
-            {/* {openDropdown === "grossprofit" && (
-              <div className='ps-3 colored'>
-                <Link
-                  to='/add-invoice'
-                  style={navLinkStyle("/add-invoice")}
-                  onClick={closeSidebar}
-                >
-                  Add New Billing
-                </Link>
-                <Link
-                  to='/display-invoice'
-                  style={navLinkStyle("/display-invoice")}
-                  onClick={closeSidebar}
-                >
-                  View Billing
-                </Link>
-              </div>
-            )} */}
-          </div>
+           <Link
+            to='#'
+            style={navLinkStyle("/")}
+            onClick={closeSidebar}
+            className='d-flex align-items-center gap-2'
+          >
+            <FiLayers />Today Gross Profit
+          </Link>
+
+
 
           {/* Billing */}
           <div className='dropdown mt-2'>

@@ -2,7 +2,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../../../Config/axios";
 
-const API_URL = "/api/customer";
+const API_URL = "/customer";
 
 // Utility to extract error message
 const getErrorMessage = (error) => {
@@ -20,6 +20,7 @@ export const fetchCustomers = createAsyncThunk(
       const response = await axios.get(API_URL);
       return response.data;
     } catch (error) {
+      console.log(error);
       return rejectWithValue(getErrorMessage(error));
     }
   }

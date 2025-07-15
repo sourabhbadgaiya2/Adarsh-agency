@@ -23,8 +23,9 @@ import CustomerDetail from "../Components/Customer/CustomerDetail";
 import FirmDetail from "../Components/Firm/FirmDetail";
 import Test from "../Components/Test";
 import PaymentVoucherForm from "../Components/payment/PaymentVoucherForm";
-import Ledger from "../Components/payment/Ledger";
-
+import Ledger from "../pages/customer-reciept/Ledger";
+import CustomerForm from "../pages/customer-reciept/CustomerForm";
+import VendorLedger from "../Components/payment/vendorLedger";
 const AppRoutes = () => {
   return (
     <Routes>
@@ -47,7 +48,9 @@ const AppRoutes = () => {
         <Route path='/add-customer' element={<CustomerDetail />} />
 
         <Route path='/test' element={<PaymentVoucherForm />} />
+        <Route path='/report' element={<CustomerForm />} />
         <Route path='/ledger' element={<Ledger />} />
+        <Route path='/vendor-ledger' element={<VendorLedger />} />
       </Route>
     </Routes>
   );

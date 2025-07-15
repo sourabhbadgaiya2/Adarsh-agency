@@ -366,22 +366,6 @@ const ProductBillingReport = ({ onBillingDataChange }, ref) => {
       return;
     }
 
-    // if (isEscape) {
-    //   e.preventDefault();
-
-    //   const prev = allFocusable[currentIndex - 1];
-    //   if (prev) {
-    //     prev.focus();
-    //   } else {
-    //     if (selectRef.current) {
-    //       selectRef.current.focus();
-    //     } else {
-    //       console.log("Select ref not ready");
-    //     }
-    //   }
-    //   return;
-    // }
-
     if (isEscape) {
       e.preventDefault();
 
@@ -481,6 +465,26 @@ const ProductBillingReport = ({ onBillingDataChange }, ref) => {
     }
   };
 
+  //!
+  const getVirtualStockMap = () => {
+    // Create a map of productId -> totalQtyInRows
+    const usedQtyMap = {};
+    rows.forEach((row) => {
+      if (row.product && row.Qty) {
+        const pid = row.product._id;
+        usedQtyMap[pid] = (usedQtyMap[pid] || 0) + parseFloat(row.Qty || 0);
+      }
+    });
+    // Return a map of productId -> availableQty - usedQtyInRows
+    const stockMap = {};
+    products.forEach((prod) => {
+      stockMap[prod._id] = prod.availableQty - (usedQtyMap[prod._id] || 0);
+    });
+    return stockMap;
+  };
+
+  const virtualStockMap = getVirtualStockMap();
+
   return (
     <div
       className='mt-4'
@@ -533,6 +537,7 @@ const ProductBillingReport = ({ onBillingDataChange }, ref) => {
               ))}
             </tr>
           </thead>
+          {/* //! Form Inputs */}
           <tbody>
             {rows.map((row, rowIndex) => (
               <tr key={rowIndex} onKeyDown={(e) => handleKeyDown(e, rowIndex)}>
@@ -624,6 +629,8 @@ const ProductBillingReport = ({ onBillingDataChange }, ref) => {
                         }}
                       />
                     ) : [
+                        "Sch",
+                        "CD", //! enter this line
                         "SchAmt",
                         "CDAmt",
                         "Total",
@@ -631,10 +638,33 @@ const ProductBillingReport = ({ onBillingDataChange }, ref) => {
                         "Basic",
                       ].includes(field) ? (
                       <input
-                        type='number'
+                        type='text'
                         className='form-control'
                         value={row[field]}
-                        readOnly
+                        onFocus={() => {
+                          if (row[field] === "0.00" || row[field] === 0) {
+                            handleChange(rowIndex, field, "");
+                          }
+                        }}
+                        onBlur={() => {
+                          let val = parseFloat(row[field]);
+                          if (isNaN(val)) val = 0;
+                          handleChange(rowIndex, field, val.toFixed(2));
+                        }}
+                        onChange={(e) => {
+                          let value = e.target.value;
+
+                          // सिर्फ नंबर और एक dot allow
+                          if (!/^\d*\.?\d*$/.test(value)) return;
+
+                          //  max 2 decimals
+                          if (value.includes(".")) {
+                            const [int, dec] = value.split(".");
+                            if (dec.length > 2) return;
+                          }
+
+                          handleChange(rowIndex, field, value);
+                        }}
                       />
                     ) : field === "GST" ? (
                       <input
@@ -756,7 +786,8 @@ const ProductBillingReport = ({ onBillingDataChange }, ref) => {
                   >
                     <td>{product.productName}</td>
                     <td>{product.hsnCode}</td>
-                    <td>{product.availableQty}</td>
+                    {/* <td>{product.availableQty}</td> */}
+                    <td>{virtualStockMap[product._id]}</td>
                     <td>{product.salesRate}</td>
                   </tr>
                 ))}

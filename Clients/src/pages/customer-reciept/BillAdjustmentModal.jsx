@@ -8,6 +8,7 @@ import React, {
 import { Modal, Form, Table } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../Config/axios";
+import Header from "./header";
 
 const BillAdjustmentModal = forwardRef(
   (
@@ -36,6 +37,12 @@ const BillAdjustmentModal = forwardRef(
     const [cashDiscount, setCashDiscount] = useState(0);
 
     const selectRef = useRef(); // Ref for first dropdown
+
+    const typeMap = {
+      "Adj Ref": "adjustment",
+      "New Ref": "new_ref",
+      Clear: "clear_ref",
+    };
 
     const navigate = useNavigate();
 
@@ -145,12 +152,13 @@ const BillAdjustmentModal = forwardRef(
 
           const payload = {
             amount: Number(pendingAmount.toFixed(2)),
-            vendorId: selectedVendorId,
+            customerId: selectedVendorId,
+            refType: typeMap[selectedType],
           };
 
           try {
             const res = await axiosInstance.post(
-              "/purchase/adjust-vendor-direct",
+              "/pro-billing/adjust-vendor-direct",
               payload
             );
 
@@ -177,35 +185,18 @@ const BillAdjustmentModal = forwardRef(
     const handleSave = async () => {
       console.log("📦 Saving payload:", selectedVendorId, pending);
 
-      // Jo type user ne select kiya hai woh dekho — pehle row ka hi enough hai
-      const selectedType = rows[0].type;
-
       const payload = {
-        vendorId: selectedVendorId,
-        amount: amount, // Same for both
+        customerId: selectedVendorId,
+        amount: amount,
+        refType: typeMap[rows[0].type], // ✅ pehli row ka type map karo
       };
 
       try {
-        let res;
-
-        if (selectedType === "New Ref") {
-          res = await axiosInstance.post(
-            "/purchase/adjust-vendor-direct",
-            payload
-          );
-        } else if (selectedType === "Clear") {
-          res = await axiosInstance.post(
-            "/purchase/clear-vendor-pending",
-            payload
-          );
-        } else {
-          alert("⚠️ Please select valid type (New Ref or Clear).");
-          return;
-        }
+        const res = await axiosInstance.post("/pro-billing/new", payload);
 
         if (res.status !== 200) throw new Error("Server error");
-
-        alert("✅ Adjustment saved successfully!");
+        console.log("Response:", res.data);
+        alert("✅ Payment adjusted successfully");
         onHide();
         navigate("/");
       } catch (error) {
@@ -224,133 +215,124 @@ const BillAdjustmentModal = forwardRef(
     }, [rows, amount, totalAdjusted, onPendingChange]);
 
     return (
-      <Modal show={show} onHide={onHide} fullscreen>
-        <Modal.Header closeButton>
-          <Modal.Title>Bill Adjustment</Modal.Title>
+<>
+
+  <Modal show={show} onHide={onHide} fullscreen>
+   <Header/>
+
+        <Modal.Header style={{ backgroundColor:"#3C6360" }} className="bg-bg-success" closeButton>
+          <Modal.Title className="text-white">Bill Adjustment</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          <p>
-            <strong>Amount:</strong> ₹{amount.toFixed(2)} Dr
-          </p>
+      <Modal.Body className="px-4 py-3" style={{ fontFamily: "Courier New, monospace" }}>
+  <div className="mb-3">
+    <div className="d-flex justify-content-between">
+      <div>
+        <strong>JYOTI LABS LIMITED-INDORE</strong><br />
+        INDORE SALES DEPO 37-38 LASUDIYA MORI DEWAS NA
+      </div>
+      <div className="text-end">
+        <strong>Amount :</strong> ₹{amount.toFixed(2)} Dr
+      </div>
+    </div>
+  </div>
 
-          <Table bordered size='sm'>
-            <thead>
-              <tr>
-                <th>Type</th>
-                <th>Particulars</th>
-                <th>Due Days</th>
-                <th>Amount</th>
-                <th>Remark</th>
-                <th>Balance</th>
-              </tr>
-            </thead>
+  <div className="border border-dark" style={{ borderWidth: "2px" }}></div>
 
-            <tbody>
-              {rows.map((row, idx) => (
-                <tr key={idx}>
-                  {/* TYPE */}
-                  <td>
-                    <Form.Control
-                      as='select'
-                      ref={idx === 0 ? selectRef : null}
-                      value={row.type || ""}
-                      onFocus={() => setFocusedRowIndex(idx)}
-                      onChange={(e) =>
-                        handleChange(idx, "type", e.target.value)
-                      }
-                      onKeyDown={(e) => handleKeyDown(e, idx)}
-                    >
-                      <option value='Adj Ref'>Adj Ref</option>
-                      <option value='New Ref'>New Ref</option>
-                      <option value='Clear'>Clear</option>
-                    </Form.Control>
-                  </td>
+  <div className="d-flex text-uppercase fw-bold mt-2 mb-2 px-1" style={{ fontSize: "13px" }}>
+    <div style={{ width: "15%" }}>Type</div>
+    <div style={{ width: "30%" }}>Particulars</div>
+    <div style={{ width: "15%" }}>Due Days</div>
+    <div style={{ width: "15%" }}>Amount</div>
+    <div style={{ width: "15%" }}>Remark</div>
+    <div style={{ width: "15%" }}>Balance</div>
+  </div>
 
-                  {/* PARTICULARS */}
-                  <td>
-                    <Form.Control
-                      value={row.particulars || ""}
-                      onChange={(e) =>
-                        handleChange(idx, "particulars", e.target.value)
-                      }
-                      disabled={row.type === "New Ref"}
-                    />
-                  </td>
+  <div className="border border-dark" style={{ borderWidth: "1px" }}></div>
 
-                  {/* DUE DAYS */}
-                  <td>
-                    <Form.Control
-                      type='number'
-                      value={row.dueDays || ""}
-                      onChange={(e) =>
-                        handleChange(idx, "dueDays", e.target.value)
-                      }
-                      disabled={row.type === "New Ref"}
-                    />
-                  </td>
+  {/* Render Table-Like Editable Rows */}
+  {rows.map((row, idx) => (
+    <div className="d-flex align-items-center mb-2 px-1" key={idx}>
+      {/* Type */}
+      <div style={{ width: "15%" }}>
+        <Form.Select
+          size="sm"
+          value={row.type}
+          onChange={(e) => handleChange(idx, "type", e.target.value)}
+          onKeyDown={(e) => handleKeyDown(e, idx)}
+          ref={idx === 0 ? selectRef : null}
+        >
+          <option value="Adj Ref">Adj Ref</option>
+          <option value="New Ref">New Ref</option>
+          <option value="Clear">Clear</option>
+        </Form.Select>
+      </div>
 
-                  {/* AMOUNT INPUT — ENABLE only for "New Ref" */}
-                  <td>
-                    <Form.Control
-                      type='number'
-                      value={row.amount || ""}
-                      onChange={(e) =>
-                        handleChange(idx, "amount", e.target.value)
-                      }
-                      onKeyDown={(e) => handleKeyDown(e, idx)}
-                      placeholder={
-                        row.type === "New Ref" ? "Enter amount to adjust" : ""
-                      }
-                      disabled={row.type !== "New Ref"}
-                    />
-                  </td>
+      {/* Particulars */}
+      <div style={{ width: "30%", padding: "0 4px" }}>
+        <Form.Control
+          size="sm"
+          value={row.particulars}
+          onChange={(e) => handleChange(idx, "particulars", e.target.value)}
+          disabled={row.type === "New Ref"}
+        />
+      </div>
 
-                  {/* REMARK */}
-                  <td>
-                    <Form.Control
-                      value={row.remark || ""}
-                      onChange={(e) =>
-                        handleChange(idx, "remark", e.target.value)
-                      }
-                      disabled={row.type === "New Ref"}
-                    />
-                  </td>
+      {/* Due Days */}
+      <div style={{ width: "15%", padding: "0 4px" }}>
+        <Form.Control
+          size="sm"
+          type="number"
+          value={row.dueDays}
+          onChange={(e) => handleChange(idx, "dueDays", e.target.value)}
+          disabled={row.type === "New Ref"}
+        />
+      </div>
 
-                  {/* BALANCE */}
-                  <td>
-                    <Form.Control
-                      value={row.balance || ""}
-                      onChange={(e) =>
-                        handleChange(idx, "balance", e.target.value)
-                      }
-                      disabled={row.type === "New Ref"}
-                    />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
+      {/* Amount */}
+      <div style={{ width: "15%", padding: "0 4px" }}>
+        <Form.Control
+          size="sm"
+          type="number"
+          value={row.amount}
+          onChange={(e) => handleChange(idx, "amount", e.target.value)}
+          onKeyDown={(e) => handleKeyDown(e, idx)}
+          disabled={row.type !== "New Ref"}
+        />
+      </div>
 
-          <div className='d-flex justify-content-between mt-3'>
-            <span>
-              <strong>Adjusted:</strong> ₹{totalAdjusted.toFixed(2)} Dr
-            </span>
-            <span>
-              <strong>Pending:</strong> ₹{pending.toFixed(2)} Dr
-            </span>
-          </div>
+      {/* Remark */}
+      <div style={{ width: "15%", padding: "0 4px" }}>
+        <Form.Control
+          size="sm"
+          value={row.remark}
+          onChange={(e) => handleChange(idx, "remark", e.target.value)}
+          disabled={row.type === "New Ref"}
+        />
+      </div>
 
-          <Modal.Footer>
-            <button
-              className='btn btn-primary'
-              onClick={handleSave}
-              disabled={rows.length === 0}
-            >
-              Save
-            </button>
-          </Modal.Footer>
-        </Modal.Body>
+      {/* Balance */}
+      <div style={{ width: "15%" }}>
+        <Form.Control
+          size="sm"
+          value={row.balance}
+          onChange={(e) => handleChange(idx, "balance", e.target.value)}
+          disabled={row.type === "New Ref"}
+        />
+      </div>
+    </div>
+  ))}
+
+  <div className="border border-dark mt-2" style={{ borderWidth: "2px" }}></div>
+
+  <div className="d-flex justify-content-end gap-5 mt-2" style={{ fontSize: "14px" }}>
+    <span><strong>ADJUSTED:</strong> ₹{totalAdjusted.toFixed(2)} Dr</span>
+    <span><strong>PENDING:</strong> ₹{pending.toFixed(2)} Dr</span>
+  </div>
+</Modal.Body>
+
       </Modal>
+</>
+
     );
   }
 );
