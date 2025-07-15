@@ -964,11 +964,7 @@ const GenerateInvoice = () => {
         `}
       </style>
 
-<<<<<<< HEAD
-      <div id='print-area' style={{ lineHeight:"1" }}>
-=======
       <div id='print-area' style={{ lineHeight: "1" }}>
->>>>>>> f4b5de3c2b1100437e16496d3f68e80d4b337fff
         {billingChunks.map((chunk, pageIndex) => (
           <div
             key={pageIndex}
@@ -991,36 +987,17 @@ const GenerateInvoice = () => {
                   marginTop: "0px",
                 }}
               >
-<<<<<<< HEAD
-                <div className="d-flex  mt-2">
-                   <p style={{  marginBottom:"0px", fontSize: "14px" }}>
-                  <strong>GSTIN: 23BJUPR9537F1ZK</strong>
-                </p>
-
-                <h2
-                  style={{
-                    width:"45%",
-                    //fontWeight: "bold",
-                    fontSize: "22px",
-                    textAlign: "right",
-                    margin: "-3px",
-                  }}
-                >
-                  SAMRIDDHI ENTERPRISES
-                </h2>
-                </div>
-
-=======
-                <div className='d-flex  mt-2'>
-                  <p style={{ marginBottom: "0px", fontSize: "14px" }}>
+                <div className='d-flex  mt-5'>
+                  <p style={{ fontSize: "14px" }}>
                     <strong>GSTIN: 23BJUPR9537F1ZK</strong>
                   </p>
 
                   <h2
                     style={{
-                      width: "45%",
+                      width: "47%",
                       //fontWeight: "bold",
                       fontSize: "22px",
+                      fontWeight:"600",
                       textAlign: "right",
                       margin: "-3px",
                     }}
@@ -1028,7 +1005,6 @@ const GenerateInvoice = () => {
                     SAMRIDDHI ENTERPRISES
                   </h2>
                 </div>
->>>>>>> f4b5de3c2b1100437e16496d3f68e80d4b337fff
 
                 <p
                   style={{
@@ -1115,11 +1091,7 @@ const GenerateInvoice = () => {
               <Table
                 bordered
                 className='mt-1 table-sm'
-<<<<<<< HEAD
-                style={{ fontSize: "12px", borderBottom:"none" }}
-=======
                 style={{ fontSize: "12px", borderBottom: "none" }}
->>>>>>> f4b5de3c2b1100437e16496d3f68e80d4b337fff
               >
                 <thead>
                   <tr>
@@ -1147,7 +1119,7 @@ const GenerateInvoice = () => {
                           textAlign: "center",
                           paddingLeft: i === 1 ? "5px" : "2px",
                           paddingRight: i === 1 ? "5px" : "2px",
-                          fontWeight: "400",
+                          fontWeight: "600",
                         }}
                       >
                         {header}
@@ -1155,24 +1127,16 @@ const GenerateInvoice = () => {
                     ))}
                   </tr>
                 </thead>
-<<<<<<< HEAD
-                <tbody style={{ borderBottom:"none !important" }}>
-=======
                 <tbody style={{ borderBottom: "none !important" }}>
->>>>>>> f4b5de3c2b1100437e16496d3f68e80d4b337fff
                   {chunk.map((item, index) => {
                     const product = productDetails[item.productId?._id] || {};
                     const gst = product?.gstPercent || 0;
                     return (
-<<<<<<< HEAD
-                      <tr id="border-table" style={{ border:"none", background:"red" }} key={index}>
-=======
                       <tr
                         id='border-table'
                         style={{ border: "none", background: "red" }}
                         key={index}
                       >
->>>>>>> f4b5de3c2b1100437e16496d3f68e80d4b337fff
                         <td
                           style={{
                             borderLeft: "1px solid black",
@@ -1189,11 +1153,7 @@ const GenerateInvoice = () => {
                             textAlign: "left",
                             paddingLeft: "5px",
                             paddingRight: "5px",
-<<<<<<< HEAD
-                            whiteSpace:"nowrap"
-=======
                             whiteSpace: "nowrap",
->>>>>>> f4b5de3c2b1100437e16496d3f68e80d4b337fff
                           }}
                         >
                           {item.itemName || "N/A"}
@@ -1212,11 +1172,7 @@ const GenerateInvoice = () => {
                             borderRight: "1px solid black",
                             textAlign: "right",
                             padding: "2px",
-<<<<<<< HEAD
-                             whiteSpace:"nowrap"
-=======
                             whiteSpace: "nowrap",
->>>>>>> f4b5de3c2b1100437e16496d3f68e80d4b337fff
                           }}
                         >
                           {product.mrp || 0}
@@ -1226,11 +1182,7 @@ const GenerateInvoice = () => {
                             borderRight: "1px solid black",
                             textAlign: "right",
                             padding: "2px",
-<<<<<<< HEAD
-                            whiteSpace:"nowrap"
-=======
                             whiteSpace: "nowrap",
->>>>>>> f4b5de3c2b1100437e16496d3f68e80d4b337fff
                           }}
                         >
                           {item.qty || 0}
@@ -1320,13 +1272,8 @@ const GenerateInvoice = () => {
                     );
                   })}
 
-<<<<<<< HEAD
                   {/* {chunk.length > 0 && (
-                    <tr style={{  }}>
-=======
-                  {chunk.length > 0 && (
                     <tr style={{}}>
->>>>>>> f4b5de3c2b1100437e16496d3f68e80d4b337fff
                       <td
                         colSpan={14}
                         style={{ height: "1px", padding: 0 }}
@@ -1334,28 +1281,6 @@ const GenerateInvoice = () => {
                     </tr>
                   )} */}
 
-<<<<<<< HEAD
-
-                    {chunk.length < itemsPerPage &&
-  Array.from({ length: itemsPerPage - chunk.length }).map((_, i) => (
-    <tr style={{ border:"none" }} key={`empty-${i}`}>
-      {Array.from({ length: 14 }).map((_, j) => (
-        <td
-          key={j}
-          style={{
-            borderRight: "1px solid black",
-            borderLeft: j === 0 ? "1px solid black" : undefined,
-            textAlign: "center",
-            padding: "2px",
-            height: "22px", // Consistent height
-          }}
-        >
-
-        </td>
-      ))}
-    </tr>
-  ))}
-=======
                   {chunk.length < itemsPerPage &&
                     Array.from({ length: itemsPerPage - chunk.length }).map(
                       (_, i) => (
@@ -1376,7 +1301,6 @@ const GenerateInvoice = () => {
                         </tr>
                       )
                     )}
->>>>>>> f4b5de3c2b1100437e16496d3f68e80d4b337fff
 
                   {pageIndex === billingChunks.length - 1 && (
                     <tr style={{ fontWeight: "bold" }}>
@@ -1396,11 +1320,7 @@ const GenerateInvoice = () => {
                       <td
                         className='p-1 '
                         style={{
-<<<<<<< HEAD
-                          whiteSpace:"nowrap",
-=======
                           whiteSpace: "nowrap",
->>>>>>> f4b5de3c2b1100437e16496d3f68e80d4b337fff
                           borderBottom: " 1px solid black",
                           borderTop: "1px solid black",
                         }}
@@ -1414,11 +1334,7 @@ const GenerateInvoice = () => {
                           borderRight: "1px solid black",
                           borderTop: "1px solid black",
                           textAlign: "center",
-<<<<<<< HEAD
-                            whiteSpace:"nowrap"
-=======
                           whiteSpace: "nowrap",
->>>>>>> f4b5de3c2b1100437e16496d3f68e80d4b337fff
                         }}
                       >
                         PCS:{totals.totalQty || 0}
@@ -1492,21 +1408,13 @@ const GenerateInvoice = () => {
                     fontSize: "11px",
                     gap: "6px",
                     border: "1px solid black",
-                    borderTop: "0",
+
                     width: "100%",
-<<<<<<< HEAD
-                    whiteSpace:"nowrap"
-                  }}
-                >
-                  <div>
-                    <p style={{ marginBottom: "0", whiteSpace:"nowrap" }}>
-=======
                     whiteSpace: "nowrap",
                   }}
                 >
                   <div>
                     <p style={{ marginBottom: "0", whiteSpace: "nowrap" }}>
->>>>>>> f4b5de3c2b1100437e16496d3f68e80d4b337fff
                       Goods once sold will not be taken back
                     </p>
                     <p style={{ marginBottom: "0" }}>
@@ -1560,11 +1468,7 @@ const GenerateInvoice = () => {
                   }}
                 >
                   <div>
-<<<<<<< HEAD
-                    <p style={{ marginBottom: "0", whiteSpace:"nowrap" }}>
-=======
                     <p style={{ marginBottom: "0", whiteSpace: "nowrap" }}>
->>>>>>> f4b5de3c2b1100437e16496d3f68e80d4b337fff
                       Goods once sold will not be taken back
                     </p>
                     <p style={{ marginBottom: "0" }}>
@@ -1574,11 +1478,7 @@ const GenerateInvoice = () => {
                     <p style={{ marginBottom: "0" }}>
                       Subject to Bhopal jurisdiction/-
                     </p>
-<<<<<<< HEAD
-                    <p className="mb-0">E.&.O.E</p>
-=======
                     <p className='mb-0'>E.&.O.E</p>
->>>>>>> f4b5de3c2b1100437e16496d3f68e80d4b337fff
                   </div>
                   {/* //!SGST */}
                   <div
@@ -1590,9 +1490,6 @@ const GenerateInvoice = () => {
                     }}
                   >
                     {Object.entries(gstSummary).map(([rate, value]) => (
-<<<<<<< HEAD
-                      <p style={{ margin: "0", padding: "2px", whiteSpace:"nowrap" }} key={rate}>
-=======
                       <p
                         style={{
                           margin: "0",
@@ -1601,7 +1498,6 @@ const GenerateInvoice = () => {
                         }}
                         key={rate}
                       >
->>>>>>> f4b5de3c2b1100437e16496d3f68e80d4b337fff
                         {rate}%: SGST {value.sgst.toFixed(2)}, CGST{" "}
                         {value.cgst.toFixed(2)} ={" "}
                         {(value.sgst + value.cgst).toFixed(2)} /{" "}
@@ -1613,11 +1509,7 @@ const GenerateInvoice = () => {
                         borderTop: "1px solid black",
                         paddingLeft: "5px",
                         paddingTop: "8px",
-<<<<<<< HEAD
-                        marginBottom:"0",
-=======
                         marginBottom: "0",
->>>>>>> f4b5de3c2b1100437e16496d3f68e80d4b337fff
                         borderTopStyle: "dashed",
                       }}
                     >
