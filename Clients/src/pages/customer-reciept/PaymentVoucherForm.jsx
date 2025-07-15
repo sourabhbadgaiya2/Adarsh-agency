@@ -182,7 +182,7 @@ const PaymentVoucherForm = () => {
 
       <Form>
         <Row className='mb-4'>
-          <Col md={6}>
+          <Col md={12}>
             <Form.Group className='mb-3'>
               <Form.Label>Voucher Type</Form.Label>
               <Form.Control
@@ -204,9 +204,9 @@ const PaymentVoucherForm = () => {
             </Form.Group>
           </Col>
 
-          <Col md={6}>
+          <Col md={12}>
             <Row>
-              <Col md={6}>
+              <Col md={12}>
                 <Form.Group className='mb-3'>
                   <Form.Label>
                     Date{" "}

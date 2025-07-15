@@ -175,68 +175,89 @@ const CustomerForm = () => {
         H.NO 2, NAGAR NIGAM COLONY COAL & TIMBER MARKET CHHOLA ROAD, BHOPAL
       </p>
       <p className='text-center mb-4'>Period : 01-04-2025 - 31-03-2026</p>
+  <div className="line mb-3"></div>
+      
 
       <Form>
-        <Row className='mb-4'>
-          <Col md={6}>
-            <Form.Group className='mb-3'>
-              <Form.Label>Voucher Type</Form.Label>
-              <Form.Control
-                type='text'
-                defaultValue='Receipt'
-                ref={(el) => (formRefs.current[0] = el)}
-                onKeyDown={(e) => handleKeyDown(e, 0)}
-              />
-            </Form.Group>
+  <Row className="mb-4">
+    {/* Left Side */}
+    <Col md={6} className="mt-4">
+      {/* Voucher Type */}
+      <Form.Group as={Row} className="mb-3 align-items-center">
+        <Form.Label column sm={4} className="col-form-label">
+          Voucher Type
+        </Form.Label>
+        <Col sm={8}>
+          <Form.Control
+            type="text"
+            defaultValue="Receipt"
+            ref={(el) => (formRefs.current[0] = el)}
+            onKeyDown={(e) => handleKeyDown(e, 0)}
+          />
+        </Col>
+      </Form.Group>
 
-            <Form.Group>
-              <Form.Label>Voucher No.</Form.Label>
-              <Form.Control
-                type='text'
-                placeholder='Enter Voucher No.'
-                ref={(el) => (formRefs.current[1] = el)}
-                onKeyDown={(e) => handleKeyDown(e, 1)}
-              />
-            </Form.Group>
-          </Col>
+      {/* Voucher No. */}
+      <Form.Group as={Row} className="mb-3 align-items-center">
+        <Form.Label column sm={4} className="col-form-label">
+          Voucher No.
+        </Form.Label>
+        <Col sm={8}>
+          <Form.Control
+            type="text"
+            placeholder="Enter Voucher No."
+            ref={(el) => (formRefs.current[1] = el)}
+            onKeyDown={(e) => handleKeyDown(e, 1)}
+          />
+        </Col>
+      </Form.Group>
+    </Col>
 
-          <Col md={6}>
-            <Row>
-              <Col md={6}>
-                <Form.Group className='mb-3'>
-                  <Form.Label>
-                    Date{" "}
-                    <span style={{ fontSize: "12px", color: "red" }}>
-                      (Press Enter to trigger a function)
-                    </span>
-                  </Form.Label>
-                  <Form.Control
-                    type='text'
-                    name='date'
-                    placeholder='DD/MM/YYYY'
-                    value={dateValue}
-                    onChange={handleDateChange}
-                    ref={(el) => (formRefs.current[2] = el)}
-                    onKeyDown={(e) => handleKeyDown(e, 2)}
-                  />
-                </Form.Group>
-              </Col>
-              <Col md={6}>
-                <Form.Group>
-                  <Form.Label>Day</Form.Label>
-                  <Form.Control
-                    type='text'
-                    value={dayValue}
-                    readOnly
-                    ref={(el) => (formRefs.current[3] = el)}
-                    onKeyDown={(e) => handleKeyDown(e, 3)}
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
-          </Col>
-        </Row>
-      </Form>
+    {/* Right Side */}
+    <Col md={6} className="mt-4">
+      {/* Date */}
+      <Form.Group as={Row} className="mb-3 align-items-center">
+        <Form.Label column sm={4} className="col-form-label">
+          Date{" "}
+          <span style={{ fontSize: "12px", color: "red" }}>
+            (Press Enter to trigger a function)
+          </span>
+        </Form.Label>
+        <Col sm={8}>
+          <Form.Control
+            type="text"
+            name="date"
+            placeholder="DD/MM/YYYY"
+            value={dateValue}
+            onChange={handleDateChange}
+            ref={(el) => (formRefs.current[2] = el)}
+            onKeyDown={(e) => handleKeyDown(e, 2)}
+          />
+        </Col>
+      </Form.Group>
+
+      {/* Day */}
+      <Form.Group as={Row} className="mb-3 align-items-center">
+        <Form.Label column sm={4} className="col-form-label">
+          Day
+        </Form.Label>
+        <Col sm={8}>
+          <Form.Control
+            type="text"
+            value={dayValue}
+            readOnly
+            ref={(el) => (formRefs.current[3] = el)}
+            onKeyDown={(e) => handleKeyDown(e, 3)}
+          />
+        </Col>
+      </Form.Group>
+    </Col>
+  </Row>
+
+  {/* Optional horizontal line */}
+  <hr />
+</Form>
+
 
       <Modal show={showModal} onHide={() => setShowModal(false)} centered>
         <Modal.Header closeButton>
@@ -303,26 +324,28 @@ const CustomerForm = () => {
           )}
         </Modal.Body>
       </Modal>
+
+
       {selectedCustomer && (
         <>
-          <hr />
-          <h5>Customer Details</h5>
-          <p>
-            <strong>Name:</strong> {selectedCustomer?.name}
+        <div className="d-flex align-items-center gap-5 mt-4 w-full">
+
+          <p className="mb-0">
+            <strong></strong> {selectedCustomer?.name}
           </p>
-          <p>
-            <strong>City:</strong> {selectedCustomer?.city}
+          <p  className="mb-0">
+            <strong></strong> {selectedCustomer?.city}
           </p>
-          <p>
+          <p  className="mb-0">
             <strong>Total Balance:</strong> ₹
             {balanceByCustomer.toFixed(2) || "0.00"}
           </p>
 
-          <Form.Group as={Row} className='mb-3' controlId='formDebit'>
-            <Form.Label column sm={2}>
+          <Form.Group  className=' d-flex ' controlId='formDebit'>
+            <Form.Label column >
               Debit Amount
             </Form.Label>
-            <Col sm={4}>
+            <Col >
               <Form.Control
                 type='number'
                 placeholder='Enter amount'
@@ -333,6 +356,8 @@ const CustomerForm = () => {
               />
             </Col>
           </Form.Group>
+          </div>
+           <div className="line mt-5"></div>
         </>
       )}
 

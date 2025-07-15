@@ -987,16 +987,17 @@ const GenerateInvoice = () => {
                   marginTop: "0px",
                 }}
               >
-                <div className='d-flex  mt-2'>
-                  <p style={{ marginBottom: "0px", fontSize: "14px" }}>
+                <div className='d-flex  mt-5'>
+                  <p style={{ fontSize: "14px" }}>
                     <strong>GSTIN: 23BJUPR9537F1ZK</strong>
                   </p>
 
                   <h2
                     style={{
-                      width: "45%",
+                      width: "47%",
                       //fontWeight: "bold",
                       fontSize: "22px",
+                      fontWeight:"600",
                       textAlign: "right",
                       margin: "-3px",
                     }}
@@ -1118,7 +1119,7 @@ const GenerateInvoice = () => {
                           textAlign: "center",
                           paddingLeft: i === 1 ? "5px" : "2px",
                           paddingRight: i === 1 ? "5px" : "2px",
-                          fontWeight: "400",
+                          fontWeight: "600",
                         }}
                       >
                         {header}
@@ -1271,14 +1272,14 @@ const GenerateInvoice = () => {
                     );
                   })}
 
-                  {chunk.length > 0 && (
+                  {/* {chunk.length > 0 && (
                     <tr style={{}}>
                       <td
                         colSpan={14}
                         style={{ height: "1px", padding: 0 }}
                       ></td>
                     </tr>
-                  )}
+                  )} */}
 
                   {chunk.length < itemsPerPage &&
                     Array.from({ length: itemsPerPage - chunk.length }).map(
@@ -1407,7 +1408,7 @@ const GenerateInvoice = () => {
                     fontSize: "11px",
                     gap: "6px",
                     border: "1px solid black",
-                    borderTop: "0",
+
                     width: "100%",
                     whiteSpace: "nowrap",
                   }}
